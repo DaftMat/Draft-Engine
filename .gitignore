@@ -30,3 +30,10 @@
 *.exe
 *.out
 *.app
+
+# Building directories
+*build*
+*bin*
+
+# Jetbrain's
+.idea/
