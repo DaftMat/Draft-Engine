@@ -1,4 +1,4 @@
-project(IIG3D-BaseTP)
+project(Daft-Engine)
 
 ############################################
 # Configure CMake and GCC flags
@@ -44,7 +44,7 @@ FILE(GLOB_RECURSE
 
 include_directories(
    ${CMAKE_SOURCE_DIR}/src
-   ${CMAKE_SOURCE_DIR}/glm
+   ${CMAKE_SOURCE_DIR}/glm/glm
 )
 
 SOURCE_GROUP("Source Files" FILES ${folder_source})
