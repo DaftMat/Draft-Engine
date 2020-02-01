@@ -5,9 +5,11 @@
 #ifndef IIG3D_BASETP_HELLOSPHERES_HPP
 #define IIG3D_BASETP_HELLOSPHERES_HPP
 
+#include <hello_camera/camera.h>
+#include <opengldemo.h>
 
-class hellospheres {
-
+class hellospheres : public OpenGLDemo {
+    
 };
 
 
