@@ -11,10 +11,18 @@ class Shader {
 public:
     Shader(const char * vertexPath, const char * fragmentPath);
 
+    Shader(const Shader & shader) { m_ID = shader.m_ID; }
+    Shader(Shader && shader) noexcept { m_ID = shader.m_ID; }
+
+    Shader & operator=(const Shader & shader) { m_ID = shader.m_ID; return *this; }
+    Shader & operator=(Shader && shader) { m_ID = shader.m_ID; return *this; }
+
+    ~Shader();
+
     /**
      * Activates the shaders
      */
-    void use();
+    void use() const;
 
     ///Uniform utils
     void setBool(const std::string &name, bool value) const;

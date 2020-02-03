@@ -3,7 +3,7 @@
 
 
 #include <vector>
-#include "opengl_stuff.h"
+#include <opengl_stuff.h>
 
 /** Simple class for managing an OpenGL demo
  */

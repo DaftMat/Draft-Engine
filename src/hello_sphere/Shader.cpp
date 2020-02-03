@@ -27,7 +27,7 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
         /// close files
         vShaderFile.close();
         fShaderFile.close();
-    } catch (std::ifstream::failure e) {
+    } catch (std::ifstream::failure &e) {
         std::cout << "ERROR:SHADER:FILE_NOT_SUCCESSFULLY_READ" << std::endl;
     }
 
@@ -57,7 +57,7 @@ void Shader::setupShader(const char * vertexCode, const char * fragmentCode) {
     glDeleteShader(fragment);
 }
 
-void Shader::use() {
+void Shader::use() const {
     glUseProgram(m_ID);
 }
 
@@ -113,3 +113,5 @@ void Shader::checkCompileError(GLuint shader, std::string type) const {
         std::cout << "ERROR:" << errorType << " of type : " << type << "\n" << infoLog << std::endl;
     }
 }
+
+Shader::~Shader() { glDeleteProgram(m_ID); }

@@ -10,6 +10,12 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices)
     setupMesh();
 }
 
+Mesh::~Mesh() {
+    glDeleteBuffers(1, &m_VBO);
+    glDeleteBuffers(1, &m_EBO);
+    glDeleteVertexArrays(1, &m_VAO);
+}
+
 void Mesh::setupMesh() {
     glGenVertexArrays(1, &m_VAO);
     glGenBuffers(1, &m_VBO);
@@ -35,6 +41,8 @@ void Mesh::setupMesh() {
 }
 
 void Mesh::draw(const Shader &shader) const {
+    shader.setMat4("model", m_model);
+
     glBindVertexArray(m_VAO);
     glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);

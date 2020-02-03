@@ -6,6 +6,8 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <hello_sphere/Shader.hpp>
+#include <hello_sphere/hellospheres.hpp>
 
 #include "hello_triangles/hellotriangles.h"
 #include "hello_camera/hellocamera.h"
@@ -20,6 +22,10 @@ MyOpenGLWidget::MyOpenGLWidget(QWidget *parent) :QOpenGLWidget(parent)/*, QOpenG
         } );
     _democonstructors.push_back( [](int width, int height)->OpenGLDemo*{
         std::cout << "Hello camera ..." << std::endl; return new SimpleCamera(width, height);
+        } );
+    _democonstructors.push_back( [](int width, int height)->OpenGLDemo*{
+        std::cout << "Hello spheres ..." << std::endl;
+        return new Hellospheres(width, height, Shader("../src/hello_sphere/shaders/default.vert.glsl", "../src/hello_sphere/shaders/default.frag.glsl"));
         } );
 }
 
