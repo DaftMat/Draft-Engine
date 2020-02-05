@@ -15,7 +15,7 @@ find_package(Qt5 COMPONENTS OpenGL REQUIRED)
 if (Qt5OpenGL_FOUND)
     message(STATUS "Found Qt ${Qt5OpenGL_VERSION}")
 else (Qt5OpenGL_FOUND)
-    message(EROR "Unable to find QTOpenGL library")
+    message(ERROR "Unable to find QTOpenGL library")
 endif(Qt5OpenGL_FOUND)
 find_package(OpenGL REQUIRED) # define OPENGL_LIBRARIES
 
@@ -34,6 +34,7 @@ FILE(GLOB_RECURSE
 FILE(GLOB_RECURSE
     folder_header
     ${CMAKE_SOURCE_DIR}/src/*.h
+    ${CMAKE_SOURCE_DIR}/src/*.hpp
 
 )
 
@@ -71,3 +72,19 @@ add_executable(${PROJECT_NAME}
 set(EXT_LIBS Qt5::OpenGL ${OPENGL_LIBRARIES})
 
 target_link_libraries(${PROJECT_NAME} ${EXT_LIBS})
+
+
+################################################################################
+# Shaders
+
+set(SHADER_DIR ${CMAKE_SOURCE_DIR}/shaders)
+file(GLOB_RECURSE SHADER_SOURCES ${SHADER_DIR}/*.glsl)
+
+add_custom_target(
+        Daft-Engine_shaders
+        COMMAND ${CMAKE_COMMAND} -E create_symlink ${SHADER_DIR} ${EXECUTABLE_OUTPUT_PATH}/shaders
+        SOURCES ${SHADER_SOURCES}
+        COMMENT "Create link (symlink) shader" VERBATIM
+)
+
+add_dependencies(Daft-Engine Daft-Engine_shaders)

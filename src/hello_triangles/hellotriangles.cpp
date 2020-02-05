@@ -24,27 +24,24 @@ static const char* fragmentshadernormal_source ="#version 410 core\n\
         out vec4 color;\n\
         void main()\n\
         {\n\
-            color = vec4(normal*0.5+0.5, 1.0f);\n\
+            color = vec4(normal, 1.0f);\n\
         }\n";
 
 SimpleTriangle::SimpleTriangle(int width, int height) : OpenGLDemo(width, height) {
     // Initialise geometric data
     _vertices = {
-        0.5f,  0.5f, 0.0f,  // Top Right
-        0.5f, -0.5f, 0.0f,  // Bottom Right
-       -0.5f, -0.5f, 0.0f,  // Bottom Left
-       -0.5f,  0.5f, 0.0f   // Top Left
+        0.5f,  0.0f, 0.0f,  // Top Right
+       -0.5f,  0.0f, 0.0f,   // Top Left
+        0.0f,  1.0f, 0.0f   // Bottom Right
     };
     _normals = {
-        0.577350269189626f, 0.577350269189626f, 0.577350269189626f,
-        0.577350269189626f, -0.577350269189626f, 0.577350269189626f,
-        -0.577350269189626f, -0.577350269189626f, 0.577350269189626f,
-        -0.577350269189626f, 0.577350269189626f, 0.577350269189626f
+        1.f, 0.f, 0.f,
+        0.f, 1.f, 0.f,
+        0.f, 0.f, 1.f
     };
     _indices = {
         // Note that we start from 0!
-        0, 1, 3,   // First Triangle
-        1, 2, 3    // Second Triangle
+        0, 1, 2,   // First Triangle
     };
 
     // Initialize the geometry

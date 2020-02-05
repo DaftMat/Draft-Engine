@@ -156,9 +156,9 @@ SimpleCamera::SimpleCamera(int width, int height) : OpenGLDemo(width, height), _
 
     _projection = glm::perspective(_camera->zoom(), float(_width) / _height, 0.1f, 100.0f);
 
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT);
-    glFrontFace(GL_CW);
+    //glEnable(GL_CULL_FACE);
+    //glCullFace(GL_FRONT);
+    //glFrontFace(GL_CW);
 }
 
 SimpleCamera::~SimpleCamera() {
