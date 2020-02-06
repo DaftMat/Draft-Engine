@@ -38,7 +38,7 @@ private:
     std::unique_ptr<Shader> m_shader;
 
     // mouse management
-    int m_button; // 0 --> left. 1 --> right. 2 --> middle. 3 --> other
+    int m_button{0}; // 0 --> left. 1 --> right. 2 --> middle. 3 --> other
     float m_mousex{0};
     float m_mousey{0};
 
@@ -48,6 +48,7 @@ private:
     unsigned int m_activecamera;
     std::unique_ptr<Camera> m_camera;
 
+    glm::mat4 m_view;
     glm::mat4 m_projection;
 };
 

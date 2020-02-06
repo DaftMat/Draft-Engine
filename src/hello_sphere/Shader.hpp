@@ -30,7 +30,6 @@ public:
     void setMat4(const std::string &name, const glm::mat4 & value) const;
 
 private:
-    void setupShader(const char * vertexCode, const char * fragmentCode);
     void checkCompileError(GLuint shader, std::string type) const;
 
     GLuint m_ID;

@@ -13,7 +13,6 @@ class Shader;
 struct Vertex {
     glm::vec3 Position;
     glm::vec3 Normal;
-    //glm::vec3 Tangent;
     glm::vec2 TexCoords;
 };
 
@@ -32,7 +31,6 @@ public:
     void draw(const Shader &shader) const;
 
     void transform(glm::vec4 transform) { m_model *= transform; }
-    glm::mat4 modelmatrix() { return m_model; }
 
 private:
     void setupMesh();

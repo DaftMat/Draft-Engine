@@ -81,10 +81,10 @@ set(SHADER_DIR ${CMAKE_SOURCE_DIR}/shaders)
 file(GLOB_RECURSE SHADER_SOURCES ${SHADER_DIR}/*.glsl)
 
 add_custom_target(
-        Daft-Engine_shaders
+        ${PROJECT_NAME}_shaders
         COMMAND ${CMAKE_COMMAND} -E create_symlink ${SHADER_DIR} ${EXECUTABLE_OUTPUT_PATH}/shaders
         SOURCES ${SHADER_SOURCES}
         COMMENT "Create link (symlink) shader" VERBATIM
 )
 
-add_dependencies(Daft-Engine Daft-Engine_shaders)
+add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_shaders)

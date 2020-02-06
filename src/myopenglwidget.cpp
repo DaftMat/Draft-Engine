@@ -6,24 +6,23 @@
 
 #include <iostream>
 #include <stdexcept>
-#include <hello_sphere/Shader.hpp>
-#include <hello_sphere/hellospheres.hpp>
 
 #include "hello_triangles/hellotriangles.h"
 #include "hello_camera/hellocamera.h"
+#include "hello_sphere/hellospheres.hpp"
 
 MyOpenGLWidget::MyOpenGLWidget(QWidget *parent) :QOpenGLWidget(parent)/*, QOpenGLFunctions_4_1_Core()*/, _openglDemo(nullptr), _lastime(0) {
     // add all demo constructors here
-    _democonstructors.push_back( [](int width, int height)->OpenGLDemo*{
+    _democonstructors.emplace_back( [](int width, int height)->OpenGLDemo*{
         std::cout << "Hello clear ..." << std::endl; return new OpenGLDemo(width, height);
         } );
-    _democonstructors.push_back( [](int width, int height)->OpenGLDemo*{
+    _democonstructors.emplace_back( [](int width, int height)->OpenGLDemo*{
         std::cout << "Hello triangles ..." << std::endl; return new SimpleTriangle(width, height);
         } );
-    _democonstructors.push_back( [](int width, int height)->OpenGLDemo*{
+    _democonstructors.emplace_back( [](int width, int height)->OpenGLDemo*{
         std::cout << "Hello camera ..." << std::endl; return new SimpleCamera(width, height);
         } );
-    _democonstructors.push_back( [](int width, int height)->OpenGLDemo*{
+    _democonstructors.emplace_back( [](int width, int height)->OpenGLDemo*{
         std::cout << "Hello spheres ..." << std::endl; return new Hellospheres(width, height);
         } );
 }

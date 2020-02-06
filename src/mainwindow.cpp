@@ -51,8 +51,7 @@ void MainWindow::on_actionHello_triangle_triggered() {
 void MainWindow::on_actionHello_camera_triggered() {
     openglWidget->activatedemo(2);
 }
-
-void MainWindow::on_actionHello_spheres_triggered() {
+void MainWindow::on_actionHello_spheres_triggered()
+{
     openglWidget->activatedemo(3);
 }
-

@@ -31,23 +31,18 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
         std::cout << "ERROR:SHADER:FILE_NOT_SUCCESSFULLY_READ" << std::endl;
     }
 
-    setupShader(vertexCode.c_str(), fragmentCode.c_str());
-}
+    const char * vShaderCode = vertexCode.c_str();
+    const char * fShaderCode = fragmentCode.c_str();
 
-Shader::~Shader() {
-    glDeleteProgram(m_ID);
-}
-
-void Shader::setupShader(const char * vertexCode, const char * fragmentCode) {
     GLuint vertex, fragment;
     /// Vertex
     vertex = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertex, 1, &vertexCode, NULL);
+    glShaderSource(vertex, 1, &vShaderCode, NULL);
     glCompileShader(vertex);
     checkCompileError(vertex, "VERTEX");
     /// Fragment
     fragment = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment, 1, &fragmentCode, NULL);
+    glShaderSource(fragment, 1, &fShaderCode, NULL);
     glCompileShader(fragment);
     checkCompileError(fragment, "FRAGMENT");
     /// Program
@@ -59,6 +54,10 @@ void Shader::setupShader(const char * vertexCode, const char * fragmentCode) {
     /// Release shader
     glDeleteShader(vertex);
     glDeleteShader(fragment);
+}
+
+Shader::~Shader() {
+    glDeleteProgram(m_ID);
 }
 
 void Shader::use() const {

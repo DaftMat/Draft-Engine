@@ -23,9 +23,9 @@ private slots:
 
     void on_actionHello_camera_triggered();
 
-    void on_actionHello_spheres_triggered();
-
     void on_actionHello_clear_triggered();
+
+    void on_actionHello_spheres_triggered();
 
 private:
     Ui::MainWindow *ui;

@@ -32,6 +32,7 @@ Hellospheres::Hellospheres(int width, int height)
     m_camera.reset(m_cameraselector[m_activecamera]());
     m_camera->setviewport(glm::vec4(0.f, 0.f, _width, _height));
 
+    m_view = m_camera->viewmatrix();
     m_projection = glm::perspective(m_camera->zoom(), float(_width) / _height, 0.1f, 100.0f);
 
     /// Setup shaders
@@ -44,8 +45,8 @@ Hellospheres::Hellospheres(int width, int height)
 }
 
 Hellospheres::~Hellospheres() {
-    m_shader.reset(nullptr);
     m_meshes.clear();
+    m_shader.reset(nullptr);
     m_camera.reset(nullptr);
 }
 
@@ -53,6 +54,7 @@ Hellospheres::~Hellospheres() {
 void Hellospheres::resize(int width, int height) {
     OpenGLDemo::resize(width, height);
     m_camera->setviewport(glm::vec4(0.f, 0.f, _width, _height));
+    m_view = m_camera->viewmatrix();
     m_projection = glm::perspective(m_camera->zoom(), float(_width) / _height, 0.1f, 100.0f);
 }
 
@@ -61,7 +63,7 @@ void Hellospheres::draw() {
 
     m_shader->use();
 
-    m_shader->setMat4("view", m_camera->viewmatrix());
+    m_shader->setMat4("view", m_view);
     m_shader->setMat4("projection", m_projection);
 
     for (const auto &mesh : m_meshes) {

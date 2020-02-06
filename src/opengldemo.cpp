@@ -45,4 +45,3 @@ bool OpenGLDemo::keyboard(unsigned char ) {
 void OpenGLDemo::toggledrawmode() {
     _drawfill = !_drawfill;
 }
-
