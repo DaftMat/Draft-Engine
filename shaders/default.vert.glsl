@@ -11,7 +11,7 @@ out vec3 normal;
 
 void main()
 {
-    // Note that we read the multiplication from right to left\n\
+    // Note that we read the multiplication from right to left
     gl_Position = projection * view * model * vec4(position, 1.0f);
     normal = inormal;
 }

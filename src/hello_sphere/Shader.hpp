@@ -30,7 +30,8 @@ public:
     void setMat4(const std::string &name, const glm::mat4 & value) const;
 
 private:
-    void checkCompileError(GLuint shader, std::string type) const;
+    void checkCompileError(GLuint shader, const std::string & type) const;
+    void checkLinkError(GLuint program) const;
 
     GLuint m_ID;
 };

@@ -26,6 +26,10 @@ Hellospheres::Hellospheres(int width, int height)
 
     m_meshes.emplace_back(Mesh({a, b, c}, {0, 1, 2}));
 
+    /// Setup shaders
+    m_shaderselector.emplace_back( []()->Shader*{ return new Shader("shaders/default.vert.glsl", "shaders/default.frag.glsl"); } );
+    m_shader.reset(m_shaderselector[m_activeshader]());
+
     /// Setup cameras
     m_cameraselector.emplace_back( []()->Camera*{ return new EulerCamera(glm::vec3(0.f, 0.f, 1.f)); } );
     m_cameraselector.emplace_back( []()->Camera*{ return new TrackballCamera(glm::vec3(0.f, 0.f, 1.f), glm::vec3(0.f, 1.f, 0.f), glm::vec3(0.f, 0.f, 0.f)); } );
@@ -35,10 +39,6 @@ Hellospheres::Hellospheres(int width, int height)
     m_view = m_camera->viewmatrix();
     m_projection = glm::perspective(m_camera->zoom(), float(_width) / _height, 0.1f, 100.0f);
 
-    /// Setup shaders
-    m_shaderselector.emplace_back( []()->Shader*{ return new Shader("shaders/default.vert.glsl", "shaders/default.frag.glsl"); } );
-    m_shader.reset(m_shaderselector[m_activeshader]());
-
     //glEnable(GL_CULL_FACE);
     //glCullFace(GL_FRONT);
     //glFrontFace(GL_CW);
@@ -46,15 +46,14 @@ Hellospheres::Hellospheres(int width, int height)
 
 Hellospheres::~Hellospheres() {
     m_meshes.clear();
-    m_shader.reset(nullptr);
-    m_camera.reset(nullptr);
+    m_shader.reset();
+    m_camera.reset();
 }
 
 
 void Hellospheres::resize(int width, int height) {
     OpenGLDemo::resize(width, height);
     m_camera->setviewport(glm::vec4(0.f, 0.f, _width, _height));
-    m_view = m_camera->viewmatrix();
     m_projection = glm::perspective(m_camera->zoom(), float(_width) / _height, 0.1f, 100.0f);
 }
 
@@ -62,6 +61,8 @@ void Hellospheres::draw() {
     OpenGLDemo::draw();
 
     m_shader->use();
+
+    m_view = m_camera->viewmatrix();
 
     m_shader->setMat4("view", m_view);
     m_shader->setMat4("projection", m_projection);
