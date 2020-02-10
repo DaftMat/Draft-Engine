@@ -37,12 +37,12 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
     GLuint vertex, fragment;
     /// Vertex
     vertex = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertex, 1, &vShaderCode, NULL);
+    glShaderSource(vertex, 1, &vShaderCode, nullptr);
     glCompileShader(vertex);
     checkCompileError(vertex, "VERTEX");
     /// Fragment
     fragment = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment, 1, &fShaderCode, NULL);
+    glShaderSource(fragment, 1, &fShaderCode, nullptr);
     glCompileShader(fragment);
     checkCompileError(fragment, "FRAGMENT");
     /// Program
