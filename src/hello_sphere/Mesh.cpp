@@ -59,6 +59,7 @@ void Mesh::setupMesh() {
 void Mesh::draw(const Shader &shader) const {
     shader.setMat4("model", m_model);
 
+    /// HERE COMES THE BUG (glBoindVertexArray returns "Invalid Operation")
     glBindVertexArray(m_VAO);
     glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, nullptr);
     glBindVertexArray(0);

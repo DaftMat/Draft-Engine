@@ -10,21 +10,7 @@ Hellospheres::Hellospheres(int width, int height)
         m_shader { nullptr },
         m_activecamera { 0 },
         m_camera { nullptr } {
-    ///m_meshes.emplace_back(Mesh(UV_SPHERE, 10));
-    Vertex a;
-    a.Position = glm::vec3(0.5f, 0.f, 0.f);
-    a.Normal = glm::vec3(1.f, 0.f, 0.f);
-    a.TexCoords = glm::vec2(0.f, 0.f);
-    Vertex b;
-    b.Position = glm::vec3(-0.5f, 0.f, 0.f);
-    b.Normal = glm::vec3(0.f, 1.f, 0.f);
-    b.TexCoords = glm::vec2(0.f, 0.f);
-    Vertex c;
-    c.Position = glm::vec3(0.f, 1.f, 0.f);
-    c.Normal = glm::vec3(0.f, 0.f, 1.f);
-    c.TexCoords = glm::vec2(0.f, 0.f);
-
-    m_meshes.emplace_back(Mesh({a, b, c}, {0, 1, 2}));
+    m_meshes.emplace_back(UV_SPHERE, 10);
 
     /// Setup shaders
     m_shaderselector.emplace_back( []()->Shader*{ return new Shader("shaders/default.vert.glsl", "shaders/default.frag.glsl"); } );
