@@ -25,7 +25,7 @@ enum PrimitiveMesh {
 class Mesh {
 public:
     Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices);
-    Mesh(PrimitiveMesh p, GLuint resolution);
+    Mesh(PrimitiveMesh p, const std::vector<GLuint> & params);
     ~Mesh();
 
     void draw(const Shader &shader) const;

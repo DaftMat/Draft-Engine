@@ -10,10 +10,11 @@ Hellospheres::Hellospheres(int width, int height)
         m_shader { nullptr },
         m_activecamera { 0 },
         m_camera { nullptr } {
-    m_meshes.emplace_back(UV_SPHERE, 10);
+    m_meshes.emplace_back(UV_SPHERE, std::vector<GLuint> {10, 15});
 
     /// Setup shaders
     m_shaderselector.emplace_back( []()->Shader*{ return new Shader("shaders/default.vert.glsl", "shaders/default.frag.glsl"); } );
+    m_shaderselector.emplace_back( []()->Shader*{ return new Shader("shaders/error.vert.glsl", "shaders/error.frag.glsl"); } );
     m_shader.reset(m_shaderselector[m_activeshader]());
 
     /// Setup cameras
