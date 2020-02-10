@@ -11,7 +11,7 @@ Render Engine made in C++/OpenGL/Qt.
 ## Downloading
 Run the following command :
 ```txt
-# git clone --recurse-submodules https://github.com/DaftMat/Daft-Engine
+# git clone --recurse-submodules https://github.com/DaftMat/Daft-Engine.git
 ```
 
 ## Compiling
