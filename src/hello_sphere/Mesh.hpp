@@ -16,28 +16,19 @@ struct Vertex {
     glm::vec2 TexCoords;
 };
 
-enum PrimitiveMesh {
-    UV_SPHERE,
-    ICO_SPHERE,
-    CUBE_SPHERE
-};
-
 class Mesh {
 public:
+    Mesh() : m_vertices {}, m_indices {} { setupMesh(); };
     Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices);
-    Mesh(PrimitiveMesh p, const std::vector<GLuint> & params);
     ~Mesh();
 
-    void draw(const Shader &shader) const;
+    void draw() const;
 
-    void transform(glm::vec4 transform) { m_model *= transform; }
+    void reset();
 
 private:
     void setupMesh();
-
-    /// Mesh generation functions
-    void createUVSphere(GLuint meridians, GLuint parallels);
-    void createIcosahedron();
+    void deleteMesh();
 
     /// Geometry
     std::vector<Vertex> m_vertices;
@@ -45,8 +36,6 @@ private:
     std::vector<GLuint> m_indices;
     /// OpenGL
     GLuint m_VAO, m_VBO, m_EBO;
-
-    glm::mat4 m_model;
 };
 
 #endif //DAFT_ENGINE_MESH_HPP

@@ -11,22 +11,8 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices)
     setupMesh();
 }
 
-Mesh::Mesh(PrimitiveMesh p, const std::vector<GLuint> & params) {
-    switch (p) {
-        case UV_SPHERE:
-            assert(params.size() >= 2);
-            createUVSphere(params[0], params[1]);
-            break;
-        default:
-            break;
-    }
-    setupMesh();
-}
-
 Mesh::~Mesh() {
-    glDeleteVertexArrays(1, &m_VAO);
-    glDeleteBuffers(1, &m_VBO);
-    glDeleteBuffers(1, &m_EBO);
+    deleteMesh();
     m_vertices.clear();
     m_indices.clear();
 }
@@ -58,58 +44,19 @@ void Mesh::setupMesh() {
     glBindVertexArray(0);
 }
 
-void Mesh::draw(const Shader &shader) const {
-    shader.setMat4("model", m_model);
+void Mesh::deleteMesh() {
+    glDeleteVertexArrays(1, &m_VAO);
+    glDeleteBuffers(1, &m_VBO);
+    glDeleteBuffers(1, &m_EBO);
+}
 
-    /// HERE COMES THE BUG (glBoindVertexArray returns "Invalid Operation")
+void Mesh::reset() {
+    deleteMesh();
+    setupMesh();
+}
+
+void Mesh::draw() const {
     glBindVertexArray(m_VAO);
     glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, nullptr);
     glBindVertexArray(0);
-}
-
-/// Primitives
-void Mesh::createUVSphere(GLuint stacks, GLuint sectors) {
-    Vertex vertex;
-
-    /// Vertices
-    float z, xy;
-
-    float sectorStep = 2.f * glm::pi<float>() / sectors;
-    float stackStep = glm::pi<float>() / stacks;
-    float sectorAngle, stackAngle;
-
-    for (GLuint i = 0 ; i <= stacks ; ++i) {
-        stackAngle = glm::pi<float>() / 2.f - i * stackStep;
-        xy = glm::cos(stackAngle);
-        z = glm::sin(stackAngle);
-
-        for (GLuint j = 0 ; j <= sectors ; ++j) {
-            sectorAngle = j * sectorStep;
-
-            vertex.Position = glm::vec3(xy * glm::cos(sectorAngle), xy * glm::sin(sectorAngle), z);
-            vertex.Normal = glm::vec3(xy * glm::cos(sectorAngle), xy * glm::sin(sectorAngle), z);
-            vertex.TexCoords = glm::vec2((float)j / sectors, (float)i / stacks);
-
-            m_vertices.push_back(vertex);
-        }
-    }
-
-    /// Triangles
-    GLuint k1, k2;
-    for (GLuint i = 0 ; i < stacks ; ++i) {
-        k1 = i * (sectors + 1);
-        k2 = k1 + sectors + 1;
-        for (GLuint j = 0 ; j < sectors ; ++j, ++k1, ++k2) {
-            if (i) {
-                m_indices.push_back(k1);
-                m_indices.push_back(k2);
-                m_indices.push_back(k1 + 1);
-            }
-            if (i != (stacks - 1)) {
-                m_indices.push_back(k1 + 1);
-                m_indices.push_back(k2);
-                m_indices.push_back(k2 + 1);
-            }
-        }
-    }
 }

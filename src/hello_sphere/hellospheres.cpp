@@ -6,12 +6,12 @@
 
 Hellospheres::Hellospheres(int width, int height)
         : OpenGLDemo(width, height),
+        m_sphere { new UVSphere(32, 64) },
         m_activeshader { 0 },
         m_shader { nullptr },
         m_activecamera { 0 },
-        m_camera { nullptr } {
-    m_meshes.emplace_back(UV_SPHERE, std::vector<GLuint> {10, 15});
-
+        m_camera { nullptr },
+        m_resetMeshes { false } {
     /// Setup shaders
     m_shaderselector.emplace_back( []()->Shader*{ return new Shader("shaders/default.vert.glsl", "shaders/default.frag.glsl"); } );
     m_shaderselector.emplace_back( []()->Shader*{ return new Shader("shaders/error.vert.glsl", "shaders/error.frag.glsl"); } );
@@ -32,7 +32,6 @@ Hellospheres::Hellospheres(int width, int height)
 }
 
 Hellospheres::~Hellospheres() {
-    m_meshes.clear();
     m_shader.reset();
     m_camera.reset();
 }
@@ -54,9 +53,12 @@ void Hellospheres::draw() {
     m_shader->setMat4("view", m_view);
     m_shader->setMat4("projection", m_projection);
 
-    for (const auto &mesh : m_meshes) {
-        mesh.draw(*m_shader);
+    if (m_resetMeshes) {
+        m_sphere->reset();
+        m_resetMeshes = false;
     }
+
+    m_sphere->draw(*m_shader);
 }
 
 
@@ -85,6 +87,22 @@ bool Hellospheres::keyboard(unsigned char k) {
         case 's':
             m_activeshader = (m_activeshader+1)%(unsigned)m_shaderselector.size();
             m_shader.reset(m_shaderselector[m_activeshader]());
+            return true;
+        case '+':
+            m_sphere->setMeridians(m_sphere->getMeridians() + 1);
+            m_resetMeshes = true;
+            return true;
+        case '*':
+            m_sphere->setParallels(m_sphere->getParallels() + 1);
+            m_resetMeshes = true;
+            return true;
+        case '-':
+            m_sphere->setMeridians(m_sphere->getMeridians() - 1);
+            m_resetMeshes = true;
+            return true;
+        case '/':
+            m_sphere->setParallels(m_sphere->getParallels() - 1);
+            m_resetMeshes = true;
             return true;
         default:
             return false;

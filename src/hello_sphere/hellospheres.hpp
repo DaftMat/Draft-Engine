@@ -13,6 +13,7 @@
 #include <hello_camera/camera.h>
 #include <hello_sphere/Mesh.hpp>
 #include <hello_sphere/Shader.hpp>
+#include "UVSphere.hpp"
 
 class Hellospheres : public OpenGLDemo {
 public:
@@ -29,7 +30,7 @@ public:
 
 private:
     // geometries
-    std::vector<Mesh> m_meshes;
+    std::unique_ptr<UVSphere> m_sphere;
 
     // Shader
     using ShaderSelector=std::function<Shader*()>;
@@ -47,6 +48,8 @@ private:
     std::vector<CameraSelector> m_cameraselector;
     unsigned int m_activecamera;
     std::unique_ptr<Camera> m_camera;
+
+    bool m_resetMeshes;
 
     glm::mat4 m_view;
     glm::mat4 m_projection;
