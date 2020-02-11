@@ -26,6 +26,9 @@ public:
 
     void reset();
 
+    std::vector<Vertex> vertices() const { return m_vertices; }
+    std::vector<GLuint> indices() const { return m_indices; }
+
 private:
     void setupMesh();
     void deleteMesh();

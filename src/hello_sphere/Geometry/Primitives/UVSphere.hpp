@@ -5,18 +5,17 @@
 #ifndef DAFT_ENGINE_SPHERE_HPP
 #define DAFT_ENGINE_SPHERE_HPP
 
-#include "Model.hpp"
+#include "src/hello_sphere/Geometry/Model.hpp"
 
 /**
  * Mother class of sphere model object
  */
 class UVSphere : public Model {
 public:
-    UVSphere() : m_stacks { 32 }, m_sectors { 64 } { setupUvSphere(); }
-    UVSphere(GLuint meridians, GLuint parallels) : m_stacks { meridians }, m_sectors { parallels } { setupUvSphere(); }
+    explicit UVSphere(GLuint meridians = 8, GLuint parallels = 8) : m_stacks { meridians }, m_sectors { parallels } { setupUvSphere(); }
 
-    void setMeridians(GLuint meridians) { m_stacks = meridians; }
-    void setParallels(GLuint parallels) { m_sectors = parallels; }
+    void setMeridians(GLuint meridians) { m_stacks = meridians > 3 ? meridians : 4; }
+    void setParallels(GLuint parallels) { m_sectors = parallels > 3 ? parallels : 4; }
 
     GLuint getMeridians() { return m_stacks; }
     GLuint getParallels() { return m_sectors; }

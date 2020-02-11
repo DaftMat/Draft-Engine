@@ -11,9 +11,10 @@
 #include <opengldemo.h>
 
 #include <hello_camera/camera.h>
-#include <hello_sphere/Mesh.hpp>
+#include <src/hello_sphere/Geometry/Mesh.hpp>
 #include <hello_sphere/Shader.hpp>
-#include "UVSphere.hpp"
+#include <src/hello_sphere/Geometry/Primitives/UVSphere.hpp>
+#include "src/hello_sphere/Geometry/Primitives/IcoSphere.hpp"
 
 class Hellospheres : public OpenGLDemo {
 public:
@@ -27,10 +28,12 @@ public:
     void mousemove(float xpos, float ypos) override;
     void keyboardmove(int key, double time) override;
     bool keyboard(unsigned char k) override;
+    void shaderChanged(ShaderSelection selected);
 
 private:
     // geometries
-    std::unique_ptr<UVSphere> m_sphere;
+    std::unique_ptr<IcoSphere> m_Icosphere;
+    std::unique_ptr<UVSphere> m_UVsphere;
 
     // Shader
     using ShaderSelector=std::function<Shader*()>;

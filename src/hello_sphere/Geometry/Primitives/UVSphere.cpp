@@ -25,8 +25,9 @@ void UVSphere::setupUvSphere() {
         for (GLuint j = 0 ; j <= m_sectors ; ++j) {
             sectorAngle = j * sectorStep;
 
-            vertex.Position = glm::vec3(xy * glm::cos(sectorAngle), xy * glm::sin(sectorAngle), z);
-            vertex.Normal = glm::vec3(xy * glm::cos(sectorAngle), xy * glm::sin(sectorAngle), z);
+            /// z on y to get it back upright
+            vertex.Position = glm::vec3(xy * glm::cos(sectorAngle), z, xy * glm::sin(sectorAngle));
+            vertex.Normal = glm::vec3(xy * glm::cos(sectorAngle), z, xy * glm::sin(sectorAngle));
             vertex.TexCoords = glm::vec2((float)j / m_sectors, (float)i / m_stacks);
 
             vertices.push_back(vertex);

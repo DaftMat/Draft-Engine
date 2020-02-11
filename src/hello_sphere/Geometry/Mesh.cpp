@@ -3,7 +3,7 @@
  */
 
 #include "Mesh.hpp"
-#include "Shader.hpp"
+#include "src/hello_sphere/Shader.hpp"
 #include <cassert>
 
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices)

@@ -7,7 +7,7 @@
 
 
 #include "Mesh.hpp"
-#include "Shader.hpp"
+#include "src/hello_sphere/Shader.hpp"
 
 class Model {
 public:
@@ -19,7 +19,8 @@ public:
 
     void draw(const Shader &shader) const;
 
-    void transform(const glm::mat4 &op) { m_model *= op; }
+    void transform(const glm::mat4 &op) { m_model = op; }
+    glm::mat4 model() { return m_model; }
 
     virtual void reset() {}
 
