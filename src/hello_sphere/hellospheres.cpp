@@ -34,6 +34,7 @@ Hellospheres::Hellospheres(int width, int height)
     //glEnable(GL_CULL_FACE);
     //glCullFace(GL_FRONT);
     //glFrontFace(GL_CW);
+    glEnable(GL_MULTISAMPLE);
 }
 
 Hellospheres::~Hellospheres() {

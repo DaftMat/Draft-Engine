@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     format.setVersion(4, 1);
     format.setProfile(QSurfaceFormat::CoreProfile);
     format.setDepthBufferSize(24);
+    format.setSamples(16);
     QSurfaceFormat::setDefaultFormat(format);
 
     ui->setupUi(this);
@@ -22,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     openglWidget = new MyOpenGLWidget(this);
     openglWidget->resize(openglWidget->sizeHint());
     openglWidget->setFocus();
+    openglWidget->setFormat(format);
 
     setCentralWidget(openglWidget);
 }

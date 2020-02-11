@@ -41,14 +41,14 @@ void UVSphere::setupUvSphere() {
         k2 = k1 + m_sectors + 1;
         for (GLuint j = 0 ; j < m_sectors ; ++j, ++k1, ++k2) {
             if (i) {
-                indices.push_back(k1);
-                indices.push_back(k2);
                 indices.push_back(k1 + 1);
+                indices.push_back(k2);
+                indices.push_back(k1);
             }
             if (i != (m_stacks - 1)) {
-                indices.push_back(k1 + 1);
-                indices.push_back(k2);
                 indices.push_back(k2 + 1);
+                indices.push_back(k2);
+                indices.push_back(k1 + 1);
             }
         }
     }
