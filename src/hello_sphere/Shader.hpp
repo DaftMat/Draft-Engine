@@ -7,6 +7,13 @@
 
 #include <opengl_stuff.h>
 
+enum ShaderSelection {
+    DEFAULT = 0,
+    ERROR,
+    BLINNPHONG,
+    PBR
+};
+
 class Shader {
 public:
     Shader(const char * vertexPath, const char * fragmentPath);
