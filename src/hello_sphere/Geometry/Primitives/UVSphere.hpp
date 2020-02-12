@@ -17,13 +17,17 @@ public:
     void setMeridians(GLuint meridians) { m_stacks = meridians > 3 ? meridians : 4; }
     void setParallels(GLuint parallels) { m_sectors = parallels > 3 ? parallels : 4; }
 
-    GLuint getMeridians() { return m_stacks; }
-    GLuint getParallels() { return m_sectors; }
+    GLuint getMeridians() const { return m_stacks; }
+    GLuint getParallels() const { return m_sectors; }
 
     void reset() override { setupUvSphere(); }
 
+    ModelType getType() const override { return UV_SPHERE; }
+    void editModel(const ModelParam &params) override;
+    ModelParam getParams() const override;
+
 private:
-    void setupUvSphere() override;
+    void setupUvSphere();
 
     GLuint m_stacks;
     GLuint m_sectors;

@@ -110,6 +110,16 @@ void IcoSphere::setupSubdivisions() {
     m_meshes.emplace_back(vertices, indices);
 }
 
+void IcoSphere::editModel(const ModelParam &params) {
+    setSubdivisions(params.ico_sphere.subdivisions);
+}
+
+ModelParam IcoSphere::getParams() const {
+    ModelParam result {};
+    result.ico_sphere.subdivisions = getSubdivisions();
+    return result;
+}
+
 GLuint mod1(GLuint x, GLuint m) {
     return m == x ? x : x%m;
 }

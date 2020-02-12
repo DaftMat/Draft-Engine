@@ -9,6 +9,26 @@
 #include "Mesh.hpp"
 #include "src/hello_sphere/Shader.hpp"
 
+union ModelParam {
+    struct uvs_param {
+        GLuint meridians;
+        GLuint parallels;
+    }uv_sphere;
+    struct icos_param {
+        GLuint subdivisions;
+    }ico_sphere;
+    struct cubs_param {
+        GLuint resolution;
+    }cube_sphere;
+};
+
+enum ModelType {
+    MODEL,
+    UV_SPHERE,
+    ICO_SPHERE,
+    CUBE_SPHERE
+};
+
 class Model {
 public:
     Model() = default;
@@ -22,19 +42,15 @@ public:
     void transform(const glm::mat4 &op) { m_model = op; }
     glm::mat4 model() { return m_model; }
 
+    void translate(const glm::vec3 & transform) { m_model = glm::translate(m_model, transform); }
+
     virtual void reset() {}
 
-protected:
-    /// Primitives functions
-    virtual void setupUvSphere() {}
-    virtual void setupIcoSphere() {}
-    virtual void setupCubeSphere() {}
-    virtual void setupPlane() {}
-    virtual void setupCylinder() {}
-    virtual void setupPyramid() {}
-    virtual void setupCube() {}
-    virtual void setupTore() {}
+    virtual ModelType getType() const { return MODEL; }
+    virtual void editModel(const ModelParam &params) = 0;
+    virtual ModelParam getParams() const = 0;
 
+protected:
     std::vector<Mesh> m_meshes;
 
 private:

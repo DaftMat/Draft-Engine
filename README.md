@@ -41,8 +41,7 @@ Run the following commands from the recently created `build` directory
  * You can switch cameras using `p`
    * A standard camera that you can move using arrow-keys and mouse-click
    * A TrackBall camera the cant move except around the center
- * You can add/delete vertices on the spheres
-   * `+` to add vertices on the IcoSphere (middle)
-   * `-` to delete vertices on the IcoSphere
-   * `*` to add vertices on the UVSphere
-   * `/` to delete vertices on the UVSphere
+ * You can switch selected object using `o` (the UVSphere on the right side is selected by default)
+ * You can add/delete vertices on the selected spheres
+   * `+` to add vertices
+   * `-` to delete vertices

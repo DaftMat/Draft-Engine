@@ -56,3 +56,15 @@ void UVSphere::setupUvSphere() {
     m_meshes.clear();
     m_meshes.emplace_back(vertices, indices);
 }
+
+void UVSphere::editModel(const ModelParam &params) {
+    setMeridians(params.uv_sphere.meridians);
+    setParallels(params.uv_sphere.parallels);
+}
+
+ModelParam UVSphere::getParams() const {
+    ModelParam result {};
+    result.uv_sphere.meridians = getMeridians();
+    result.uv_sphere.parallels = getParallels();
+    return result;
+}

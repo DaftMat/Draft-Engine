@@ -14,6 +14,7 @@
 #include <src/hello_sphere/Geometry/Mesh.hpp>
 #include <hello_sphere/Shader.hpp>
 #include <src/hello_sphere/Geometry/Primitives/UVSphere.hpp>
+#include <src/hello_sphere/Managers/ModelManager.hpp>
 #include "src/hello_sphere/Geometry/Primitives/IcoSphere.hpp"
 
 class Hellospheres : public OpenGLDemo {
@@ -32,8 +33,7 @@ public:
 
 private:
     // geometries
-    std::unique_ptr<IcoSphere> m_Icosphere;
-    std::unique_ptr<UVSphere> m_UVsphere;
+    std::unique_ptr<ModelManager> m_modelmanager;
 
     // Shader
     using ShaderSelector=std::function<Shader*()>;
