@@ -52,8 +52,6 @@ private:
     unsigned int m_activecamera;
     std::unique_ptr<Camera> m_camera;
 
-    bool m_resetMeshes;
-
     glm::mat4 m_view;
     glm::mat4 m_projection;
 };

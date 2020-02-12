@@ -6,13 +6,30 @@
 #include <src/hello_sphere/Geometry/Primitives/IcoSphere.hpp>
 #include "ModelManager.hpp"
 
-void ModelManager::draw(const Shader &shader) {
+void ModelManager::draw(const Shader &shader, const glm::mat4 &view, const glm::mat4 &projection) {
     for (const auto &ind : m_toReset)
         m_models[ind]->reset();
     m_toReset.clear();
 
-    for (const auto &model : m_models)
-        model->draw(shader);
+    shader.use();
+    shader.setMat4("view", view);
+    shader.setMat4("projection", projection);
+    m_blackshader->use();
+    m_blackshader->setMat4("view", view);
+    m_blackshader->setMat4("projection", projection);
+    m_yellowshader->use();
+    m_yellowshader->setMat4("view", view);
+    m_yellowshader->setMat4("projection", projection);
+
+    for(GLuint i = 0 ; i < m_models.size() ; ++i) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        m_models[i]->draw(shader);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        if (i == m_selectedmodel)
+            m_models[i]->draw(*m_yellowshader);
+        else
+            m_models[i]->draw(*m_blackshader);
+    }
 }
 
 void ModelManager::addUVSphere(GLuint meridians, GLuint parallels) {

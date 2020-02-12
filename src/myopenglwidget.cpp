@@ -62,6 +62,8 @@ void MyOpenGLWidget::paintGL() {
     glFinish();
     std::int64_t endtime = QDateTime::currentMSecsSinceEpoch();
     _lastime = endtime-starttime;
+    if (frame_loop)
+        update();
 }
 
 void MyOpenGLWidget::resizeGL(int width, int height) {
@@ -120,6 +122,10 @@ void MyOpenGLWidget::keyPressEvent(QKeyEvent *event) {
             _openglDemo->toggledrawmode();
             update();
         break;
+        case Qt::Key_F:
+            frame_loop = !frame_loop;
+            update();
+            break;
         // Other keys are transmitted to the scene
         default :
             if (_openglDemo->keyboard(event->text().toStdString()[0]))

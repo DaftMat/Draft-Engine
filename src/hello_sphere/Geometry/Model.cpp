@@ -5,7 +5,8 @@
 #include "Model.hpp"
 
 void Model::draw(const Shader &shader) const {
-    shader.setMat4("model", m_model);
+    shader.use();
+    shader.setMat4("model", model());
 
     for (const auto & mesh : m_meshes) {
         mesh.draw();

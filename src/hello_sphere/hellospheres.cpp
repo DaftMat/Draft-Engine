@@ -11,8 +11,7 @@ Hellospheres::Hellospheres(int width, int height)
         m_activeshader { 0 },
         m_shader { nullptr },
         m_activecamera { 0 },
-        m_camera { nullptr },
-        m_resetMeshes { false } {
+        m_camera { nullptr } {
     /// Setup shaders
     m_shaderselector.emplace_back( []()->Shader*{ return new Shader("shaders/default.vert.glsl", "shaders/default.frag.glsl"); } );
     m_shaderselector.emplace_back( []()->Shader*{ return new Shader("shaders/error.vert.glsl", "shaders/error.frag.glsl"); } );
@@ -52,15 +51,8 @@ void Hellospheres::resize(int width, int height) {
 
 void Hellospheres::draw() {
     OpenGLDemo::draw();
-
-    m_shader->use();
-
     m_view = m_camera->viewmatrix();
-
-    m_shader->setMat4("view", m_view);
-    m_shader->setMat4("projection", m_projection);
-
-    m_modelmanager->draw(*m_shader);
+    m_modelmanager->draw(*m_shader, m_view, m_projection);
 }
 
 

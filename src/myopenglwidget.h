@@ -47,6 +47,7 @@ private :
 
     // for event management
     std::int64_t _lastime;
+    bool frame_loop {false};
 };
 
 #endif // MYOPENGLWIDGET_H
