@@ -22,7 +22,7 @@ public:
     virtual bool keyboard(unsigned char k);
 
 
-    void toggledrawmode();
+    virtual void toggledrawmode();
 
 protected:
     // Width and heigth of the viewport

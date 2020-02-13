@@ -15,7 +15,8 @@ class ModelManager {
 public:
     ModelManager() : m_selectedmodel { 0 },
     m_blackshader { new Shader("shaders/black.vert.glsl", "shaders/black.frag.glsl") },
-    m_yellowshader { new Shader("shaders/yellow.vert.glsl", "shaders/yellow.frag.glsl") } {}
+    m_yellowshader { new Shader("shaders/yellow.vert.glsl", "shaders/yellow.frag.glsl") },
+    m_wireframe { true } {}
 
     ~ModelManager() { m_models.clear(); m_blackshader.reset(); }
 
@@ -24,7 +25,10 @@ public:
     ModelManager & operator=(const ModelManager &) = delete;
     ModelManager && operator=(ModelManager &&) = delete;
 
-    void draw(const Shader &shader, const glm::mat4 &view, const glm::mat4 &projection);
+    void draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &projection);
+
+
+    //void addPointLight()
 
     //void addModel(std::string file)
     void addUVSphere(GLuint meridians = 8, GLuint parallels = 8);
@@ -37,21 +41,26 @@ public:
     bool keyboard(unsigned char key);
     void switch_selection();
 
+    void toggledrawmode() { m_wireframe = !m_wireframe; }
+
 private:
     /// User-Interactions utils functions
     ModelParam add_uvsphere_params(GLuint meridians = 1, GLuint parallels = 1);
-    ModelParam add_icosphere_params(GLuint subdivisions = 1);
     ModelParam sub_uvsphere_params(GLuint meridians = 1, GLuint parallels = 1);
+    ModelParam add_icosphere_params(GLuint subdivisions = 1);
     ModelParam sub_icosphere_params(GLuint subdivisions = 1);
 
     std::vector<std::unique_ptr<Model>> m_models;
     GLuint m_selectedmodel;
+
+    std::vector<std::unique_ptr<Light>> m_lights;
 
     std::unique_ptr<Shader> m_blackshader;
     std::unique_ptr<Shader> m_yellowshader;
 
     /// Reset utils
     std::set<GLuint> m_toReset;
+    bool m_wireframe;
 };
 
 

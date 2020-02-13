@@ -6,6 +6,7 @@
 #define DAFT_ENGINE_SHADER_HPP
 
 #include <opengl_stuff.h>
+#include <hello_sphere/Geometry/Lights/Light.hpp>
 
 enum ShaderSelection {
     DEFAULT = 0,
@@ -36,11 +37,19 @@ public:
     void setMat3(const std::string &name, const glm::mat3 & value) const;
     void setMat4(const std::string &name, const glm::mat4 & value) const;
 
+    void addLight(Light * light);
+    void clearLights();
+
 private:
     void checkCompileError(GLuint shader, const std::string & type) const;
     void checkLinkError(GLuint program) const;
 
+    void setBaseLight(Light * light, const std::string & lightType, GLuint index);
+
     GLuint m_ID;
+    GLuint m_num_point_light { 0 };
+    GLuint m_num_dir_light { 0 };
+    GLuint m_num_spot_light { 0 };
 };
 
 

@@ -31,6 +31,11 @@ public:
     bool keyboard(unsigned char k) override;
     void shaderChanged(ShaderSelection selected);
 
+    void toggledrawmode() override {
+        OpenGLDemo::toggledrawmode();
+        m_modelmanager->toggledrawmode();
+    }
+
 private:
     // geometries
     std::unique_ptr<ModelManager> m_modelmanager;

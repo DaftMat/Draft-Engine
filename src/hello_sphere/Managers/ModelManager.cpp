@@ -6,7 +6,7 @@
 #include <src/hello_sphere/Geometry/Primitives/IcoSphere.hpp>
 #include "ModelManager.hpp"
 
-void ModelManager::draw(const Shader &shader, const glm::mat4 &view, const glm::mat4 &projection) {
+void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &projection) {
     for (const auto &ind : m_toReset)
         m_models[ind]->reset();
     m_toReset.clear();
@@ -14,12 +14,17 @@ void ModelManager::draw(const Shader &shader, const glm::mat4 &view, const glm::
     shader.use();
     shader.setMat4("view", view);
     shader.setMat4("projection", projection);
-    m_blackshader->use();
-    m_blackshader->setMat4("view", view);
-    m_blackshader->setMat4("projection", projection);
+    for (const auto &light : m_lights) {
+        shader.addLight(light.get());
+    }
     m_yellowshader->use();
     m_yellowshader->setMat4("view", view);
     m_yellowshader->setMat4("projection", projection);
+    if (m_wireframe) {
+        m_blackshader->use();
+        m_blackshader->setMat4("view", view);
+        m_blackshader->setMat4("projection", projection);
+    }
 
     for(GLuint i = 0 ; i < m_models.size() ; ++i) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -27,9 +32,11 @@ void ModelManager::draw(const Shader &shader, const glm::mat4 &view, const glm::
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         if (i == m_selectedmodel)
             m_models[i]->draw(*m_yellowshader);
-        else
+        else if (m_wireframe)
             m_models[i]->draw(*m_blackshader);
     }
+
+    shader.clearLights();
 }
 
 void ModelManager::addUVSphere(GLuint meridians, GLuint parallels) {
@@ -47,16 +54,16 @@ ModelParam ModelManager::add_uvsphere_params(GLuint meridians, GLuint parallels)
     return result;
 }
 
-ModelParam ModelManager::add_icosphere_params(GLuint subdivisions) {
-    ModelParam result = m_models[m_selectedmodel]->getParams();
-    result.ico_sphere.subdivisions += subdivisions;
-    return result;
-}
-
 ModelParam ModelManager::sub_uvsphere_params(GLuint meridians, GLuint parallels) {
     ModelParam result = m_models[m_selectedmodel]->getParams();
     result.uv_sphere.meridians -= meridians;
     result.uv_sphere.parallels -= parallels;
+    return result;
+}
+
+ModelParam ModelManager::add_icosphere_params(GLuint subdivisions) {
+    ModelParam result = m_models[m_selectedmodel]->getParams();
+    result.ico_sphere.subdivisions += subdivisions;
     return result;
 }
 
