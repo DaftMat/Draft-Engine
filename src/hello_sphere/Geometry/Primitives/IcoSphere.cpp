@@ -60,12 +60,12 @@ void IcoSphere::setupIcosahedron() {
     }
 
     m_meshes.clear();
-    m_meshes.emplace_back(vertices, indices);
+    m_meshes.emplace_back(new Mesh(vertices, indices));
 }
 
 void IcoSphere::setupSubdivisions() {
-    std::vector<Vertex> tmpVertices = m_meshes[0].vertices();
-    std::vector<GLuint> tmpIndices = m_meshes[0].indices();
+    std::vector<Vertex> tmpVertices = m_meshes[0]->vertices();
+    std::vector<GLuint> tmpIndices = m_meshes[0]->indices();
     std::vector<Vertex> vertices;
     std::vector<GLuint> indices;
     GLuint v1_ind, v2_ind, v3_ind;
@@ -107,7 +107,7 @@ void IcoSphere::setupSubdivisions() {
     }
 
     m_meshes.clear();
-    m_meshes.emplace_back(vertices, indices);
+    m_meshes.emplace_back(new Mesh(vertices, indices));
 }
 
 void IcoSphere::editModel(const ModelParam &params) {

@@ -6,6 +6,7 @@
 #define DAFT_ENGINE_MODEL_HPP
 
 
+#include <memory>
 #include "Mesh.hpp"
 #include "src/hello_sphere/Shader.hpp"
 
@@ -52,7 +53,7 @@ public:
     virtual ModelParam getParams() const = 0;
 
 protected:
-    std::vector<Mesh> m_meshes;
+    std::vector<std::unique_ptr<Mesh>> m_meshes;
 
 private:
     glm::mat4 m_model;

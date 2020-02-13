@@ -39,8 +39,9 @@ public:
                        { m_lights.emplace_back(new PointLight(pos, constant, linear, quadratic, ambient, diffuse, specular)); }
 
     //void addModel(std::string file)
-    void addUVSphere(GLuint meridians = 8, GLuint parallels = 8);
-    void addIcoSphere(GLuint subdivisions = 0);
+    void addUVSphere(GLuint meridians = 16, GLuint parallels = 32);
+    void addIcoSphere(GLuint subdivisions = 3);
+    void addCubeSphere(GLuint resolution = 16);
 
     void translateSelection(const glm::vec3 &transform) { m_models[m_selectedmodel]->translate(transform); }
     void rotateSelection(const glm::vec3 &axis, float angle) { m_models[m_selectedmodel]->rotate(axis, angle); }
@@ -57,6 +58,8 @@ private:
     ModelParam sub_uvsphere_params(GLuint meridians = 1, GLuint parallels = 1);
     ModelParam add_icosphere_params(GLuint subdivisions = 1);
     ModelParam sub_icosphere_params(GLuint subdivisions = 1);
+    ModelParam add_cubesphere_params(GLuint resolution = 1);
+    ModelParam sub_cubesphere_params(GLuint resolution = 1);
 
     std::vector<std::unique_ptr<Model>> m_models;
     GLuint m_selectedmodel;

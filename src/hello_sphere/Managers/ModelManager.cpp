@@ -4,6 +4,7 @@
 
 #include <src/hello_sphere/Geometry/Primitives/UVSphere.hpp>
 #include <src/hello_sphere/Geometry/Primitives/IcoSphere.hpp>
+#include <src/hello_sphere/Geometry/Primitives/CubeSphere.hpp>
 #include "ModelManager.hpp"
 
 void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &projection, const glm::vec3 &viewPos) {
@@ -48,6 +49,10 @@ void ModelManager::addIcoSphere(GLuint subdivisions) {
     m_models.emplace_back(new IcoSphere(subdivisions));
 }
 
+void ModelManager::addCubeSphere(GLuint resolution) {
+    m_models.emplace_back(new CubeSphere(resolution));
+}
+
 ModelParam ModelManager::add_uvsphere_params(GLuint meridians, GLuint parallels) {
     ModelParam result = m_models[m_selectedmodel]->getParams();
     result.uv_sphere.meridians += meridians;
@@ -74,6 +79,17 @@ ModelParam ModelManager::sub_icosphere_params(GLuint subdivisions) {
     return result;
 }
 
+ModelParam ModelManager::add_cubesphere_params(GLuint resolution) {
+    ModelParam result = m_models[m_selectedmodel]->getParams();
+    result.cube_sphere.resolution += resolution;
+    return result;
+}
+
+ModelParam ModelManager::sub_cubesphere_params(GLuint resolution) {
+    ModelParam result = m_models[m_selectedmodel]->getParams();
+    result.cube_sphere.resolution -= resolution;
+    return result;
+}
 
 bool ModelManager::keyboard(unsigned char key) {
     switch (key) {
@@ -90,6 +106,10 @@ bool ModelManager::keyboard(unsigned char key) {
                     m_models[m_selectedmodel]->editModel(add_icosphere_params());
                     m_toReset.insert(m_selectedmodel);
                     return true;
+                case CUBE_SPHERE:
+                    m_models[m_selectedmodel]->editModel(add_cubesphere_params());
+                    m_toReset.insert(m_selectedmodel);
+                    return true;
                 default:
                     return false;
             }
@@ -101,6 +121,10 @@ bool ModelManager::keyboard(unsigned char key) {
                     return true;
                 case ICO_SPHERE:
                     m_models[m_selectedmodel]->editModel(sub_icosphere_params());
+                    m_toReset.insert(m_selectedmodel);
+                    return true;
+                case CUBE_SPHERE:
+                    m_models[m_selectedmodel]->editModel(sub_cubesphere_params());
                     m_toReset.insert(m_selectedmodel);
                     return true;
                 default:

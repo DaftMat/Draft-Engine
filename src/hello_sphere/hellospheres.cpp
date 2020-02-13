@@ -29,8 +29,13 @@ Hellospheres::Hellospheres(int width, int height)
 
     m_modelmanager->addUVSphere();
     m_modelmanager->addIcoSphere();
+    m_modelmanager->addCubeSphere();
 
     m_modelmanager->translateSelection(glm::vec3(-2.5f, 0.f, 0.f));
+    m_modelmanager->switch_selection();
+    m_modelmanager->switch_selection();
+    m_modelmanager->translateSelection(glm::vec3(2.5f, 0.f, 0.f));
+    m_modelmanager->switch_selection();
 
     m_modelmanager->addPointLight(glm::vec3(0.f, 0.f, 3.f));
     m_modelmanager->addPointLight(glm::vec3(0.f, 4.f, 1.f));
