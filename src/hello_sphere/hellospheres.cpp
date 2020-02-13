@@ -15,6 +15,7 @@ Hellospheres::Hellospheres(int width, int height)
     /// Setup shaders
     m_shaderselector.emplace_back( []()->Shader*{ return new Shader("shaders/default.vert.glsl", "shaders/default.frag.glsl"); } );
     m_shaderselector.emplace_back( []()->Shader*{ return new Shader("shaders/error.vert.glsl", "shaders/error.frag.glsl"); } );
+    m_shaderselector.emplace_back( []()->Shader*{ return new Shader("shaders/blinnphong.vert.glsl", "shaders/blinnphong.frag.glsl"); } );
     m_shader.reset(m_shaderselector[m_activeshader]());
 
     /// Setup cameras
@@ -32,6 +33,8 @@ Hellospheres::Hellospheres(int width, int height)
     m_modelmanager->translateSelection(glm::vec3(-2.5f, 0.f, 0.f));
 
     m_modelmanager->addPointLight(glm::vec3(0.f, 0.f, 3.f));
+    m_modelmanager->addPointLight(glm::vec3(0.f, 4.f, 1.f));
+    m_modelmanager->addPointLight(glm::vec3(-2.5f, 4.f, 1.f));
 
     //glEnable(GL_CULL_FACE);
     //glCullFace(GL_FRONT);
@@ -55,7 +58,7 @@ void Hellospheres::resize(int width, int height) {
 void Hellospheres::draw() {
     OpenGLDemo::draw();
     m_view = m_camera->viewmatrix();
-    m_modelmanager->draw(*m_shader, m_view, m_projection);
+    m_modelmanager->draw(*m_shader, m_view, m_projection, m_camera->position());
 }
 
 

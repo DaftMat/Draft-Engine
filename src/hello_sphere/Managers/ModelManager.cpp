@@ -6,12 +6,13 @@
 #include <src/hello_sphere/Geometry/Primitives/IcoSphere.hpp>
 #include "ModelManager.hpp"
 
-void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &projection) {
+void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &projection, const glm::vec3 &viewPos) {
     for (const auto &ind : m_toReset)
         m_models[ind]->reset();
     m_toReset.clear();
 
     shader.use();
+    shader.setVec3("viewPos", viewPos);
     shader.setMat4("view", view);
     shader.setMat4("projection", projection);
     for (const auto &light : m_lights) {

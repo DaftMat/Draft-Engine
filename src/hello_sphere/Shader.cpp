@@ -54,6 +54,9 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
     /// Release shader
     glDeleteShader(vertex);
     glDeleteShader(fragment);
+
+    use();
+    clearLights();
 }
 
 Shader::~Shader() {

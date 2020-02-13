@@ -26,7 +26,7 @@ public:
     ModelManager & operator=(const ModelManager &) = delete;
     ModelManager && operator=(ModelManager &&) = delete;
 
-    void draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &projection);
+    void draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &projection, const glm::vec3 &viewPos);
 
 
     void addPointLight(const glm::vec3 &pos=glm::vec3(0.f, 0.f, 0.f),
