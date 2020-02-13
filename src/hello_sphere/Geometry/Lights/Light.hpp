@@ -29,7 +29,12 @@ class Light {
 public:
     Light(const glm::vec3 &ambient, const glm::vec3 &diffuse, const glm::vec3 &specular);
 
-    virtual LightType getType() = 0;
+    Light(const Light &) = delete;
+    Light(Light &&) = delete;
+    Light &operator=(const Light &) = delete;
+    Light &&operator=(Light &&) = delete;
+
+    virtual LightType getType() const = 0;
     virtual LightParam getParams() const = 0;
     virtual void editLight(const LightParam &params) = 0;
 

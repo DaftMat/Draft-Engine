@@ -10,6 +10,7 @@
 #include <vector>
 #include <set>
 #include <memory>
+#include <src/hello_sphere/Geometry/Lights/PointLight.hpp>
 
 class ModelManager {
 public:
@@ -18,7 +19,7 @@ public:
     m_yellowshader { new Shader("shaders/yellow.vert.glsl", "shaders/yellow.frag.glsl") },
     m_wireframe { true } {}
 
-    ~ModelManager() { m_models.clear(); m_blackshader.reset(); }
+    ~ModelManager() { m_models.clear(); m_lights.clear(); m_blackshader.reset(); }
 
     ModelManager(const ModelManager &) = delete;
     ModelManager(ModelManager &&) = delete;
@@ -28,7 +29,14 @@ public:
     void draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &projection);
 
 
-    //void addPointLight()
+    void addPointLight(const glm::vec3 &pos=glm::vec3(0.f, 0.f, 0.f),
+                       GLfloat constant = 1.f,
+                       GLfloat linear = 0.09f,
+                       GLfloat quadratic = 0.032f,
+                       const glm::vec3 &ambient=glm::vec3(0.05f, 0.05f, 0.05f),
+                       const glm::vec3 &diffuse=glm::vec3(0.8f, 0.8f, 0.8f),
+                       const glm::vec3 &specular=glm::vec3(1.f, 1.f, 1.f))
+                       { m_lights.emplace_back(new PointLight(pos, constant, linear, quadratic, ambient, diffuse, specular)); }
 
     //void addModel(std::string file)
     void addUVSphere(GLuint meridians = 8, GLuint parallels = 8);

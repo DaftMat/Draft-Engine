@@ -31,6 +31,8 @@ Hellospheres::Hellospheres(int width, int height)
 
     m_modelmanager->translateSelection(glm::vec3(-2.5f, 0.f, 0.f));
 
+    m_modelmanager->addPointLight(glm::vec3(0.f, 0.f, 3.f));
+
     //glEnable(GL_CULL_FACE);
     //glCullFace(GL_FRONT);
     //glFrontFace(GL_CW);
@@ -40,6 +42,7 @@ Hellospheres::Hellospheres(int width, int height)
 Hellospheres::~Hellospheres() {
     m_shader.reset();
     m_camera.reset();
+    m_modelmanager.reset();
 }
 
 
