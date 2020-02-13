@@ -36,12 +36,13 @@ Run the following commands from the recently created `build` directory
    * My work is on the 4th scene, from now I assume you're using the engine from this scene.
  * You can print wireframed object using `w` (same key to get triangles back)
  * You can switch shaders using `s`
+   * A Blinn-Phong shaders with grey default materials
    * An Error shader that shows the spheres with green for parts close to the perfect sphere, and red for errors parts
    * A normal shader that make the spheres look like rainbow
  * You can switch cameras using `p`
    * A standard camera that you can move using arrow-keys and mouse-click
    * A TrackBall camera the cant move except around the center
- * You can switch selected object using `o` (the UVSphere on the right side is selected by default)
+ * You can switch selected object using `o` (Yellow wireframed object is the selected one)
  * You can add/delete vertices on the selected spheres
    * `+` to add vertices
    * `-` to delete vertices
