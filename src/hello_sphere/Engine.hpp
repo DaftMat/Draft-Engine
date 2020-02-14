@@ -17,10 +17,10 @@
 #include <src/hello_sphere/Managers/ModelManager.hpp>
 #include "src/hello_sphere/Geometry/Primitives/IcoSphere.hpp"
 
-class Hellospheres : public OpenGLDemo {
+class Engine : public OpenGLDemo {
 public:
-    explicit Hellospheres(int width, int height);
-    ~Hellospheres() override;
+    explicit Engine(int width, int height);
+    ~Engine() override;
 
     void resize(int width, int height) override;
     void draw() override;
@@ -35,6 +35,10 @@ public:
         OpenGLDemo::toggledrawmode();
         m_modelmanager->toggledrawmode();
     }
+
+    void addUVSphere() { m_modelmanager->addUVSphere(); }
+    void addIcoSphere() { m_modelmanager->addIcoSphere(); }
+    void addCubeSphere() { m_modelmanager->addCubeSphere(); }
 
 private:
     // geometries

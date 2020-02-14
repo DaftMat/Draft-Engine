@@ -9,7 +9,7 @@
 
 #include "hello_triangles/hellotriangles.h"
 #include "hello_camera/hellocamera.h"
-#include "hello_sphere/hellospheres.hpp"
+#include "hello_sphere/Engine.hpp"
 
 MyOpenGLWidget::MyOpenGLWidget(QWidget *parent) :QOpenGLWidget(parent)/*, QOpenGLFunctions_4_1_Core()*/, _openglDemo(nullptr), _lastime(0) {
     // add all demo constructors here
@@ -23,7 +23,7 @@ MyOpenGLWidget::MyOpenGLWidget(QWidget *parent) :QOpenGLWidget(parent)/*, QOpenG
         std::cout << "Hello camera ..." << std::endl; return new SimpleCamera(width, height);
         } );
     _democonstructors.emplace_back( [](int width, int height)->OpenGLDemo*{
-        std::cout << "Hello spheres ..." << std::endl; return new Hellospheres(width, height);
+        std::cout << "Hello spheres ..." << std::endl; return new Engine(width, height);
         } );
 }
 

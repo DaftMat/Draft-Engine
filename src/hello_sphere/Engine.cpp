@@ -3,9 +3,9 @@
 //
 
 #include <src/hello_sphere/Geometry/Primitives/IcoSphere.hpp>
-#include "hellospheres.hpp"
+#include "Engine.hpp"
 
-Hellospheres::Hellospheres(int width, int height)
+Engine::Engine(int width, int height)
         : OpenGLDemo(width, height),
         m_modelmanager { new ModelManager() },
         m_activeshader { 0 },
@@ -47,42 +47,42 @@ Hellospheres::Hellospheres(int width, int height)
     glEnable(GL_MULTISAMPLE);
 }
 
-Hellospheres::~Hellospheres() {
+Engine::~Engine() {
     m_shader.reset();
     m_camera.reset();
     m_modelmanager.reset();
 }
 
 
-void Hellospheres::resize(int width, int height) {
+void Engine::resize(int width, int height) {
     OpenGLDemo::resize(width, height);
     m_camera->setviewport(glm::vec4(0.f, 0.f, _width, _height));
     m_projection = glm::perspective(m_camera->zoom(), float(_width) / _height, 0.1f, 100.0f);
 }
 
-void Hellospheres::draw() {
+void Engine::draw() {
     OpenGLDemo::draw();
     m_view = m_camera->viewmatrix();
     m_modelmanager->draw(*m_shader, m_view, m_projection, m_camera->position());
 }
 
 
-void Hellospheres::mouseclick(int button, float xpos, float ypos) {
+void Engine::mouseclick(int button, float xpos, float ypos) {
     m_button = button;
     m_mousex = xpos;
     m_mousey = ypos;
     m_camera->processmouseclick(m_button, xpos, ypos);
 }
 
-void Hellospheres::mousemove(float xpos, float ypos) {
+void Engine::mousemove(float xpos, float ypos) {
     m_camera->processmousemovement(m_button, xpos, ypos, true);
 }
 
-void Hellospheres::keyboardmove(int key, double time) {
+void Engine::keyboardmove(int key, double time) {
     m_camera->processkeyboard(Camera_Movement(key), time);
 }
 
-bool Hellospheres::keyboard(unsigned char k) {
+bool Engine::keyboard(unsigned char k) {
     switch(k) {
         case 'p':
             m_activecamera = (m_activecamera+1)%2;
@@ -98,7 +98,7 @@ bool Hellospheres::keyboard(unsigned char k) {
     }
 }
 
-void Hellospheres::shaderChanged(ShaderSelection selected) {
+void Engine::shaderChanged(ShaderSelection selected) {
     m_activeshader = selected;
     if (m_activeshader >= m_shaderselector.size())
         m_activeshader = m_shaderselector.size() - 1;
