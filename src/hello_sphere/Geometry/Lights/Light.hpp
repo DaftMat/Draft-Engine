@@ -23,6 +23,15 @@ union LightParam {
     struct dir_param {
         glm::vec3 direction;
     }dirlight;
+    struct spot_param {
+        glm::vec3 position;
+        glm::vec3 direction;
+        GLfloat innerCutoff;
+        GLfloat outerCutoff;
+        GLfloat constant;
+        GLfloat linear;
+        GLfloat quadratic;
+    }spotlight;
 };
 
 class Light {

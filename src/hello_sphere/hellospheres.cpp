@@ -39,6 +39,7 @@ Hellospheres::Hellospheres(int width, int height)
 
     m_modelmanager->addPointLight(glm::vec3(0.f, 0.5f, 3.f));
     m_modelmanager->addDirLight();
+    m_modelmanager->addSpotLight(glm::vec3(0.f, 6.f, 0.f));
 
     //glEnable(GL_CULL_FACE);
     //glCullFace(GL_FRONT);

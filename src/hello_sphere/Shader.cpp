@@ -117,12 +117,25 @@ void Shader::addLight(Light * light) {
             setFloat(lightType + "[" + std::to_string(m_num_point_light) + "].quadratic", params.pointlight.quadratic);
             setInt("num_point_light", ++m_num_point_light);
             break;
-        } case DIR_LIGHT:
+        } case DIR_LIGHT: {
             lightType = "dir_light";
             setBaseLight(light, lightType, m_num_dir_light);
             setVec3(lightType + "[" + std::to_string(m_num_dir_light) + "].direction", params.dirlight.direction);
             setInt("num_dir_light", ++m_num_dir_light);
             break;
+        } case SPOT_LIGHT: {
+            lightType = "spot_light";
+            setBaseLight(light, lightType, m_num_spot_light);
+            setVec3(lightType + "[" + std::to_string(m_num_spot_light) + "].position", params.spotlight.position);
+            setVec3(lightType + "[" + std::to_string(m_num_spot_light) + "].direction", params.spotlight.direction);
+            setFloat(lightType + "[" + std::to_string(m_num_spot_light) + "].innerCutoff", glm::cos(glm::radians(params.spotlight.innerCutoff)));
+            setFloat(lightType + "[" + std::to_string(m_num_spot_light) + "].outerCutoff", glm::cos(glm::radians(params.spotlight.outerCutoff)));
+            setFloat(lightType + "[" + std::to_string(m_num_spot_light) + "].constant", params.spotlight.constant);
+            setFloat(lightType + "[" + std::to_string(m_num_spot_light) + "].linear", params.spotlight.linear);
+            setFloat(lightType + "[" + std::to_string(m_num_spot_light) + "].quadratic", params.spotlight.quadratic);
+            setInt("num_spot_light", ++m_num_spot_light);
+            break;
+        }
         default:
             return;
     }
