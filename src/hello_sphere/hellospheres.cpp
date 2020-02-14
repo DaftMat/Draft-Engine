@@ -20,7 +20,7 @@ Hellospheres::Hellospheres(int width, int height)
 
     /// Setup cameras
     m_cameraselector.emplace_back( []()->Camera*{ return new EulerCamera(glm::vec3(0.f, 0.f, 6.f)); } );
-    m_cameraselector.emplace_back( []()->Camera*{ return new TrackballCamera(glm::vec3(0.f, 0.f, 6.f), glm::vec3(0.f, 1.f, 0.f), glm::vec3(0.f, 0.f, 0.f)); } );
+    m_cameraselector.emplace_back( []()->Camera*{ return new TrackballCamera(glm::vec3(0.f, 0.f, 4.f), glm::vec3(0.f, 1.f, 0.f), glm::vec3(0.f, 0.f, 0.f)); } );
     m_camera.reset(m_cameraselector[m_activecamera]());
     m_camera->setviewport(glm::vec4(0.f, 0.f, _width, _height));
 
@@ -37,9 +37,8 @@ Hellospheres::Hellospheres(int width, int height)
     m_modelmanager->translateSelection(glm::vec3(2.5f, 0.f, 0.f));
     m_modelmanager->switch_selection();
 
-    m_modelmanager->addPointLight(glm::vec3(0.f, 0.f, 3.f));
-    m_modelmanager->addPointLight(glm::vec3(0.f, 4.f, 1.f));
-    m_modelmanager->addPointLight(glm::vec3(-2.5f, 4.f, 1.f));
+    m_modelmanager->addPointLight(glm::vec3(0.f, 0.5f, 3.f));
+    m_modelmanager->addDirLight();
 
     //glEnable(GL_CULL_FACE);
     //glCullFace(GL_FRONT);

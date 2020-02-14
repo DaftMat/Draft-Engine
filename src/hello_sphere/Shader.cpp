@@ -55,6 +55,7 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
     glDeleteShader(vertex);
     glDeleteShader(fragment);
 
+    // make sure the lights lists are cleared
     use();
     clearLights();
 }
@@ -107,7 +108,7 @@ void Shader::addLight(Light * light) {
     std::string lightType;
     LightParam params = light->getParams();
     switch (light->getType()) {
-        case POINT_LIGHT:
+        case POINT_LIGHT: {
             lightType = "point_light";
             setBaseLight(light, lightType, m_num_point_light);
             setVec3(lightType + "[" + std::to_string(m_num_point_light) + "].position", params.pointlight.position);
@@ -116,7 +117,7 @@ void Shader::addLight(Light * light) {
             setFloat(lightType + "[" + std::to_string(m_num_point_light) + "].quadratic", params.pointlight.quadratic);
             setInt("num_point_light", ++m_num_point_light);
             break;
-        case DIR_LIGHT:
+        } case DIR_LIGHT:
             lightType = "dir_light";
             setBaseLight(light, lightType, m_num_dir_light);
             setVec3(lightType + "[" + std::to_string(m_num_dir_light) + "].direction", params.dirlight.direction);

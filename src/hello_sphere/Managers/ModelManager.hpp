@@ -35,8 +35,11 @@ public:
                        GLfloat quadratic = 0.032f,
                        const glm::vec3 &ambient=glm::vec3(0.05f, 0.05f, 0.05f),
                        const glm::vec3 &diffuse=glm::vec3(0.8f, 0.8f, 0.8f),
-                       const glm::vec3 &specular=glm::vec3(1.f, 1.f, 1.f))
-                       { m_lights.emplace_back(new PointLight(pos, constant, linear, quadratic, ambient, diffuse, specular)); }
+                       const glm::vec3 &specular=glm::vec3(1.f, 1.f, 1.f));
+    void addDirLight(const glm::vec3 &dir=glm::vec3(-0.2f, -1.0f, -0.3f),
+                     const glm::vec3 &ambient=glm::vec3(0.05f, 0.05f, 0.05f),
+                     const glm::vec3 &diffuse=glm::vec3(0.6f, 0.6f, 0.6f),
+                     const glm::vec3 &specular=glm::vec3(0.8f, 0.8f, 0.8f));
 
     //void addModel(std::string file)
     void addUVSphere(GLuint meridians = 16, GLuint parallels = 32);

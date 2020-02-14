@@ -5,6 +5,7 @@
 #include <src/hello_sphere/Geometry/Primitives/UVSphere.hpp>
 #include <src/hello_sphere/Geometry/Primitives/IcoSphere.hpp>
 #include <src/hello_sphere/Geometry/Primitives/CubeSphere.hpp>
+#include <src/hello_sphere/Geometry/Lights/DirLight.hpp>
 #include "ModelManager.hpp"
 
 void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &projection, const glm::vec3 &viewPos) {
@@ -39,6 +40,16 @@ void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &
     }
 
     shader.clearLights();
+}
+
+void ModelManager::addPointLight(const glm::vec3 &pos, GLfloat constant, GLfloat linear, GLfloat quadratic,
+                                 const glm::vec3 &ambient, const glm::vec3 &diffuse, const glm::vec3 &specular) {
+    m_lights.emplace_back(new PointLight(pos, constant, linear, quadratic, ambient, diffuse, specular));
+}
+
+void ModelManager::addDirLight(const glm::vec3 &dir, const glm::vec3 &ambient, const glm::vec3 &diffuse,
+                               const glm::vec3 &specular) {
+    m_lights.emplace_back(new DirLight(dir, ambient, diffuse, specular));
 }
 
 void ModelManager::addUVSphere(GLuint meridians, GLuint parallels) {
