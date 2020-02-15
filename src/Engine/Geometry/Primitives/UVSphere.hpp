@@ -5,7 +5,7 @@
 #ifndef DAFT_ENGINE_SPHERE_HPP
 #define DAFT_ENGINE_SPHERE_HPP
 
-#include "src/hello_sphere/Geometry/Model.hpp"
+#include "src/Engine/Geometry/Model.hpp"
 
 /**
  * Mother class of sphere model object

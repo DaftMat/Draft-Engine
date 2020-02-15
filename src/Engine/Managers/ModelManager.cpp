@@ -2,11 +2,11 @@
  * Created by mathis on 12/02/2020.
  */
 
-#include <src/hello_sphere/Geometry/Primitives/UVSphere.hpp>
-#include <src/hello_sphere/Geometry/Primitives/IcoSphere.hpp>
-#include <src/hello_sphere/Geometry/Primitives/CubeSphere.hpp>
-#include <src/hello_sphere/Geometry/Lights/DirLight.hpp>
-#include <src/hello_sphere/Geometry/Lights/SpotLight.hpp>
+#include <src/Engine/Geometry/Primitives/UVSphere.hpp>
+#include <src/Engine/Geometry/Primitives/IcoSphere.hpp>
+#include <src/Engine/Geometry/Primitives/CubeSphere.hpp>
+#include <src/Engine/Geometry/Lights/DirLight.hpp>
+#include <src/Engine/Geometry/Lights/SpotLight.hpp>
 #include "ModelManager.hpp"
 
 void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &projection, const glm::vec3 &viewPos) {

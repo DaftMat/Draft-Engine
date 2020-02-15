@@ -5,7 +5,7 @@
 #ifndef DAFT_ENGINE_CUBESPHERE_HPP
 #define DAFT_ENGINE_CUBESPHERE_HPP
 
-#include <src/hello_sphere/Geometry/Model.hpp>
+#include <src/Engine/Geometry/Model.hpp>
 
 class CubeSphere : public Model {
 public:

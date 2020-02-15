@@ -8,7 +8,7 @@
 
 #include <memory>
 #include "Mesh.hpp"
-#include "src/hello_sphere/Shader.hpp"
+#include "src/Engine/Shader.hpp"
 
 union ModelParam {
     struct uvs_param {

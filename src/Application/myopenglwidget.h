@@ -6,8 +6,7 @@
 #include <QKeyEvent>
 
 #include <memory>
-
-#include "opengldemo.h"
+#include <src/Engine/Engine.hpp>
 
 
 class MyOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_1_Core {
@@ -20,9 +19,6 @@ public:
     // size hints for the widget
     QSize minimumSizeHint() const override;
     QSize sizeHint() const override;
-
-    // Demo management
-    void activatedemo(unsigned int numdemo);
 
 public slots:
     void cleanup();
@@ -40,10 +36,7 @@ protected:
     void keyPressEvent(QKeyEvent *event) override;
 
 private :
-    std::unique_ptr<OpenGLDemo> _openglDemo;
-
-    using DemoConstructors=std::function<OpenGLDemo*(int, int)>;
-    std::vector<DemoConstructors> _democonstructors;
+    std::unique_ptr<Engine> m_engine;
 
     // for event management
     std::int64_t _lastime;
