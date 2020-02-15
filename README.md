@@ -30,10 +30,6 @@ Run the following commands from the recently created `build` directory
 # ./Daft-Engine
 ```
 ## Using
- * You can switch scenes using numbers (0 to 3)
-   * Use the 1st scene (0) to clear OpenGL context
-   * The 2 nexts scenes were provided by teachers
-   * My work is on the 4th scene, from now I assume you're using the engine from this scene.
  * You can print wireframed object using `w` (same key to get triangles back)
  * You can switch shaders using `s`
    * A Blinn-Phong shaders with grey default materials
