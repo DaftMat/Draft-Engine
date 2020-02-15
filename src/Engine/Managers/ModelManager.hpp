@@ -5,12 +5,12 @@
 #ifndef DAFT_ENGINE_MODELMANAGER_HPP
 #define DAFT_ENGINE_MODELMANAGER_HPP
 
-#include <opengldemo.h>
-#include <hello_sphere/Geometry/Model.hpp>
+#include <opengl_stuff.h>
+#include <Engine/Geometry/Model.hpp>
 #include <vector>
 #include <set>
 #include <memory>
-#include <src/hello_sphere/Geometry/Lights/PointLight.hpp>
+#include <src/Engine/Geometry/Lights/PointLight.hpp>
 
 class ModelManager {
 public:

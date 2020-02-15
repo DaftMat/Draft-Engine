@@ -7,25 +7,10 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "hello_triangles/hellotriangles.h"
-#include "hello_camera/hellocamera.h"
-#include "hello_sphere/Engine.hpp"
+#include <src/Engine/Engine.hpp>
 
-MyOpenGLWidget::MyOpenGLWidget(QWidget *parent) :QOpenGLWidget(parent)/*, QOpenGLFunctions_4_1_Core()*/, _openglDemo(nullptr), _lastime(0) {
-    // add all demo constructors here
-    _democonstructors.emplace_back( [](int width, int height)->OpenGLDemo*{
-        std::cout << "Hello clear ..." << std::endl; return new OpenGLDemo(width, height);
-        } );
-    _democonstructors.emplace_back( [](int width, int height)->OpenGLDemo*{
-        std::cout << "Hello triangles ..." << std::endl; return new SimpleTriangle(width, height);
-        } );
-    _democonstructors.emplace_back( [](int width, int height)->OpenGLDemo*{
-        std::cout << "Hello camera ..." << std::endl; return new SimpleCamera(width, height);
-        } );
-    _democonstructors.emplace_back( [](int width, int height)->OpenGLDemo*{
-        std::cout << "Hello spheres ..." << std::endl; return new Engine(width, height);
-        } );
-}
+MyOpenGLWidget::MyOpenGLWidget(QWidget *parent) :QOpenGLWidget(parent)/*, QOpenGLFunctions_4_1_Core()*/,
+                                m_engine { nullptr }, _lastime { 0 }, frame_loop { false } {}
 
 MyOpenGLWidget::~MyOpenGLWidget() {
 
@@ -42,7 +27,7 @@ QSize MyOpenGLWidget::sizeHint() const
 }
 
 void MyOpenGLWidget::cleanup() {
-    _openglDemo.reset(nullptr);
+    m_engine.reset(nullptr);
 }
 
 void MyOpenGLWidget::initializeGL() {
@@ -53,12 +38,12 @@ void MyOpenGLWidget::initializeGL() {
         exit(1);
     }
     // Initialize OpenGL and all OpenGL dependent stuff below
-    _openglDemo.reset(_democonstructors[0](width(), height()));
+    m_engine.reset(new Engine(width(), height()));
 }
 
 void MyOpenGLWidget::paintGL() {
     std::int64_t starttime = QDateTime::currentMSecsSinceEpoch();
-    _openglDemo->draw();
+    m_engine->draw();
     glFinish();
     std::int64_t endtime = QDateTime::currentMSecsSinceEpoch();
     _lastime = endtime-starttime;
@@ -67,7 +52,7 @@ void MyOpenGLWidget::paintGL() {
 }
 
 void MyOpenGLWidget::resizeGL(int width, int height) {
-    _openglDemo->resize(width, height);
+    m_engine->resize(width, height);
 }
 
 void MyOpenGLWidget::mousePressEvent(QMouseEvent *event) {
@@ -85,41 +70,28 @@ void MyOpenGLWidget::mousePressEvent(QMouseEvent *event) {
         b = 2;
     else
         b=3;
-    _openglDemo->mouseclick(b, event->x(), event->y());
+    m_engine->mouseclick(b, event->x(), event->y());
     _lastime = QDateTime::currentMSecsSinceEpoch();
 }
 
 void MyOpenGLWidget::mouseMoveEvent(QMouseEvent *event) {
-    _openglDemo->mousemove(event->x(), event->y());
+    m_engine->mousemove(event->x(), event->y());
     update();
 }
 
 void MyOpenGLWidget::keyPressEvent(QKeyEvent *event) {
     switch(event->key()) {
-        // Demo keys
-        case Qt::Key_0:
-        case Qt::Key_1:
-        case Qt::Key_2:
-        case Qt::Key_3:
-        case Qt::Key_4:
-        case Qt::Key_5:
-        case Qt::Key_6:
-        case Qt::Key_7:
-        case Qt::Key_8:
-        case Qt::Key_9:
-            activatedemo(event->key()-Qt::Key_0);
-        break;
         // Move keys
         case Qt::Key_Left:
         case Qt::Key_Up:
         case Qt::Key_Right:
         case Qt::Key_Down:
-            _openglDemo->keyboardmove(event->key()-Qt::Key_Left, 1./100/*double(_lastime)/10.*/);
+            m_engine->keyboardmove(event->key()-Qt::Key_Left, 1./100/*double(_lastime)/10.*/);
             update();
         break;
         // Wireframe key
         case Qt::Key_W:
-            _openglDemo->toggledrawmode();
+            m_engine->toggledrawmode();
             update();
         break;
         case Qt::Key_F:
@@ -128,19 +100,8 @@ void MyOpenGLWidget::keyPressEvent(QKeyEvent *event) {
             break;
         // Other keys are transmitted to the scene
         default :
-            if (_openglDemo->keyboard(event->text().toStdString()[0]))
+            if (m_engine->keyboard(event->text().toStdString()[0]))
                 update();
         break;
     }
 }
-
-void MyOpenGLWidget::activatedemo(unsigned int numdemo) {
-    if (numdemo < _democonstructors.size()) {
-        std::cout << "Activating demo " << numdemo << " : ";
-        makeCurrent();
-        _openglDemo.reset(_democonstructors[numdemo](width(), height()));
-        doneCurrent();
-        update();
-    }
-}
-

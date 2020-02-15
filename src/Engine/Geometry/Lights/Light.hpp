@@ -5,7 +5,7 @@
 #ifndef DAFT_ENGINE_LIGHT_HPP
 #define DAFT_ENGINE_LIGHT_HPP
 
-#include <opengldemo.h>
+#include <opengl_stuff.h>
 
 enum LightType {
     POINT_LIGHT,

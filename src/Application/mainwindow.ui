@@ -34,16 +34,6 @@
     </property>
     <addaction name="action_Version_OpenGL"/>
    </widget>
-   <widget class="QMenu" name="menu_Demo">
-    <property name="title">
-     <string>&amp;Demo</string>
-    </property>
-    <addaction name="actionHello_clear"/>
-    <addaction name="actionHello_triangle"/>
-    <addaction name="actionHello_camera"/>
-    <addaction name="actionHello_spheres"/>
-   </widget>
-   <addaction name="menu_Demo"/>
    <addaction name="menuInfo"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -58,26 +48,6 @@
   <action name="action_Version_OpenGL">
    <property name="text">
     <string>&amp;Version OpenGL</string>
-   </property>
-  </action>
-  <action name="actionHello_triangle">
-   <property name="text">
-    <string>Hello triangle ...</string>
-   </property>
-  </action>
-  <action name="actionHello_camera">
-   <property name="text">
-    <string>Hello camera ...</string>
-   </property>
-  </action>
-  <action name="actionHello_spheres">
-   <property name="text">
-    <string>Hello spheres ...</string>
-   </property>
-  </action>
-  <action name="actionHello_clear">
-   <property name="text">
-    <string>Hello clear ...</string>
    </property>
   </action>
  </widget>

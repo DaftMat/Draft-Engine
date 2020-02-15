@@ -41,19 +41,3 @@ void MainWindow::on_action_Version_OpenGL_triggered() {
     message << "GLSL Version   : " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
     QMessageBox::information(this, "OpenGL Information", message.str().c_str());
 }
-
-void MainWindow::on_actionHello_clear_triggered() {
-    openglWidget->activatedemo(0);
-}
-
-void MainWindow::on_actionHello_triangle_triggered() {
-    openglWidget->activatedemo(1);
-}
-
-void MainWindow::on_actionHello_camera_triggered() {
-    openglWidget->activatedemo(2);
-}
-void MainWindow::on_actionHello_spheres_triggered()
-{
-    openglWidget->activatedemo(3);
-}

@@ -8,31 +8,28 @@
 #include <memory>
 #include <functional>
 
-#include <opengldemo.h>
+#include <src/Engine/Cameras/camera.h>
+#include <src/Engine/Geometry/Mesh.hpp>
+#include <Engine/Shader.hpp>
+#include <src/Engine/Geometry/Primitives/UVSphere.hpp>
+#include <src/Engine/Managers/ModelManager.hpp>
+#include "src/Engine/Geometry/Primitives/IcoSphere.hpp"
 
-#include <hello_camera/camera.h>
-#include <src/hello_sphere/Geometry/Mesh.hpp>
-#include <hello_sphere/Shader.hpp>
-#include <src/hello_sphere/Geometry/Primitives/UVSphere.hpp>
-#include <src/hello_sphere/Managers/ModelManager.hpp>
-#include "src/hello_sphere/Geometry/Primitives/IcoSphere.hpp"
-
-class Engine : public OpenGLDemo {
+class Engine {
 public:
     explicit Engine(int width, int height);
-    ~Engine() override;
+    ~Engine();
 
-    void resize(int width, int height) override;
-    void draw() override;
+    void resize(int width, int height);
+    void draw();
 
-    void mouseclick(int button, float xpos, float ypos) override;
-    void mousemove(float xpos, float ypos) override;
-    void keyboardmove(int key, double time) override;
-    bool keyboard(unsigned char k) override;
+    void mouseclick(int button, float xpos, float ypos);
+    void mousemove(float xpos, float ypos);
+    void keyboardmove(int key, double time);
+    bool keyboard(unsigned char k);
     void shaderChanged(ShaderSelection selected);
 
-    void toggledrawmode() override {
-        OpenGLDemo::toggledrawmode();
+    void toggledrawmode() {
         m_modelmanager->toggledrawmode();
     }
 
@@ -41,6 +38,9 @@ public:
     void addCubeSphere() { m_modelmanager->addCubeSphere(); }
 
 private:
+    int m_width;
+    int m_height;
+
     // geometries
     std::unique_ptr<ModelManager> m_modelmanager;
 

@@ -6,7 +6,7 @@
 #define DAFT_ENGINE_SHADER_HPP
 
 #include <opengl_stuff.h>
-#include <hello_sphere/Geometry/Lights/Light.hpp>
+#include <Engine/Geometry/Lights/Light.hpp>
 
 enum ShaderSelection {
     DEFAULT = 0,

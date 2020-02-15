@@ -6,7 +6,7 @@
 #define DAFT_ENGINE_ICOSPHERE_HPP
 
 
-#include <src/hello_sphere/Geometry/Model.hpp>
+#include <src/Engine/Geometry/Model.hpp>
 
 class IcoSphere : public Model {
 public:
