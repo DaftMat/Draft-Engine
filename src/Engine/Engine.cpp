@@ -13,6 +13,13 @@ Engine::Engine(int width, int height) :
         m_shader { nullptr },
         m_activecamera { 0 },
         m_camera { nullptr } {
+    glEnable(GL_DEPTH_TEST);
+    glViewport(0, 0, width, height);
+    //glEnable(GL_CULL_FACE);
+    //glCullFace(GL_FRONT);
+    //glFrontFace(GL_CW);
+    glEnable(GL_MULTISAMPLE);
+
     /// Setup shaders
     m_shaderselector.emplace_back( []()->Shader*{ return new Shader("shaders/blinnphong.vert.glsl", "shaders/blinnphong.frag.glsl"); } );
     m_shaderselector.emplace_back( []()->Shader*{ return new Shader("shaders/error.vert.glsl", "shaders/error.frag.glsl"); } );
@@ -28,26 +35,19 @@ Engine::Engine(int width, int height) :
     m_view = m_camera->viewmatrix();
     m_projection = glm::perspective(m_camera->zoom(), float(m_width) / m_height, 0.1f, 100.0f);
 
-    m_modelmanager->addUVSphere();
-    m_modelmanager->addIcoSphere();
-    m_modelmanager->addCubeSphere();
+    //m_modelmanager->addUVSphere();
+    //m_modelmanager->addIcoSphere();
+    //m_modelmanager->addCubeSphere();
 
-    m_modelmanager->translateSelection(glm::vec3(-2.5f, 0.f, 0.f));
-    m_modelmanager->switch_selection();
-    m_modelmanager->switch_selection();
-    m_modelmanager->translateSelection(glm::vec3(2.5f, 0.f, 0.f));
-    m_modelmanager->switch_selection();
+    //m_modelmanager->translateSelection(glm::vec3(-2.5f, 0.f, 0.f));
+    //m_modelmanager->switch_selection();
+    //m_modelmanager->switch_selection();
+    //m_modelmanager->translateSelection(glm::vec3(2.5f, 0.f, 0.f));
+    //m_modelmanager->switch_selection();
 
     m_modelmanager->addPointLight(glm::vec3(0.f, 0.5f, 3.f));
     m_modelmanager->addDirLight();
     m_modelmanager->addSpotLight(glm::vec3(0.f, 6.f, 0.f));
-
-    glEnable(GL_DEPTH_TEST);
-    glViewport(0, 0, width, height);
-    //glEnable(GL_CULL_FACE);
-    //glCullFace(GL_FRONT);
-    //glFrontFace(GL_CW);
-    glEnable(GL_MULTISAMPLE);
 }
 
 Engine::~Engine() {

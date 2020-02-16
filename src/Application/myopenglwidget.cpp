@@ -23,7 +23,7 @@ QSize MyOpenGLWidget::minimumSizeHint() const
 
 QSize MyOpenGLWidget::sizeHint() const
 {
-    return QSize(512, 512);
+    return QSize(720, 512);
 }
 
 void MyOpenGLWidget::cleanup() {
@@ -104,4 +104,9 @@ void MyOpenGLWidget::keyPressEvent(QKeyEvent *event) {
                 update();
         break;
     }
+}
+
+void MyOpenGLWidget::addObject(ModelType type) {
+    m_engine->addModel(type);
+    update();
 }

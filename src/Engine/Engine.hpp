@@ -33,9 +33,21 @@ public:
         m_modelmanager->toggledrawmode();
     }
 
-    void addUVSphere() { m_modelmanager->addUVSphere(); }
-    void addIcoSphere() { m_modelmanager->addIcoSphere(); }
-    void addCubeSphere() { m_modelmanager->addCubeSphere(); }
+    void addModel(ModelType type) {
+        switch (type) {
+            case UV_SPHERE:
+                m_modelmanager->addUVSphere();
+                break;
+            case ICO_SPHERE:
+                m_modelmanager->addIcoSphere();
+                break;
+            case CUBE_SPHERE:
+                m_modelmanager->addCubeSphere();
+                break;
+            default:
+                break;
+        }
+    }
 
 private:
     int m_width;

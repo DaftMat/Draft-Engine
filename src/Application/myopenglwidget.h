@@ -14,11 +14,13 @@ class MyOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_1_Core
 public:
     explicit MyOpenGLWidget(QWidget *parent = 0);
 
-    ~MyOpenGLWidget() override ;
+    ~MyOpenGLWidget() override;
 
     // size hints for the widget
     QSize minimumSizeHint() const override;
     QSize sizeHint() const override;
+
+    void addObject(ModelType type);
 
 public slots:
     void cleanup();
