@@ -59,14 +59,14 @@ public:
     void addIcoSphere(GLuint subdivisions = 3);
     void addCubeSphere(GLuint resolution = 16);
 
-    void translateSelection(const glm::vec3 &transform) { m_models[m_selectedmodel]->translate(transform); }
-    void rotateSelection(const glm::vec3 &axis, float angle) { m_models[m_selectedmodel]->rotate(axis, glm::radians(angle)); }
-    void scaleSelection(const glm::vec3 &transform) { m_models[m_selectedmodel]->scale(transform); }
-
     bool keyboard(unsigned char key);
     void switch_selection();
 
     void toggledrawmode() { m_wireframe = !m_wireframe; }
+
+    Model & getSelectedObject() { return *m_models[m_selectedmodel]; }
+    GLuint getSelectedIndex() { return m_selectedmodel; }
+    void setSelectedIndex(GLuint index) { m_selectedmodel = glm::max(index, (GLuint)(m_models.size() - 1)); }
 
 private:
     /// User-Interactions utils functions

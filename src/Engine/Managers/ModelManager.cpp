@@ -10,6 +10,8 @@
 #include "ModelManager.hpp"
 
 void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &projection, const glm::vec3 &viewPos) {
+    if (m_models.empty())   return;
+
     for (const auto &ind : m_toReset)
         m_models[ind]->reset();
     m_toReset.clear();
