@@ -55,8 +55,6 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
     glDeleteShader(vertex);
     glDeleteShader(fragment);
 
-    // make sure the lights lists are cleared
-    use();
     clearLights();
 }
 
@@ -148,6 +146,7 @@ void Shader::setBaseLight(Light *light, const std::string & lightType, GLuint in
 }
 
 void Shader::clearLights() {
+    use();
     m_num_point_light = 0;
     m_num_dir_light = 0;
     m_num_spot_light = 0;
