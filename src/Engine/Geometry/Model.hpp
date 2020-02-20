@@ -33,22 +33,30 @@ enum ModelType {
 class Model {
 public:
     Model() = default;
-    ~Model() { m_meshes.clear(); }
+    virtual ~Model() { m_meshes.clear(); }
 
     Model(const Model &) = delete;
     Model & operator=(const Model &) = delete;
 
     void draw(const Shader &shader) const;
 
-    glm::mat4 model() const { return m_model * m_scale; }
+    glm::mat4 model() const { return m_translateMat * m_rotateMat * m_scaleMat; }
 
-    void translate(const glm::vec3 & transform) { m_model = glm::translate(m_model, transform); }
-    void rotate(const glm::vec3 &axis, float angle) { m_model = glm::rotate(m_model, angle, axis); }
-    void scale(const glm::vec3 &transform) {m_scale = glm::scale(m_scale, transform); }
+    void translate(const glm::vec3 & transform) { m_translateMat = glm::translate(m_translateMat, transform); }
+    void rotate(const glm::vec3 &axis, float angle) { m_rotateMat = glm::rotate(m_rotateMat, glm::radians(angle), axis); }
+    void scale(const glm::vec3 &transform) { m_scaleMat = glm::scale(m_scaleMat, transform); }
+
+    void setPosition(const glm::vec3 &new_pos);
+    const glm::vec3 & getPosition() const { return m_position; }
+    void setRotation(const glm::vec3 &new_rot);
+    const glm::vec3 & getRotation() const { return m_rotation; }
+    void setScale(const glm::vec3 &new_scale);
+    const glm::vec3 & getScale() const { return m_scale; }
 
     virtual void reset() {}
 
     virtual ModelType getType() const { return MODEL; }
+    virtual std::string getTypeAsString() const { return "Object"; }
     virtual void editModel(const ModelParam &params) = 0;
     virtual ModelParam getParams() const = 0;
 
@@ -56,8 +64,13 @@ protected:
     std::vector<std::unique_ptr<Mesh>> m_meshes;
 
 private:
-    glm::mat4 m_model;
-    glm::mat4 m_scale;
+    glm::vec3 m_position {0.f, 0.f, 0.f};
+    glm::vec3 m_rotation {0.f, 0.f, 0.f};
+    glm::vec3 m_scale {1.f, 1.f, 1.f};
+
+    glm::mat4 m_translateMat;
+    glm::mat4 m_rotateMat;
+    glm::mat4 m_scaleMat;
 };
 
 

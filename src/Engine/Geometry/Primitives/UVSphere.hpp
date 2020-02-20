@@ -12,7 +12,8 @@
  */
 class UVSphere : public Model {
 public:
-    explicit UVSphere(GLuint meridians = 8, GLuint parallels = 8) : m_stacks { meridians }, m_sectors { parallels } { setupUvSphere(); }
+    explicit UVSphere(GLuint meridians = 8, GLuint parallels = 8) : m_stacks { meridians }, m_sectors { parallels }
+    { setupUvSphere(); }
 
     void setMeridians(GLuint meridians) { m_stacks = meridians > 3 ? meridians : 4; }
     void setParallels(GLuint parallels) { m_sectors = parallels > 3 ? parallels : 4; }
@@ -23,6 +24,7 @@ public:
     void reset() override { setupUvSphere(); }
 
     ModelType getType() const override { return UV_SPHERE; }
+    std::string getTypeAsString() const override { return "UV Sphere"; }
     void editModel(const ModelParam &params) override;
     ModelParam getParams() const override;
 

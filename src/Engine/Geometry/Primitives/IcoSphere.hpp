@@ -21,6 +21,7 @@ public:
     void setSubdivisions(int subs) { m_subs = subs >= 0 ? subs : 0; }
 
     ModelType getType() const override { return ICO_SPHERE; }
+    std::string getTypeAsString() const override { return "Ico Sphere"; }
     void editModel(const ModelParam &params) override;
     ModelParam getParams() const override;
 

@@ -24,7 +24,7 @@ public:
 
     void draw() const;
 
-    void reset();
+    void reset(std::vector<Vertex> vertices, std::vector<GLuint> indices);
 
     std::vector<Vertex> vertices() const { return m_vertices; }
     std::vector<GLuint> indices() const { return m_indices; }

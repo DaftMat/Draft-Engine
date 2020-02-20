@@ -9,26 +9,35 @@ namespace Ui {
 class MainWindow;
 }
 
+enum DaftState {
+    EDIT,
+    SELECTION
+};
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    ~MainWindow() override;
 
 private slots:
     void on_actionOpenGL_Version_triggered();
 
-    void on_icoSphereButton_clicked();
+    void on_position_valueChanged(double d);
 
-    void on_cubeSphereButton_clicked();
+    void on_rotation_valueChanged(double d);
 
-    void on_uvSphereButton_clicked();
+    void on_scale_valueChanged(double d);
+
+    void on_selectionChanged(GLuint index);
+
+    void on_objectCreator_activated(const QString &arg1);
 
 private:
+    DaftState m_state { EDIT };
     Ui::MainWindow *ui;
-    MyOpenGLWidget *m_openglwidget;
 };
 
 #endif // MAINWINDOW_H

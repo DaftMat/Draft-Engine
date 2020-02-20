@@ -14,6 +14,7 @@ public:
     void reset() override { setupCubeSphere(); }
 
     ModelType getType() const override { return CUBE_SPHERE; }
+    std::string getTypeAsString() const override { return "Cube Sphere"; }
     void editModel(const ModelParam &params) override;
     ModelParam getParams() const override;
 

@@ -29,29 +29,24 @@ public:
     bool keyboard(unsigned char k);
     void shaderChanged(ShaderSelection selected);
 
-    void toggledrawmode() {
-        m_modelmanager->toggledrawmode();
-    }
+    void toggledrawmode() { m_modelmanager->toggledrawmode(); }
 
-    void addModel(ModelType type) {
-        switch (type) {
-            case UV_SPHERE:
-                m_modelmanager->addUVSphere();
-                break;
-            case ICO_SPHERE:
-                m_modelmanager->addIcoSphere();
-                break;
-            case CUBE_SPHERE:
-                m_modelmanager->addCubeSphere();
-                break;
-            default:
-                break;
-        }
-    }
+    void addModel(ModelType type);
+
+    Model & getSelectedModel() { return m_modelmanager->getSelectedObject(); }
+    GLuint getSelectedIndex() { return m_modelmanager->getSelectedIndex(); }
+    void setSelectedIndex(GLuint index) { m_modelmanager->setSelectedIndex(index); }
 
 private:
+    void checkCreation();
+
     int m_width;
     int m_height;
+
+    struct ModelCreation {
+        bool toCreate;
+        ModelType type;
+    } m_creationstate;
 
     // geometries
     std::unique_ptr<ModelManager> m_modelmanager;
@@ -73,7 +68,6 @@ private:
     unsigned int m_activecamera;
     std::unique_ptr<Camera> m_camera;
 
-    glm::mat4 m_view;
     glm::mat4 m_projection;
 };
 

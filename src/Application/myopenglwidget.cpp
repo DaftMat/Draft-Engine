@@ -13,7 +13,6 @@ MyOpenGLWidget::MyOpenGLWidget(QWidget *parent) :QOpenGLWidget(parent)/*, QOpenG
                                 m_engine { nullptr }, _lastime { 0 }, frame_loop { false } {}
 
 MyOpenGLWidget::~MyOpenGLWidget() {
-
 }
 
 QSize MyOpenGLWidget::minimumSizeHint() const
@@ -44,11 +43,10 @@ void MyOpenGLWidget::initializeGL() {
 void MyOpenGLWidget::paintGL() {
     std::int64_t starttime = QDateTime::currentMSecsSinceEpoch();
     m_engine->draw();
+    glCheckError()
     glFinish();
     std::int64_t endtime = QDateTime::currentMSecsSinceEpoch();
     _lastime = endtime-starttime;
-    if (frame_loop)
-        update();
 }
 
 void MyOpenGLWidget::resizeGL(int width, int height) {
@@ -69,7 +67,7 @@ void MyOpenGLWidget::mousePressEvent(QMouseEvent *event) {
     else if (button & Qt::MiddleButton)
         b = 2;
     else
-        b=3;
+        b = 3;
     m_engine->mouseclick(b, event->x(), event->y());
     _lastime = QDateTime::currentMSecsSinceEpoch();
 }
@@ -94,13 +92,14 @@ void MyOpenGLWidget::keyPressEvent(QKeyEvent *event) {
             m_engine->toggledrawmode();
             update();
         break;
-        case Qt::Key_F:
-            frame_loop = !frame_loop;
-            update();
-            break;
         // Other keys are transmitted to the scene
+        case Qt::Key_O:
+            m_engine->keyboard('o');
+            emit selectionChanged(m_engine->getSelectedIndex());
+            update();
+        break;
         default :
-            if (m_engine->keyboard(event->text().toStdString()[0]))
+            if (m_engine->keyboard((unsigned char)event->text().toStdString()[0]))
                 update();
         break;
     }

@@ -2,9 +2,10 @@
  * Created by mathis on 01/02/2020.
  */
 
+#include <thread>
 #include "Mesh.hpp"
 #include "src/Engine/Shader.hpp"
-#include <cassert>
+#include <unistd.h>
 
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices)
 : m_vertices { std::move(vertices) }, m_indices { std::move(indices) } {
@@ -31,14 +32,14 @@ void Mesh::setupMesh() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(GLuint), m_indices.data(), GL_STATIC_DRAW);
 
     /// in vertex position
-    glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)nullptr);
+    glEnableVertexAttribArray(0);
     /// in vertex normal
-    glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
+    glEnableVertexAttribArray(1);
     /// in vertex texture coords
-    glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
+    glEnableVertexAttribArray(2);
 
     /// release
     glBindVertexArray(0);
@@ -50,7 +51,9 @@ void Mesh::deleteMesh() {
     glDeleteBuffers(1, &m_EBO);
 }
 
-void Mesh::reset() {
+void Mesh::reset(std::vector<Vertex> vertices, std::vector<GLuint> indices) {
+    m_vertices = std::move(vertices);
+    m_indices = std::move(indices);
     deleteMesh();
     setupMesh();
 }

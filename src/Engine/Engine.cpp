@@ -32,7 +32,6 @@ Engine::Engine(int width, int height) :
     m_camera.reset(m_cameraselector[m_activecamera]());
     m_camera->setviewport(glm::vec4(0.f, 0.f, m_width, m_height));
 
-    m_view = m_camera->viewmatrix();
     m_projection = glm::perspective(m_camera->zoom(), float(m_width) / m_height, 0.1f, 100.0f);
 
     //m_modelmanager->addUVSphere();
@@ -48,6 +47,9 @@ Engine::Engine(int width, int height) :
     m_modelmanager->addPointLight(glm::vec3(0.f, 0.5f, 3.f));
     m_modelmanager->addDirLight();
     m_modelmanager->addSpotLight(glm::vec3(0.f, 6.f, 0.f));
+
+    m_creationstate.toCreate = false;
+    m_creationstate.type = MODEL;
 }
 
 Engine::~Engine() {
@@ -67,8 +69,8 @@ void Engine::resize(int width, int height) {
 void Engine::draw() {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    m_view = m_camera->viewmatrix();
-    m_modelmanager->draw(*m_shader, m_view, m_projection, m_camera->position());
+    checkCreation();
+    m_modelmanager->draw(*m_shader, m_camera->viewmatrix(), m_projection, m_camera->position());
 }
 
 
@@ -89,6 +91,15 @@ void Engine::keyboardmove(int key, double time) {
 
 bool Engine::keyboard(unsigned char k) {
     switch(k) {
+        case '1':
+            m_modelmanager->addUVSphere();
+            return true;
+        case '2':
+            m_modelmanager->addIcoSphere();
+            return true;
+        case '3':
+            m_modelmanager->addCubeSphere();
+            return true;
         case 'p':
             m_activecamera = (m_activecamera+1)%2;
             m_camera.reset(m_cameraselector[m_activecamera]());
@@ -108,4 +119,28 @@ void Engine::shaderChanged(ShaderSelection selected) {
     if (m_activeshader >= m_shaderselector.size())
         m_activeshader = m_shaderselector.size() - 1;
     m_shader.reset(m_shaderselector[m_activeshader]());
+}
+
+void Engine::addModel(ModelType type) {
+    m_creationstate.toCreate = true;
+    m_creationstate.type = type;
+}
+
+void Engine::checkCreation() {
+    if (m_creationstate.toCreate) {
+        m_creationstate.toCreate = false;
+        switch (m_creationstate.type) {
+            case UV_SPHERE:
+                m_modelmanager->addUVSphere();
+                break;
+            case ICO_SPHERE:
+                m_modelmanager->addIcoSphere();
+                break;
+            case CUBE_SPHERE:
+                m_modelmanager->addCubeSphere();
+                break;
+            default:
+                break;
+        }
+    }
 }

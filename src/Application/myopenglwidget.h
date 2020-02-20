@@ -10,9 +10,10 @@
 
 
 class MyOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_1_Core {
+    Q_OBJECT
 
 public:
-    explicit MyOpenGLWidget(QWidget *parent = 0);
+    explicit MyOpenGLWidget(QWidget *parent = nullptr);
 
     ~MyOpenGLWidget() override;
 
@@ -22,20 +23,24 @@ public:
 
     void addObject(ModelType type);
 
+    Model & getSelectedObject() { return m_engine->getSelectedModel(); }
+
+    // Event management
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
+
 public slots:
     void cleanup();
+
+signals:
+    void selectionChanged(GLuint newIndex);
 
 protected:
     // OpenGL management
     void initializeGL() override;
     void paintGL() override;
     void resizeGL(int width, int height) override;
-
-    // Event management
-    void mousePressEvent(QMouseEvent *event) override;
-    void mouseMoveEvent(QMouseEvent *event) override;
-
-    void keyPressEvent(QKeyEvent *event) override;
 
 private :
     std::unique_ptr<Engine> m_engine;
