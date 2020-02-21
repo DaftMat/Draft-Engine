@@ -27,7 +27,7 @@ public:
     void mousemove(float xpos, float ypos);
     void keyboardmove(int key, double time);
     bool keyboard(unsigned char k);
-    void shaderChanged(ShaderSelection selected);
+    void shaderChanged(GLuint selected);
 
     void toggledrawmode() { m_modelmanager->toggledrawmode(); }
 

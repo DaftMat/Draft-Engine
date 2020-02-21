@@ -109,3 +109,8 @@ void MyOpenGLWidget::addObject(ModelType type) {
     m_engine->addModel(type);
     update();
 }
+
+void MyOpenGLWidget::setShader(GLuint index) {
+    m_engine->shaderChanged(index);
+    update();
+}

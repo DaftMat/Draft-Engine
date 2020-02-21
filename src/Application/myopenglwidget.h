@@ -25,6 +25,8 @@ public:
 
     Model & getSelectedObject() { return m_engine->getSelectedModel(); }
 
+    void setShader(GLuint index);
+
     // Event management
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;

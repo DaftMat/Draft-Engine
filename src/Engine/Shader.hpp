@@ -8,13 +8,6 @@
 #include <opengl_stuff.h>
 #include <Engine/Geometry/Lights/Light.hpp>
 
-enum ShaderSelection {
-    DEFAULT = 0,
-    ERROR,
-    BLINNPHONG,
-    PBR
-};
-
 class Shader {
 public:
     Shader(const char * vertexPath, const char * fragmentPath);

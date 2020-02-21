@@ -35,6 +35,8 @@ private slots:
 
     void on_objectCreator_activated(const QString &arg1);
 
+    void on_shaderChoser_activated(int index);
+
 private:
     DaftState m_state { EDIT };
     Ui::MainWindow *ui;

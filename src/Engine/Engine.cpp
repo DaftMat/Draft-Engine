@@ -34,16 +34,6 @@ Engine::Engine(int width, int height) :
 
     m_projection = glm::perspective(m_camera->zoom(), float(m_width) / m_height, 0.1f, 100.0f);
 
-    //m_modelmanager->addUVSphere();
-    //m_modelmanager->addIcoSphere();
-    //m_modelmanager->addCubeSphere();
-
-    //m_modelmanager->translateSelection(glm::vec3(-2.5f, 0.f, 0.f));
-    //m_modelmanager->switch_selection();
-    //m_modelmanager->switch_selection();
-    //m_modelmanager->translateSelection(glm::vec3(2.5f, 0.f, 0.f));
-    //m_modelmanager->switch_selection();
-
     m_modelmanager->addPointLight(glm::vec3(0.f, 0.5f, 3.f));
     m_modelmanager->addDirLight();
     m_modelmanager->addSpotLight(glm::vec3(0.f, 6.f, 0.f));
@@ -69,8 +59,8 @@ void Engine::resize(int width, int height) {
 void Engine::draw() {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    checkCreation();
     m_modelmanager->draw(*m_shader, m_camera->viewmatrix(), m_projection, m_camera->position());
+    checkCreation();
 }
 
 
@@ -91,15 +81,6 @@ void Engine::keyboardmove(int key, double time) {
 
 bool Engine::keyboard(unsigned char k) {
     switch(k) {
-        case '1':
-            m_modelmanager->addUVSphere();
-            return true;
-        case '2':
-            m_modelmanager->addIcoSphere();
-            return true;
-        case '3':
-            m_modelmanager->addCubeSphere();
-            return true;
         case 'p':
             m_activecamera = (m_activecamera+1)%2;
             m_camera.reset(m_cameraselector[m_activecamera]());
@@ -114,7 +95,7 @@ bool Engine::keyboard(unsigned char k) {
     }
 }
 
-void Engine::shaderChanged(ShaderSelection selected) {
+void Engine::shaderChanged(GLuint selected) {
     m_activeshader = selected;
     if (m_activeshader >= m_shaderselector.size())
         m_activeshader = m_shaderselector.size() - 1;

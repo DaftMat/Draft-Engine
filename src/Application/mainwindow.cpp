@@ -102,8 +102,7 @@ void MainWindow::on_selectionChanged(GLuint index) {
 
 void MainWindow::on_objectCreator_activated(const QString &arg1)
 {
-    if (arg1 == "Create Object")    return;
-    else if (arg1 == "UVSphere")
+    if (arg1 == "UVSphere")
         ui->m_openglwidget->addObject(UV_SPHERE);
     else if (arg1 == "IcoSphere")
         ui->m_openglwidget->addObject(ICO_SPHERE);
@@ -111,4 +110,10 @@ void MainWindow::on_objectCreator_activated(const QString &arg1)
         ui->m_openglwidget->addObject(CUBE_SPHERE);
     ui->m_openglwidget->setFocus();
     ui->objectCreator->setCurrentIndex(0);
+}
+
+void MainWindow::on_shaderChoser_activated(int index)
+{
+    ui->m_openglwidget->setShader((unsigned int)index);
+    ui->m_openglwidget->setFocus();
 }
