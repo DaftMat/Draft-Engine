@@ -7,8 +7,8 @@
 #include "src/Engine/Shader.hpp"
 #include <unistd.h>
 
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices)
-: m_vertices { std::move(vertices) }, m_indices { std::move(indices) } {
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, bool grid)
+: m_vertices { std::move(vertices) }, m_indices { std::move(indices) }, m_grid { grid } {
     setupMesh();
 }
 
@@ -60,6 +60,6 @@ void Mesh::reset(std::vector<Vertex> vertices, std::vector<GLuint> indices) {
 
 void Mesh::draw() const {
     glBindVertexArray(m_VAO);
-    glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, nullptr);
+    glDrawElements(m_grid ? GL_LINES : GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, nullptr);
     glBindVertexArray(0);
 }

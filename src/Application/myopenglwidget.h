@@ -23,7 +23,9 @@ public:
 
     void addObject(ModelType type);
 
-    Model & getSelectedObject() { return m_engine->getSelectedModel(); }
+    Model * getSelectedObject() { return m_engine->getSelectedModel(); }
+
+    void setModelParams(ModelType type, const ModelParam &params) { m_engine->setModelParams(type, params); }
 
     void setShader(GLuint index);
 
@@ -49,7 +51,7 @@ private :
 
     // for event management
     std::int64_t _lastime;
-    bool frame_loop {false};
+    bool object_added;
 };
 
 #endif // MYOPENGLWIDGET_H

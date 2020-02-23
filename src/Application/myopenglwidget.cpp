@@ -10,7 +10,7 @@
 #include <src/Engine/Engine.hpp>
 
 MyOpenGLWidget::MyOpenGLWidget(QWidget *parent) :QOpenGLWidget(parent)/*, QOpenGLFunctions_4_1_Core()*/,
-                                m_engine { nullptr }, _lastime { 0 }, frame_loop { false } {}
+                                m_engine { nullptr }, _lastime { 0 }, object_added { false } {}
 
 MyOpenGLWidget::~MyOpenGLWidget() {
 }
@@ -44,6 +44,10 @@ void MyOpenGLWidget::paintGL() {
     std::int64_t starttime = QDateTime::currentMSecsSinceEpoch();
     m_engine->draw();
     glCheckError()
+    if (object_added) {
+        object_added = false;
+        emit selectionChanged(m_engine->getSelectedIndex());
+    }
     glFinish();
     std::int64_t endtime = QDateTime::currentMSecsSinceEpoch();
     _lastime = endtime-starttime;
@@ -107,6 +111,7 @@ void MyOpenGLWidget::keyPressEvent(QKeyEvent *event) {
 
 void MyOpenGLWidget::addObject(ModelType type) {
     m_engine->addModel(type);
+    object_added = true;
     update();
 }
 

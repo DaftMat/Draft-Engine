@@ -34,9 +34,7 @@ Engine::Engine(int width, int height) :
 
     m_projection = glm::perspective(m_camera->zoom(), float(m_width) / m_height, 0.1f, 100.0f);
 
-    m_modelmanager->addPointLight(glm::vec3(0.f, 0.5f, 3.f));
-    m_modelmanager->addDirLight();
-    m_modelmanager->addSpotLight(glm::vec3(0.f, 6.f, 0.f));
+    m_modelmanager->addDirLight(glm::vec3(0.f, -1.f, 0.f), glm::vec3(0.5f, 0.5f, 0.5f));
 
     m_creationstate.toCreate = false;
     m_creationstate.type = MODEL;
@@ -57,10 +55,10 @@ void Engine::resize(int width, int height) {
 }
 
 void Engine::draw() {
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    m_modelmanager->draw(*m_shader, m_camera->viewmatrix(), m_projection, m_camera->position());
     checkCreation();
+    m_modelmanager->draw(*m_shader, m_camera->viewmatrix(), m_projection, m_camera->position());
 }
 
 
@@ -120,8 +118,25 @@ void Engine::checkCreation() {
             case CUBE_SPHERE:
                 m_modelmanager->addCubeSphere();
                 break;
-            default:
+            case MODEL:
                 break;
         }
+        m_modelmanager->setSelectedIndex(m_modelmanager->getSize()-1);
+    }
+}
+
+void Engine::setModelParams(ModelType type, const ModelParam &params) {
+    switch (type) {
+    case UV_SPHERE:
+        m_modelmanager->setUVSphereParams(params.uv_sphere.meridians, params.uv_sphere.parallels);
+        break;
+    case ICO_SPHERE:
+        m_modelmanager->setIcoSphereParams(params.ico_sphere.subdivisions);
+        break;
+    case CUBE_SPHERE:
+        m_modelmanager->setCubeSphereParams(params.cube_sphere.resolution);
+        break;
+    case MODEL:
+        break;
     }
 }

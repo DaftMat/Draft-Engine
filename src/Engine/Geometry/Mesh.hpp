@@ -18,8 +18,8 @@ struct Vertex {
 
 class Mesh {
 public:
-    Mesh() : m_vertices {}, m_indices {} { setupMesh(); };
-    Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices);
+    explicit Mesh(bool grid = false) : m_vertices {}, m_indices {}, m_grid { grid } { setupMesh(); };
+    Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, bool grid = false);
     ~Mesh();
 
     void draw() const;
@@ -39,6 +39,7 @@ private:
     std::vector<GLuint> m_indices;
     /// OpenGL
     GLuint m_VAO, m_VBO, m_EBO;
+    bool m_grid;
 };
 
 #endif //DAFT_ENGINE_MESH_HPP

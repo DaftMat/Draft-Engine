@@ -14,12 +14,11 @@
 
 class ModelManager {
 public:
-    ModelManager() : m_selectedmodel { 0 },
-    m_blackshader { new Shader("shaders/black.vert.glsl", "shaders/black.frag.glsl") },
-    m_yellowshader { new Shader("shaders/yellow.vert.glsl", "shaders/yellow.frag.glsl") },
-    m_wireframe { true } {}
+    ModelManager() : m_selectedmodel { -1 },
+    m_colorshader { new Shader("shaders/color.vert.glsl", "shaders/color.frag.glsl") },
+    m_wireframe { true } { makeGrid(); }
 
-    ~ModelManager() { m_models.clear(); m_lights.clear(); m_blackshader.reset(); }
+    ~ModelManager() { m_models.clear(); m_lights.clear(); m_colorshader.reset(); }
 
     ModelManager(const ModelManager &) = delete;
     ModelManager(ModelManager &&) = delete;
@@ -55,7 +54,7 @@ public:
             const glm::vec3 &specular=glm::vec3(1.f, 1.0f, 1.0f));
 
     //void addModel(std::string file)
-    void addUVSphere(GLuint meridians = 16, GLuint parallels = 32);
+    void addUVSphere(GLuint meridians = 32, GLuint parallels = 16);
     void addIcoSphere(GLuint subdivisions = 3);
     void addCubeSphere(GLuint resolution = 16);
 
@@ -64,26 +63,25 @@ public:
 
     void toggledrawmode() { m_wireframe = !m_wireframe; }
 
-    Model & getSelectedObject() { return *m_models[m_selectedmodel]; }
-    GLuint getSelectedIndex() { return m_selectedmodel; }
+    Model * getSelectedObject() { if (m_selectedmodel == -1) return nullptr; else return m_models[m_selectedmodel].get(); }
+    int getSelectedIndex() const { return m_selectedmodel; }
     void setSelectedIndex(GLuint index) { m_selectedmodel = glm::max(index, (GLuint)(m_models.size() - 1)); }
+    unsigned long getSize() const { return m_models.size(); }
+
+    void setUVSphereParams(GLuint meridians, GLuint parallels);
+    void setIcoSphereParams(GLuint subdivisions);
+    void setCubeSphereParams(GLuint resolution);
 
 private:
-    /// User-Interactions utils functions
-    ModelParam add_uvsphere_params(GLuint meridians = 1, GLuint parallels = 1);
-    ModelParam sub_uvsphere_params(GLuint meridians = 1, GLuint parallels = 1);
-    ModelParam add_icosphere_params(GLuint subdivisions = 1);
-    ModelParam sub_icosphere_params(GLuint subdivisions = 1);
-    ModelParam add_cubesphere_params(GLuint resolution = 1);
-    ModelParam sub_cubesphere_params(GLuint resolution = 1);
+    void makeGrid();
+    std::unique_ptr<Mesh> m_grid;
 
     std::vector<std::unique_ptr<Model>> m_models;
-    GLuint m_selectedmodel;
+    int m_selectedmodel;
 
     std::vector<std::unique_ptr<Light>> m_lights;
 
-    std::unique_ptr<Shader> m_blackshader;
-    std::unique_ptr<Shader> m_yellowshader;
+    std::unique_ptr<Shader> m_colorshader;
 
     /// Reset utils
     std::set<GLuint> m_toReset;

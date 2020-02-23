@@ -10,6 +10,15 @@
 #include "ModelManager.hpp"
 
 void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &projection, const glm::vec3 &viewPos) {
+    m_colorshader->use();
+    m_colorshader->setMat4("projection", projection);
+    m_colorshader->setMat4("view", view);
+    m_colorshader->setMat4("model", glm::mat4{});
+
+    m_colorshader->setVec3("color", glm::vec3(0.8f, 0.8f, 0.8f));
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    m_grid->draw();
+
     if (m_models.empty())   return;
 
     for (const auto &ind : m_toReset)
@@ -23,23 +32,19 @@ void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &
     for (const auto &light : m_lights) {
         shader.addLight(light.get());
     }
-    m_yellowshader->use();
-    m_yellowshader->setMat4("view", view);
-    m_yellowshader->setMat4("projection", projection);
-    if (m_wireframe) {
-        m_blackshader->use();
-        m_blackshader->setMat4("view", view);
-        m_blackshader->setMat4("projection", projection);
-    }
 
     for(GLuint i = 0 ; i < m_models.size() ; ++i) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         m_models[i]->draw(shader);
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        if (i == m_selectedmodel)
-            m_models[i]->draw(*m_yellowshader);
-        else if (m_wireframe)
-            m_models[i]->draw(*m_blackshader);
+        m_colorshader->use();
+        if (i == m_selectedmodel) {
+            m_colorshader->setVec3("color", glm::vec3(0.f, 0.8f, 0.2f));
+            m_models[i]->draw(*m_colorshader);
+        } else if (m_wireframe) {
+            m_colorshader->setVec3("color", glm::vec3(0.f, 0.f, 0.f));
+            m_models[i]->draw(*m_colorshader);
+        }
     }
 
     shader.clearLights();
@@ -74,42 +79,26 @@ void ModelManager::addCubeSphere(GLuint resolution) {
     m_models.emplace_back(new CubeSphere(resolution));
 }
 
-ModelParam ModelManager::add_uvsphere_params(GLuint meridians, GLuint parallels) {
-    ModelParam result = m_models[m_selectedmodel]->getParams();
-    result.uv_sphere.meridians += meridians;
-    result.uv_sphere.parallels += parallels;
-    return result;
+void ModelManager::setUVSphereParams(GLuint meridians, GLuint parallels) {
+    ModelParam new_params = m_models[m_selectedmodel]->getParams();
+    new_params.uv_sphere.meridians = meridians;
+    new_params.uv_sphere.parallels = parallels;
+    m_models[m_selectedmodel]->editModel(new_params);
+    m_toReset.insert(m_selectedmodel);
 }
 
-ModelParam ModelManager::sub_uvsphere_params(GLuint meridians, GLuint parallels) {
-    ModelParam result = m_models[m_selectedmodel]->getParams();
-    result.uv_sphere.meridians -= meridians;
-    result.uv_sphere.parallels -= parallels;
-    return result;
+void ModelManager::setIcoSphereParams(GLuint subdivisions) {
+    ModelParam new_params = m_models[m_selectedmodel]->getParams();
+    new_params.ico_sphere.subdivisions = subdivisions;
+    m_models[m_selectedmodel]->editModel(new_params);
+    m_toReset.insert(m_selectedmodel);
 }
 
-ModelParam ModelManager::add_icosphere_params(GLuint subdivisions) {
-    ModelParam result = m_models[m_selectedmodel]->getParams();
-    result.ico_sphere.subdivisions += subdivisions;
-    return result;
-}
-
-ModelParam ModelManager::sub_icosphere_params(GLuint subdivisions) {
-    ModelParam result = m_models[m_selectedmodel]->getParams();
-    result.ico_sphere.subdivisions -= subdivisions;
-    return result;
-}
-
-ModelParam ModelManager::add_cubesphere_params(GLuint resolution) {
-    ModelParam result = m_models[m_selectedmodel]->getParams();
-    result.cube_sphere.resolution += resolution;
-    return result;
-}
-
-ModelParam ModelManager::sub_cubesphere_params(GLuint resolution) {
-    ModelParam result = m_models[m_selectedmodel]->getParams();
-    result.cube_sphere.resolution -= resolution;
-    return result;
+void ModelManager::setCubeSphereParams(GLuint resolution) {
+    ModelParam new_params = m_models[m_selectedmodel]->getParams();
+    new_params.cube_sphere.resolution = resolution;
+    m_models[m_selectedmodel]->editModel(new_params);
+    m_toReset.insert(m_selectedmodel);
 }
 
 bool ModelManager::keyboard(unsigned char key) {
@@ -117,41 +106,7 @@ bool ModelManager::keyboard(unsigned char key) {
         case 'o':
             switch_selection();
             return true;
-        case '+': {
-            switch (m_models[m_selectedmodel]->getType()) {
-                case UV_SPHERE:
-                    m_models[m_selectedmodel]->editModel(add_uvsphere_params());
-                    m_toReset.insert(m_selectedmodel);
-                    return true;
-                case ICO_SPHERE:
-                    m_models[m_selectedmodel]->editModel(add_icosphere_params());
-                    m_toReset.insert(m_selectedmodel);
-                    return true;
-                case CUBE_SPHERE:
-                    m_models[m_selectedmodel]->editModel(add_cubesphere_params());
-                    m_toReset.insert(m_selectedmodel);
-                    return true;
-                default:
-                    return false;
-            }
-        } case '-': {
-            switch (m_models[m_selectedmodel]->getType()) {
-                case UV_SPHERE:
-                    m_models[m_selectedmodel]->editModel(sub_uvsphere_params());
-                    m_toReset.insert(m_selectedmodel);
-                    return true;
-                case ICO_SPHERE:
-                    m_models[m_selectedmodel]->editModel(sub_icosphere_params());
-                    m_toReset.insert(m_selectedmodel);
-                    return true;
-                case CUBE_SPHERE:
-                    m_models[m_selectedmodel]->editModel(sub_cubesphere_params());
-                    m_toReset.insert(m_selectedmodel);
-                    return true;
-                default:
-                    return false;
-            }
-        } default:
+        default:
             return false;
     }
 }
@@ -159,4 +114,34 @@ bool ModelManager::keyboard(unsigned char key) {
 void ModelManager::switch_selection() {
     if (!m_models.empty())
         m_selectedmodel = (m_selectedmodel + 1) % m_models.size();
+}
+
+void ModelManager::makeGrid() {
+    std::vector<Vertex> vertices;
+    std::vector<GLuint> indices;
+
+    GLuint index;
+    Vertex vertex {};
+    glm::vec3 normal { 0.f, 1.f, 0.f };
+    for (int i = 0 ; i < 20 ; ++i) {
+        for (int j = 0 ; j < 20 ; ++j) {
+            index = (GLuint)(i + j * 20);
+            vertex.Normal = normal;
+            vertex.Position = glm::vec3((float)(i-10), 0.f, (float)(j-10));
+            vertices.push_back(vertex);
+
+            if (i < 20 && j < 20) {
+                if (i < 19) {
+                    indices.push_back(index);
+                    indices.push_back(index + 1);
+                }
+                if (j < 19) {
+                    indices.push_back(index);
+                    indices.push_back(index + 20);
+                }
+            }
+        }
+    }
+
+    m_grid.reset(new Mesh(vertices, indices, true));
 }

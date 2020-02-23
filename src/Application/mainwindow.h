@@ -37,7 +37,18 @@ private slots:
 
     void on_shaderChoser_activated(int index);
 
+    void on_uv_meridians_valueChanged(int arg1);
+
+    void on_uv_parallels_valueChanged(int arg1);
+
+    void on_ico_subdiv_valueChanged(int arg1);
+
+    void on_cube_res_valueChanged(int arg1);
+
 private:
+    void updateSettings(ModelType type);
+    void unset_settings();
+
     DaftState m_state { EDIT };
     Ui::MainWindow *ui;
 };

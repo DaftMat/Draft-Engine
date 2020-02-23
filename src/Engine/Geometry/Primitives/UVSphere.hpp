@@ -12,14 +12,14 @@
  */
 class UVSphere : public Model {
 public:
-    explicit UVSphere(GLuint meridians = 8, GLuint parallels = 8) : m_stacks { meridians }, m_sectors { parallels }
+    explicit UVSphere(GLuint meridians = 8, GLuint parallels = 8) : m_stacks { parallels }, m_sectors { meridians }
     { setupUvSphere(); }
 
-    void setMeridians(GLuint meridians) { m_stacks = meridians > 3 ? meridians : 4; }
-    void setParallels(GLuint parallels) { m_sectors = parallels > 3 ? parallels : 4; }
+    void setMeridians(GLuint meridians) { m_sectors = glm::max<GLuint>(meridians, 4); }
+    void setParallels(GLuint parallels) { m_stacks = glm::max<GLuint>(parallels, 4); }
 
-    GLuint getMeridians() const { return m_stacks; }
-    GLuint getParallels() const { return m_sectors; }
+    GLuint getMeridians() const { return m_sectors; }
+    GLuint getParallels() const { return m_stacks; }
 
     void reset() override { setupUvSphere(); }
 

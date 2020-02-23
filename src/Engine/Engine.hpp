@@ -33,9 +33,11 @@ public:
 
     void addModel(ModelType type);
 
-    Model & getSelectedModel() { return m_modelmanager->getSelectedObject(); }
+    Model * getSelectedModel() { return m_modelmanager->getSelectedObject(); }
     GLuint getSelectedIndex() { return m_modelmanager->getSelectedIndex(); }
     void setSelectedIndex(GLuint index) { m_modelmanager->setSelectedIndex(index); }
+
+    void setModelParams(ModelType type, const ModelParam &params);
 
 private:
     void checkCreation();
