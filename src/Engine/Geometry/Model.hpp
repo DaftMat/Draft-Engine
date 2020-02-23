@@ -40,11 +40,9 @@ public:
 
     void draw(const Shader &shader) const;
 
-    glm::mat4 model() const { return m_translateMat * m_rotateMat * m_scaleMat; }
+    glm::mat4 model() const { return m_translateMat * rotation() * scale(); }
 
-    void translate(const glm::vec3 & transform) { m_translateMat = glm::translate(m_translateMat, transform); }
-    void rotate(const glm::vec3 &axis, float angle) { m_rotateMat = glm::rotate(m_rotateMat, glm::radians(angle), axis); }
-    void scale(const glm::vec3 &transform) { m_scaleMat = glm::scale(m_scaleMat, transform); }
+    void translate(const glm::vec3 & t);
 
     void setPosition(const glm::vec3 &new_pos);
     const glm::vec3 & getPosition() const { return m_position; }
@@ -64,13 +62,14 @@ protected:
     std::vector<std::unique_ptr<Mesh>> m_meshes;
 
 private:
+    glm::mat4 rotation() const;
+    glm::mat4 scale() const { return glm::scale(glm::mat4(), m_scale); }
+
     glm::vec3 m_position {0.f, 0.f, 0.f};
     glm::vec3 m_rotation {0.f, 0.f, 0.f};
     glm::vec3 m_scale {1.f, 1.f, 1.f};
 
     glm::mat4 m_translateMat;
-    glm::mat4 m_rotateMat;
-    glm::mat4 m_scaleMat;
 };
 
 

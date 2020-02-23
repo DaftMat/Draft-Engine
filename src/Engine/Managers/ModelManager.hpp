@@ -16,7 +16,7 @@ class ModelManager {
 public:
     ModelManager() : m_selectedmodel { -1 },
     m_colorshader { new Shader("shaders/color.vert.glsl", "shaders/color.frag.glsl") },
-    m_wireframe { true } { makeGrid(); }
+    m_wireframe { true } { makeGrid(50); makeUnitArrows(); }
 
     ~ModelManager() { m_models.clear(); m_lights.clear(); m_colorshader.reset(); }
 
@@ -58,6 +58,8 @@ public:
     void addIcoSphere(GLuint subdivisions = 3);
     void addCubeSphere(GLuint resolution = 16);
 
+    void deleteModel(int index);
+
     bool keyboard(unsigned char key);
     void switch_selection();
 
@@ -73,8 +75,20 @@ public:
     void setCubeSphereParams(GLuint resolution);
 
 private:
-    void makeGrid();
+    void drawGrid(const glm::mat4 &projection, const glm::mat4 &view);
+    void makeGrid(int size);
+    void makeUnitArrows();
+
+    std::vector<glm::vec3> dirs() {
+        return {
+                { 1.f, 0.f, 0.f },
+                { 0.f, 1.f, 0.f },
+                { 0.f, 0.f, 1.f }
+        };
+    }
+
     std::unique_ptr<Mesh> m_grid;
+    std::vector<std::unique_ptr<Mesh>> m_unitarrows;
 
     std::vector<std::unique_ptr<Model>> m_models;
     int m_selectedmodel;

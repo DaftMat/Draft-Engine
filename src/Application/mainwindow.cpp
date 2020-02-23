@@ -92,6 +92,7 @@ void MainWindow::on_scale_valueChanged(double d) {
 
 void MainWindow::on_selectionChanged(GLuint index) {
     m_state = DaftState::SELECTION;
+    unset_settings();
     if (ui->m_openglwidget->getSelectedObject() == nullptr) return;
     ui->x_position->setValue(ui->m_openglwidget->getSelectedObject()->getPosition().x);
     ui->y_position->setValue(ui->m_openglwidget->getSelectedObject()->getPosition().y);
@@ -201,6 +202,7 @@ void MainWindow::updateSettings(ModelType type) {
 }
 
 void MainWindow::unset_settings() {
+    ui->object_settings_label->setText("Model Settings");
     ui->uv_meridians->setVisible(false);
     ui->uv_parallels->setVisible(false);
     ui->uv_meridians_label->setVisible(false);

@@ -34,7 +34,7 @@ Engine::Engine(int width, int height) :
 
     m_projection = glm::perspective(m_camera->zoom(), float(m_width) / m_height, 0.1f, 100.0f);
 
-    m_modelmanager->addDirLight(glm::vec3(0.f, -1.f, 0.f), glm::vec3(0.5f, 0.5f, 0.5f));
+    m_modelmanager->addDirLight(glm::vec3(0.f, -1.f, 0.f), glm::vec3(0.35f, 0.35f, 0.35f));
 
     m_creationstate.toCreate = false;
     m_creationstate.type = MODEL;
@@ -55,7 +55,7 @@ void Engine::resize(int width, int height) {
 }
 
 void Engine::draw() {
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     checkCreation();
     m_modelmanager->draw(*m_shader, m_camera->viewmatrix(), m_projection, m_camera->position());

@@ -32,6 +32,7 @@ public:
     void toggledrawmode() { m_modelmanager->toggledrawmode(); }
 
     void addModel(ModelType type);
+    void deleteModel(int index) { m_modelmanager->deleteModel(index); }
 
     Model * getSelectedModel() { return m_modelmanager->getSelectedObject(); }
     GLuint getSelectedIndex() { return m_modelmanager->getSelectedIndex(); }

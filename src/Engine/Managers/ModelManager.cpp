@@ -10,15 +10,7 @@
 #include "ModelManager.hpp"
 
 void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &projection, const glm::vec3 &viewPos) {
-    m_colorshader->use();
-    m_colorshader->setMat4("projection", projection);
-    m_colorshader->setMat4("view", view);
-    m_colorshader->setMat4("model", glm::mat4{});
-
-    m_colorshader->setVec3("color", glm::vec3(0.8f, 0.8f, 0.8f));
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    m_grid->draw();
-
+    drawGrid(projection, view);
     if (m_models.empty())   return;
 
     for (const auto &ind : m_toReset)
@@ -106,6 +98,10 @@ bool ModelManager::keyboard(unsigned char key) {
         case 'o':
             switch_selection();
             return true;
+        case 'd':
+            deleteModel(m_selectedmodel);
+            switch_selection();
+            return true;
         default:
             return false;
     }
@@ -114,34 +110,80 @@ bool ModelManager::keyboard(unsigned char key) {
 void ModelManager::switch_selection() {
     if (!m_models.empty())
         m_selectedmodel = (m_selectedmodel + 1) % m_models.size();
+    else
+        m_selectedmodel = -1;
 }
 
-void ModelManager::makeGrid() {
+void ModelManager::makeGrid(int size) {
     std::vector<Vertex> vertices;
     std::vector<GLuint> indices;
 
     GLuint index;
     Vertex vertex {};
     glm::vec3 normal { 0.f, 1.f, 0.f };
-    for (int i = 0 ; i < 20 ; ++i) {
-        for (int j = 0 ; j < 20 ; ++j) {
-            index = (GLuint)(i + j * 20);
+    for (int i = 0 ; i < size ; ++i) {
+        for (int j = 0 ; j < size ; ++j) {
+            index = (GLuint)(i + j * size);
             vertex.Normal = normal;
-            vertex.Position = glm::vec3((float)(i-10), 0.f, (float)(j-10));
+            vertex.Position = glm::vec3((float)(i-(size/2)), 0.f, (float)(j-(size/2)));
             vertices.push_back(vertex);
 
-            if (i < 20 && j < 20) {
-                if (i < 19) {
+            if (i < size && j < size && (i != size/2 || j != size/2)) {
+                if (i < size - 1) {
                     indices.push_back(index);
                     indices.push_back(index + 1);
                 }
-                if (j < 19) {
+                if (j < size - 1) {
                     indices.push_back(index);
-                    indices.push_back(index + 20);
+                    indices.push_back(index + size);
                 }
             }
         }
     }
 
     m_grid.reset(new Mesh(vertices, indices, true));
+}
+
+void ModelManager::drawGrid(const glm::mat4 &projection, const glm::mat4 &view) {
+    m_colorshader->use();
+    m_colorshader->setMat4("projection", projection);
+    m_colorshader->setMat4("view", view);
+    m_colorshader->setMat4("model", glm::mat4{});
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+    /// Draw grid
+    m_colorshader->setVec3("color", glm::vec3(0.25f, 0.25f, 0.25f));
+    m_grid->draw();
+
+    /// Draw unit arrows
+    for (int i = 0 ; i < 3 ; ++i) {
+        m_colorshader->setVec3("color", dirs()[i]);
+        m_unitarrows[i]->draw();
+    }
+
+}
+
+void ModelManager::makeUnitArrows() {
+    std::vector<Vertex> vertices;
+    std::vector<GLuint> indices { 0, 1 };
+    Vertex vertex {};
+    Vertex center {};
+    for (int i = 0 ; i < 3 ; ++i) {
+        vertices.push_back(center);
+        vertex.Position = dirs()[i];
+        vertices.push_back(vertex);
+        m_unitarrows.emplace_back(new Mesh(vertices, indices, true));
+        vertices.clear();
+    }
+
+}
+
+void ModelManager::deleteModel(int index) {
+    if (index < 0 || index >= m_models.size()) return;
+    for (auto it = m_models.begin() ; it != m_models.end() ; ++it) {
+        if (*it == m_models[index]) {
+            m_models.erase(it);
+            return;
+        }
+    }
 }

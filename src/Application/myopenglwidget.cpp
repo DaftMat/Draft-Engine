@@ -102,6 +102,11 @@ void MyOpenGLWidget::keyPressEvent(QKeyEvent *event) {
             emit selectionChanged(m_engine->getSelectedIndex());
             update();
         break;
+        case Qt::Key_D:
+            m_engine->keyboard('d');
+            emit selectionChanged(m_engine->getSelectedIndex());
+            update();
+            break;
         default :
             if (m_engine->keyboard((unsigned char)event->text().toStdString()[0]))
                 update();
