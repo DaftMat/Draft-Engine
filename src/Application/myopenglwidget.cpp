@@ -124,3 +124,9 @@ void MyOpenGLWidget::setShader(GLuint index) {
     m_engine->shaderChanged(index);
     update();
 }
+
+void MyOpenGLWidget::deleteObject() {
+    m_engine->deleteModel();
+    object_added = true;
+    update();
+}
