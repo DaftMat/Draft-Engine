@@ -22,6 +22,7 @@ public:
     QSize sizeHint() const override;
 
     void addObject(ModelType type);
+    void deleteObject() { m_engine->deleteModel(); update(); }
 
     Model * getSelectedObject() { return m_engine->getSelectedModel(); }
 

@@ -212,3 +212,8 @@ void MainWindow::unset_settings() {
     ui->cube_res->setVisible(false);
     ui->cube_res_label->setVisible(false);
 }
+
+void MainWindow::on_deleteButton_clicked()
+{
+    ui->m_openglwidget->deleteObject();
+}

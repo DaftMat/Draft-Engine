@@ -99,8 +99,7 @@ bool ModelManager::keyboard(unsigned char key) {
             switch_selection();
             return true;
         case 'd':
-            deleteModel(m_selectedmodel);
-            switch_selection();
+            deleteModel();
             return true;
         default:
             return false;
@@ -178,11 +177,12 @@ void ModelManager::makeUnitArrows() {
 
 }
 
-void ModelManager::deleteModel(int index) {
-    if (index < 0 || index >= m_models.size()) return;
+void ModelManager::deleteModel() {
+    if (m_selectedmodel < 0) return;
     for (auto it = m_models.begin() ; it != m_models.end() ; ++it) {
-        if (*it == m_models[index]) {
+        if (*it == m_models[m_selectedmodel]) {
             m_models.erase(it);
+            switch_selection();
             return;
         }
     }

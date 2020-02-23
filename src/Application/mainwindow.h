@@ -45,6 +45,8 @@ private slots:
 
     void on_cube_res_valueChanged(int arg1);
 
+    void on_deleteButton_clicked();
+
 private:
     void updateSettings(ModelType type);
     void unset_settings();

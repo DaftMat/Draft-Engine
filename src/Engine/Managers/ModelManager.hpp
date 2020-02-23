@@ -58,7 +58,7 @@ public:
     void addIcoSphere(GLuint subdivisions = 3);
     void addCubeSphere(GLuint resolution = 16);
 
-    void deleteModel(int index);
+    void deleteModel();
 
     bool keyboard(unsigned char key);
     void switch_selection();
