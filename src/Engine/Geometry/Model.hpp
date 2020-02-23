@@ -30,6 +30,16 @@ enum ModelType {
     CUBE_SPHERE
 };
 
+struct Ray {
+    glm::vec3 position;
+    glm::vec3 direction;
+};
+
+struct OBB {
+    glm::vec3 aabb_min;
+    glm::vec3 aabb_max;
+};
+
 class Model {
 public:
     Model() = default;
@@ -58,8 +68,11 @@ public:
     virtual void editModel(const ModelParam &params) = 0;
     virtual ModelParam getParams() const = 0;
 
+    bool isIntersected(const Ray &ray, float &dist);
+
 protected:
     std::vector<std::unique_ptr<Mesh>> m_meshes;
+    OBB m_obb;
 
 private:
     glm::mat4 rotation() const;

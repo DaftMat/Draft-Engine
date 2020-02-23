@@ -46,3 +46,35 @@ void Model::translate(const glm::vec3 &t) {
     m_translateMat = glm::translate(m_translateMat, t);
     m_position += t;
 }
+
+bool Model::isIntersected(const Ray &ray, float &dist) {
+    float tMin { 0.f };
+    float tMax { 1000000.f };
+    float e, f, t1, t2;
+
+    glm::mat4 modelMat = model();
+
+    glm::vec3 OBBposition { modelMat[3].x, modelMat[3].y, modelMat[3].z };
+    glm::vec3 delta { OBBposition - ray.position };
+
+    for (int i = 0 ; i < 3 ; ++i) {
+        glm::vec3 axis { modelMat[i].x, modelMat[i].y, modelMat[i].z };
+        e = glm::dot(axis, delta);
+        f = glm::dot(ray.direction, axis);
+        if (glm::abs(f) > glm::epsilon<float>()) {
+            t1 = (e + m_obb.aabb_min[i]) * (1 / f);
+            t2 = (e + m_obb.aabb_max[i]) * (1 / f);
+
+            if (t1 > t2)    std::swap(t1, t2);
+            if (t2 < tMax)  tMax = t2;
+            if (t1 > tMin)  tMin = t1;
+
+            if (tMax < tMin)
+                return false;
+        } else if (-e + m_obb.aabb_min.x > 0.0f || -e + m_obb.aabb_max.x < 0.0f)
+            return false;
+    }
+
+    dist = tMin;
+    return true;
+}

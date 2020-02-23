@@ -27,7 +27,6 @@ public:
 
     void draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &projection, const glm::vec3 &viewPos);
 
-
     void addPointLight(
             const glm::vec3 &pos=glm::vec3(0.f, 0.f, 0.f),
             GLfloat constant = 1.f,
@@ -73,6 +72,8 @@ public:
     void setUVSphereParams(GLuint meridians, GLuint parallels);
     void setIcoSphereParams(GLuint subdivisions);
     void setCubeSphereParams(GLuint resolution);
+
+    void mouse_click(const Ray &ray);
 
 private:
     void drawGrid(const glm::mat4 &projection, const glm::mat4 &view);

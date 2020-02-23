@@ -180,7 +180,6 @@ void MainWindow::on_cube_res_valueChanged(int arg1)
 }
 
 void MainWindow::updateSettings(ModelType type) {
-    unset_settings();
     switch (type) {
     case ModelType::UV_SPHERE:
         ui->uv_meridians->setVisible(true);
@@ -202,6 +201,15 @@ void MainWindow::updateSettings(ModelType type) {
 }
 
 void MainWindow::unset_settings() {
+    ui->x_position->setValue(0.0);
+    ui->y_position->setValue(0.0);
+    ui->z_position->setValue(0.0);
+    ui->x_rotation->setValue(0.0);
+    ui->y_rotation->setValue(0.0);
+    ui->z_rotation->setValue(0.0);
+    ui->x_scale->setValue(1.0);
+    ui->y_scale->setValue(1.0);
+    ui->z_scale->setValue(1.0);
     ui->object_settings_label->setText("Model Settings");
     ui->uv_meridians->setVisible(false);
     ui->uv_parallels->setVisible(false);

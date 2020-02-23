@@ -69,3 +69,9 @@ void CubeSphere::setupCubeSphere() {
         indices.clear();
     }
 }
+
+CubeSphere::CubeSphere(GLuint resolution) : m_resolution { resolution } {
+    setupCubeSphere();
+    m_obb.aabb_min = { -1.f, -1.f, -1.f };
+    m_obb.aabb_max = {  1.f,  1.f,  1.f };
+}

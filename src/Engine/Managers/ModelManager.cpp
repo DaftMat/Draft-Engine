@@ -187,3 +187,19 @@ void ModelManager::deleteModel() {
         }
     }
 }
+
+void ModelManager::mouse_click(const Ray &ray) {
+    float dist = 100000.f;
+    bool found = false;
+    for (int i = 0 ; i < m_models.size() ; ++i) {
+        float temp;
+        if (m_models[i]->isIntersected(ray, temp)) {
+            found = true;
+            if (temp < dist) {
+                dist = temp;
+                m_selectedmodel = i;
+            }
+        }
+    }
+    if (!found) m_selectedmodel = -1;
+}

@@ -68,3 +68,10 @@ ModelParam UVSphere::getParams() const {
     result.uv_sphere.parallels = getParallels();
     return result;
 }
+
+UVSphere::UVSphere(GLuint meridians, GLuint parallels) : m_stacks { parallels }, m_sectors { meridians }{
+    setupUvSphere();
+    m_obb.aabb_min = { -1.f, -1.f, -1.f };
+    m_obb.aabb_max = {  1.f,  1.f,  1.f };
+}
+

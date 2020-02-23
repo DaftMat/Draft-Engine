@@ -9,11 +9,8 @@
 #include <functional>
 
 #include <src/Engine/Cameras/camera.h>
-#include <src/Engine/Geometry/Mesh.hpp>
 #include <Engine/Shader.hpp>
-#include <src/Engine/Geometry/Primitives/UVSphere.hpp>
 #include <src/Engine/Managers/ModelManager.hpp>
-#include "src/Engine/Geometry/Primitives/IcoSphere.hpp"
 
 class Engine {
 public:
@@ -42,6 +39,7 @@ public:
 
 private:
     void checkCreation();
+    Ray getRay(float x, float y);
 
     int m_width;
     int m_height;

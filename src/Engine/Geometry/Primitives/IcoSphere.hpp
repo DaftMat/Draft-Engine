@@ -10,7 +10,7 @@
 
 class IcoSphere : public Model {
 public:
-    explicit IcoSphere(GLuint subs = 0) : m_subs { subs } { setupIcoSphere(); }
+    explicit IcoSphere(GLuint subs = 0);
 
     void reset() override { setupIcoSphere(); }
 
