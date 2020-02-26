@@ -30,10 +30,6 @@ Run the following commands from the recently created `build` directory
 # ./Daft-Engine
 ```
 ## Using
-
-![Daft-Engine](https://imgur.com/nTNbxYp.png)
-
-### How to use it
  
 ![Annoted App](https://imgur.com/L0lIBdU.png)
 
