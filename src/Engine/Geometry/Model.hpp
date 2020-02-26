@@ -69,7 +69,6 @@ public:
     virtual ModelParam getParams() const = 0;
 
     bool isIntersected(const Ray &ray, float &dist);
-    bool isOBBIntersected(const Ray &ray, float &dist);
 
 protected:
     std::vector<std::unique_ptr<Mesh>> m_meshes;

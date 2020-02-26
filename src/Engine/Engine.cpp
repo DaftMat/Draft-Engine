@@ -55,9 +55,6 @@ void Engine::resize(int width, int height) {
 }
 
 void Engine::draw() {
-    //if (m_mouseClicked) {
-    //    m_mouseClicked = false;
-    //}
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     checkCreation();
@@ -69,7 +66,6 @@ void Engine::mouseclick(int button, float xpos, float ypos) {
     m_button = button;
     m_mousex = xpos;
     m_mousey = ypos;
-    //m_mouseClicked = true;
     m_modelmanager->mouse_click(getRay(xpos, ypos));
     m_camera->processmouseclick(m_button, xpos, ypos);
 }

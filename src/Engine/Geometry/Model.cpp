@@ -77,45 +77,6 @@ bool Model::isIntersected(const Ray &ray, float &dist) {
     return true;
 }
 
-bool Model::isOBBIntersected(const Ray &ray, float &dist) {
-    float tMin { 0.f };
-    float tMax { 100000.f };
-
-    glm::mat4 modelMat = m_translateMat * rotation();
-    glm::vec3 OBBPosition{
-        modelMat[3].x,
-        modelMat[3].y,
-        modelMat[3].z
-    };
-    glm::vec3 delta = OBBPosition - ray.position;
-
-    for (int i = 0 ; i < 3 ; ++i) {
-        glm::vec3 axis {
-            modelMat[i].x,
-            modelMat[i].y,
-            modelMat[i].z
-        };
-        float e = glm::dot(axis, delta);
-        float f = glm::dot(ray.direction, axis);
-
-        if (glm::abs(f) > 0.001f) {
-            float t1 = (e + m_aabb.min.x) / f;
-            float t2 = (e + m_aabb.max.y) / f;
-
-            if (t1 > t2) std::swap(t1, t2);
-            if (t2 < tMax) tMax = t2;
-            if (t1 > tMin) tMin = t1;
-
-            if (tMax < tMin) return false;
-        } else if (-e + m_aabb.min[i] > 0.f || -e + m_aabb.max[i] < 0.f) {
-            return false;
-        }
-    }
-
-    dist = tMin;
-    return true;
-}
-
 void Model::transformAABB() {
     m_aabb.min = std::numeric_limits<glm::vec3>::infinity();
     m_aabb.max = -std::numeric_limits<glm::vec3>::infinity();
