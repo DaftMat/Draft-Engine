@@ -47,3 +47,5 @@ Run the following commands from the recently created `build` directory
    * Edit selected object's rotations **(3.2)**
    * Edit selected object's scale **(3.3)**
  * Object's settings management **(4)**
+   * Depends on the selected object
+ * You can select an object by clicking on it
