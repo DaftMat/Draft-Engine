@@ -30,15 +30,20 @@ Run the following commands from the recently created `build` directory
 # ./Daft-Engine
 ```
 ## Using
- * You can print wireframed object using `w` (same key to get triangles back)
- * You can switch shaders using `s`
-   * A Blinn-Phong shaders with grey default materials
-   * An Error shader that shows the spheres with green for parts close to the perfect sphere, and red for errors parts
-   * A normal shader that make the spheres look like rainbow
- * You can switch cameras using `p`
-   * A standard camera that you can move using arrow-keys and mouse-click
-   * A TrackBall camera the cant move except around the center
- * You can switch selected object using `o` (Yellow wireframed object is the selected one)
- * You can add/delete vertices on the selected spheres
-   * `+` to add vertices
-   * `-` to delete vertices
+
+![Daft-Engine](https://imgur.com/nTNbxYp)
+
+### How to use it
+ 
+![Annoted App](https://imgur.com/niXHvOr)
+
+ * You can switch cameras using `p` (no button implemented on the GUI yet...)
+ * Creation/Deletion management **(1)**
+   * Create an new object **(1.1)** (only spheres for now)
+   * Delete the selected object **(1.2)**
+ * Change shader **(2)**
+ * Transformation management **(3)**
+   * Edit selected object's position **(3.1)**
+   * Edit selected object's rotations **(3.2)**
+   * Edit selected object's scale **(3.3)**
+ * Object's settings management **(4)**
