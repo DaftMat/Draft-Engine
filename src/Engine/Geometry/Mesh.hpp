@@ -26,8 +26,8 @@ public:
 
     void reset(std::vector<Vertex> vertices, std::vector<GLuint> indices);
 
-    std::vector<Vertex> vertices() const { return m_vertices; }
-    std::vector<GLuint> indices() const { return m_indices; }
+    const std::vector<Vertex>& vertices() const { return m_vertices; }
+    const std::vector<GLuint>& indices() const { return m_indices; }
 
 private:
     void setupMesh();

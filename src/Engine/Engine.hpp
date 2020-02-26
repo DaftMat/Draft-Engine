@@ -49,6 +49,8 @@ private:
         ModelType type;
     } m_creationstate;
 
+    bool m_mouseClicked {false};
+
     // geometries
     std::unique_ptr<ModelManager> m_modelmanager;
 

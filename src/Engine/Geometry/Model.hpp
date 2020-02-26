@@ -35,9 +35,9 @@ struct Ray {
     glm::vec3 direction;
 };
 
-struct OBB {
-    glm::vec3 aabb_min;
-    glm::vec3 aabb_max;
+struct AABB {
+    glm::vec3 min;
+    glm::vec3 max;
 };
 
 class Model {
@@ -69,14 +69,17 @@ public:
     virtual ModelParam getParams() const = 0;
 
     bool isIntersected(const Ray &ray, float &dist);
+    bool isOBBIntersected(const Ray &ray, float &dist);
 
 protected:
     std::vector<std::unique_ptr<Mesh>> m_meshes;
-    OBB m_obb;
+    AABB m_aabb;
 
 private:
     glm::mat4 rotation() const;
     glm::mat4 scale() const { return glm::scale(glm::mat4(), m_scale); }
+
+    void transformAABB();
 
     glm::vec3 m_position {0.f, 0.f, 0.f};
     glm::vec3 m_rotation {0.f, 0.f, 0.f};

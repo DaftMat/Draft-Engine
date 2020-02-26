@@ -47,6 +47,7 @@ void MyOpenGLWidget::paintGL() {
     if (object_added) {
         object_added = false;
         emit selectionChanged(m_engine->getSelectedIndex());
+        update();
     }
     glFinish();
     std::int64_t endtime = QDateTime::currentMSecsSinceEpoch();

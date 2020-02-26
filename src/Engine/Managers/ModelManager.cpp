@@ -147,7 +147,7 @@ void ModelManager::drawGrid(const glm::mat4 &projection, const glm::mat4 &view) 
     m_colorshader->use();
     m_colorshader->setMat4("projection", projection);
     m_colorshader->setMat4("view", view);
-    m_colorshader->setMat4("model", glm::mat4{});
+    m_colorshader->setMat4("model", glm::mat4());
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     /// Draw grid
@@ -156,6 +156,7 @@ void ModelManager::drawGrid(const glm::mat4 &projection, const glm::mat4 &view) 
 
     /// Draw unit arrows
     for (int i = 0 ; i < 3 ; ++i) {
+        m_colorshader->setMat4("model", glm::mat4());
         m_colorshader->setVec3("color", dirs()[i]);
         m_unitarrows[i]->draw();
     }
@@ -189,6 +190,44 @@ void ModelManager::deleteModel() {
 }
 
 void ModelManager::mouse_click(const Ray &ray) {
+/*    glClearColor(1.f, 1.f, 1.f, 1.f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    m_colorshader->use();
+    glCheckError();
+    m_colorshader->setMat4("projection", projection);
+    m_colorshader->setMat4("view", view);
+    for (int i = 0 ; i < m_models.size() ; ++i) {
+        int r = (i & 0x000000FF) >> 0;
+        int g = (i & 0x0000FF00) >> 8;
+        int b = (i & 0x00FF0000) >> 16;
+        glm::vec3 color{r / 255.f, g / 255.f, b / 255.f};
+        m_colorshader->setVec3("color", color);
+        m_toReset.insert(i);
+        m_models[i]->reset();
+        m_models[i]->draw(*m_colorshader);
+        glCheckError()
+    }
+
+    glFinish();
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glCheckError()
+
+    unsigned char data[4];
+    glReadBuffer(GL_BACK);
+    glReadPixels(mousex, mousey, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    glCheckError()
+
+    m_selectedmodel =
+            data[0] +
+            data[1] * 256 +
+            data[2] * 256 * 256;
+    std::cout << "pos (" << mousex << ", " << mousey << ") - color (" << int(data[0]) << ", " << int(data[1])
+              << ", " << int(data[2]) << ")" << std::endl;
+
+    if (m_selectedmodel >= m_models.size())
+        m_selectedmodel = -1;
+*/
     float dist = 100000.f;
     bool found = false;
     for (int i = 0 ; i < m_models.size() ; ++i) {

@@ -10,7 +10,9 @@
 
 class Shader {
 public:
-    Shader(const char * vertexPath, const char * fragmentPath);
+    Shader(const char * vertexPath, const char * fragmentPath) :
+    m_vertexpath { vertexPath }, m_fragmentpath { fragmentPath }
+    { reset(); }
 
     ~Shader();
 
@@ -33,6 +35,8 @@ public:
     void addLight(Light * light);
     void clearLights();
 
+    void reset();
+
 private:
     void checkCompileError(GLuint shader, const std::string & type) const;
     void checkLinkError(GLuint program) const;
@@ -43,6 +47,9 @@ private:
     GLuint m_num_point_light { 0 };
     GLuint m_num_dir_light { 0 };
     GLuint m_num_spot_light { 0 };
+
+    const char * m_vertexpath;
+    const char * m_fragmentpath;
 };
 
 

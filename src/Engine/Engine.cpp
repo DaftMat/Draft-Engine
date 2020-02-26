@@ -2,6 +2,7 @@
 // Created by daftmat on 27/01/20.
 //
 
+#include <QtWidgets/QMainWindow>
 #include "Engine.hpp"
 
 Engine::Engine(int width, int height) :
@@ -27,7 +28,7 @@ Engine::Engine(int width, int height) :
 
     /// Setup cameras
     m_cameraselector.emplace_back( []()->Camera*{ return new EulerCamera(glm::vec3(0.f, 0.f, 6.f)); } );
-    m_cameraselector.emplace_back( []()->Camera*{ return new TrackballCamera(glm::vec3(0.f, 0.f, 4.f), glm::vec3(0.f, 1.f, 0.f), glm::vec3(0.f, 0.f, 0.f)); } );
+    m_cameraselector.emplace_back( []()->Camera*{ return new TrackballCamera(glm::vec3(0.f, 0.f, 6.f), glm::vec3(0.f, 1.f, 0.f), glm::vec3(0.f, 0.f, 0.f)); } );
     m_camera.reset(m_cameraselector[m_activecamera]());
     m_camera->setviewport(glm::vec4(0.f, 0.f, m_width, m_height));
 
@@ -54,6 +55,9 @@ void Engine::resize(int width, int height) {
 }
 
 void Engine::draw() {
+    //if (m_mouseClicked) {
+    //    m_mouseClicked = false;
+    //}
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     checkCreation();
@@ -65,6 +69,7 @@ void Engine::mouseclick(int button, float xpos, float ypos) {
     m_button = button;
     m_mousex = xpos;
     m_mousey = ypos;
+    //m_mouseClicked = true;
     m_modelmanager->mouse_click(getRay(xpos, ypos));
     m_camera->processmouseclick(m_button, xpos, ypos);
 }
@@ -144,6 +149,7 @@ void Engine::setModelParams(ModelType type, const ModelParam &params) {
 Ray Engine::getRay(float x, float y) {
     Ray ray {};
 
+    y = m_height - y;
     glm::vec4 rayStart_NDC {
             ( x / m_width - 0.5f ) * 2.f,
             ( y / m_height - 0.5f ) * 2.f,
