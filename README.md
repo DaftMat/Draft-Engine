@@ -35,7 +35,7 @@ Run the following commands from the recently created `build` directory
 
 ### How to use it
  
-![Annoted App](https://imgur.com/niXHvOr.png)
+![Annoted App](https://imgur.com/L0lIBdU.png)
 
  * You can switch cameras using `p` (no button implemented on the GUI yet...)
  * Creation/Deletion management **(1)**
