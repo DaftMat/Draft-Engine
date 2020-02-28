@@ -5,7 +5,8 @@ Render Engine made in C++/OpenGL/Qt.
 ## Dependencies
 
  - [GLM](https://github.com/g-truc/glm) (As submodule in repository)
- - GLSL 4.10+
+ - [Eigen](https://gitlab.com/libeigen/eigen) (As submodule in repository)
+ - GLSL/OpenGL 4.10+
  - Qt
 
 ## Downloading

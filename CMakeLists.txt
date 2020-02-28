@@ -43,9 +43,11 @@ FILE(GLOB_RECURSE
     ${CMAKE_SOURCE_DIR}/src/*.ui
 )
 
+# Include libraries
 include_directories(
    ${CMAKE_SOURCE_DIR}/src
    ${CMAKE_SOURCE_DIR}/glm
+   ${CMAKE_SOURCE_DIR}/Eigen
 )
 
 SOURCE_GROUP("Source Files" FILES ${folder_source})
