@@ -63,3 +63,11 @@ void Mesh::draw() const {
     glDrawElements(m_grid ? GL_LINES : GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, nullptr);
     glBindVertexArray(0);
 }
+
+Utils::Aabb Mesh::aabb() const {
+    Utils::Aabb ret;
+    for (const auto &v : m_vertices) {
+        ret.extend(toEigen(v.Position));
+    }
+    return ret;
+}

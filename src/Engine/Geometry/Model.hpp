@@ -7,8 +7,15 @@
 
 
 #include <memory>
+
+#include <Eigen/Core>
+#include <Eigen/Geometry>
+#include <src/Utils/adapters.hpp>
+
 #include "Mesh.hpp"
 #include "src/Engine/Shader.hpp"
+#include <Engine/Physics/Obb.hpp>
+#include <Utils/types.hpp>
 
 union ModelParam {
     struct uvs_param {
@@ -30,16 +37,6 @@ enum ModelType {
     CUBE_SPHERE
 };
 
-struct Ray {
-    glm::vec3 position;
-    glm::vec3 direction;
-};
-
-struct AABB {
-    glm::vec3 min;
-    glm::vec3 max;
-};
-
 class Model {
 public:
     Model() = default;
@@ -50,7 +47,8 @@ public:
 
     void draw(const Shader &shader) const;
 
-    glm::mat4 model() const { return m_translateMat * rotation() * scale(); }
+    glm::mat4 model() const { return toGlm(modelEigen().matrix()); }
+    Utils::Transform modelEigen() const { return (m_transform * Eigen::Scaling(toEigen(m_scale))); }
 
     void translate(const glm::vec3 & t);
 
@@ -68,23 +66,22 @@ public:
     virtual void editModel(const ModelParam &params) = 0;
     virtual ModelParam getParams() const = 0;
 
-    bool isIntersected(const Ray &ray, float &dist);
+    Utils::Aabb aabb() const;
+    Obb obb() const { return Obb(aabb(), modelEigen()); }
 
 protected:
     std::vector<std::unique_ptr<Mesh>> m_meshes;
-    AABB m_aabb;
 
 private:
     glm::mat4 rotation() const;
     glm::mat4 scale() const { return glm::scale(glm::mat4(), m_scale); }
-
-    void transformAABB();
 
     glm::vec3 m_position {0.f, 0.f, 0.f};
     glm::vec3 m_rotation {0.f, 0.f, 0.f};
     glm::vec3 m_scale {1.f, 1.f, 1.f};
 
     glm::mat4 m_translateMat;
+    Utils::Transform m_transform { Utils::Transform::Identity() };
 };
 
 

@@ -71,7 +71,5 @@ ModelParam UVSphere::getParams() const {
 
 UVSphere::UVSphere(GLuint meridians, GLuint parallels) : m_stacks { parallels }, m_sectors { meridians }{
     setupUvSphere();
-    m_aabb.min = { -1.f, -1.f, -1.f };
-    m_aabb.max = {  1.f,  1.f,  1.f };
 }
 

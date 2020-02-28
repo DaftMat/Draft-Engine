@@ -8,6 +8,9 @@
 #include <vector>
 #include <opengl_stuff.h>
 
+#include <Utils/types.hpp>
+#include <Utils/adapters.hpp>
+
 class Shader;
 
 struct Vertex {
@@ -28,6 +31,8 @@ public:
 
     const std::vector<Vertex>& vertices() const { return m_vertices; }
     const std::vector<GLuint>& indices() const { return m_indices; }
+
+    Utils::Aabb aabb() const;
 
 private:
     void setupMesh();

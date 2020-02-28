@@ -39,7 +39,6 @@ public:
 
 private:
     void checkCreation();
-    Ray getRay(float x, float y);
 
     int m_width;
     int m_height;

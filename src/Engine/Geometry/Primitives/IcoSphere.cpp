@@ -122,8 +122,6 @@ ModelParam IcoSphere::getParams() const {
 
 IcoSphere::IcoSphere(GLuint subs) : m_subs { subs } {
     setupIcoSphere();
-    m_aabb.min = { -1.f, -1.f, -1.f };
-    m_aabb.max = {  1.f,  1.f,  1.f };
 }
 
 GLuint mod1(GLuint x, GLuint m) {

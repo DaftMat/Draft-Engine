@@ -3,6 +3,7 @@
 //
 
 #include <QtWidgets/QMainWindow>
+#include <src/Engine/Physics/Ray.hpp>
 #include "Engine.hpp"
 
 Engine::Engine(int width, int height) :
@@ -66,7 +67,7 @@ void Engine::mouseclick(int button, float xpos, float ypos) {
     m_button = button;
     m_mousex = xpos;
     m_mousey = ypos;
-    m_modelmanager->mouse_click(getRay(xpos, ypos));
+    m_modelmanager->mouse_click(Ray(xpos, ypos, m_width, m_height, m_projection, m_camera->viewmatrix()));
     m_camera->processmouseclick(m_button, xpos, ypos);
 }
 
@@ -140,33 +141,4 @@ void Engine::setModelParams(ModelType type, const ModelParam &params) {
     case MODEL:
         break;
     }
-}
-
-Ray Engine::getRay(float x, float y) {
-    Ray ray {};
-
-    y = m_height - y;
-    glm::vec4 rayStart_NDC {
-            ( x / m_width - 0.5f ) * 2.f,
-            ( y / m_height - 0.5f ) * 2.f,
-            -1.f,
-            1.f
-    };
-    glm::vec4 rayEnd_NDC {
-            ( x / m_width - 0.5f ) * 2.f,
-            ( y / m_height - 0.5f ) * 2.f,
-            0.f,
-            1.f
-    };
-
-    glm::mat4 M = glm::inverse(m_projection * m_camera->viewmatrix());
-    glm::vec4 rayStart_world = M * rayStart_NDC;
-    rayStart_world /= rayStart_world.w;
-    glm::vec4 rayEnd_world = M * rayEnd_NDC;
-    rayEnd_world  /= rayEnd_world.w;
-    glm::vec3 rayDir_world = glm::normalize( rayEnd_world - rayStart_world );
-
-    ray.position = glm::vec3(rayStart_world);
-    ray.direction = rayDir_world;
-    return ray;
 }

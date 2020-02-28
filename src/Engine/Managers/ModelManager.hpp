@@ -11,6 +11,7 @@
 #include <set>
 #include <memory>
 #include <src/Engine/Geometry/Lights/PointLight.hpp>
+#include <src/Engine/Physics/Ray.hpp>
 
 class ModelManager {
 public:
