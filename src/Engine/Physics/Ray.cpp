@@ -56,47 +56,31 @@ bool Ray::intersects(const Utils::Aabb &aabb, float &dist) const {
 }
 
 bool Ray::intersects(const Obb &obb, float &dist) const {
-    float t = 0.0f;
-    bool ret =
-            intersects(obb.corner(Utils::Aabb::CornerType::BottomLeftFloor),
-                    obb.corner(Utils::Aabb::CornerType::BottomRightFloor),
-                    obb.corner(Utils::Aabb::CornerType::TopRightFloor), t)
-            || intersects(obb.corner(Utils::Aabb::CornerType::BottomLeftFloor),
-                                  obb.corner(Utils::Aabb::CornerType::BottomRightFloor),
-                                  obb.corner(Utils::Aabb::CornerType::TopRightFloor), t)
-    || intersects(obb.corner(Utils::Aabb::CornerType::BottomLeftCeil),
-               obb.corner(Utils::Aabb::CornerType::BottomRightCeil),
-               obb.corner(Utils::Aabb::CornerType::TopRightCeil), t)
-    || intersects(obb.corner(Utils::Aabb::CornerType::BottomLeftCeil),
-                  obb.corner(Utils::Aabb::CornerType::BottomRightCeil),
-                  obb.corner(Utils::Aabb::CornerType::TopRightCeil), t)
-       || intersects(obb.corner(Utils::Aabb::CornerType::BottomLeftFloor),
-                     obb.corner(Utils::Aabb::CornerType::BottomRightFloor),
-                     obb.corner(Utils::Aabb::CornerType::BottomLeftCeil), t)
-       || intersects(obb.corner(Utils::Aabb::CornerType::BottomLeftFloor),
-                     obb.corner(Utils::Aabb::CornerType::BottomRightFloor),
-                     obb.corner(Utils::Aabb::CornerType::BottomRightCeil), t)
-          || intersects(obb.corner(Utils::Aabb::CornerType::TopLeftFloor),
-                        obb.corner(Utils::Aabb::CornerType::TopRightFloor),
-                        obb.corner(Utils::Aabb::CornerType::TopLeftCeil), t)
-          || intersects(obb.corner(Utils::Aabb::CornerType::TopLeftFloor),
-                        obb.corner(Utils::Aabb::CornerType::TopRightFloor),
-                        obb.corner(Utils::Aabb::CornerType::TopRightCeil), t)
-             || intersects(obb.corner(Utils::Aabb::CornerType::BottomLeftFloor),
-                           obb.corner(Utils::Aabb::CornerType::TopLeftFloor),
-                           obb.corner(Utils::Aabb::CornerType::TopLeftCeil), t)
-             || intersects(obb.corner(Utils::Aabb::CornerType::BottomLeftFloor),
-                           obb.corner(Utils::Aabb::CornerType::TopLeftCeil),
-                           obb.corner(Utils::Aabb::CornerType::BottomLeftCeil), t)
-                || intersects(obb.corner(Utils::Aabb::CornerType::BottomRightFloor),
-                              obb.corner(Utils::Aabb::CornerType::TopRightFloor),
-                              obb.corner(Utils::Aabb::CornerType::TopRightCeil), t)
-                || intersects(obb.corner(Utils::Aabb::CornerType::BottomRightFloor),
-                              obb.corner(Utils::Aabb::CornerType::TopRightCeil),
-                              obb.corner(Utils::Aabb::CornerType::BottomRightCeil), t);
-    if (t < dist)
-        t = dist;
-    return ret ;
+    float tMin = 0.f;
+    float tMax = 100000.f;
+
+    glm::vec3 d = obb.position() - m_origin;
+    for (int i = 0 ; i < 3 ; ++i) {
+        glm::vec3 axis = obb.axis(i);
+        float e = glm::dot(axis, d);
+        float f = glm::dot(m_direction, axis);
+
+        if (glm::abs(f) > glm::epsilon<float>()) {
+            float t1 = (e + obb.min()[i]) / f;
+            float t2 = (e + obb.max()[i]) / f;
+
+            if (t1 > t2)    std::swap(t1, t2);
+            if (t2 < tMax)  tMax = t2;
+            if (t1 > tMin)  tMin = t1;
+            if (tMax < tMin)
+                return false;
+        } else if (-e + obb.min()[i] > 0.f || -e + obb.max()[i] < 0.f) {
+            return false;
+        }
+    }
+
+    dist = tMin;
+    return true;
 }
 
 bool Ray::intersects(const glm::vec3 &a, const glm::vec3 &b, const glm::vec3 &c, float &dist) const {

@@ -48,6 +48,19 @@ void Model::translate(const glm::vec3 &t) {
     setPosition(m_position + t);
 }
 
+Utils::Aabb Model::base_aabb() const {
+    Utils::Aabb aabb;
+    for (const auto &m : m_meshes) {
+        aabb.extend(m->aabb());
+    }
+    if (aabb.isEmpty()) return aabb;
+    Utils::Aabb res;
+    for (int i = 0 ; i < 8 ; ++i) {
+        res.extend(scaleEigen() * aabb.corner(Utils::Aabb::CornerType(i)));
+    }
+    return res;
+}
+
 Utils::Aabb Model::aabb() const {
     Utils::Aabb aabb;
     for (const auto &m : m_meshes) {

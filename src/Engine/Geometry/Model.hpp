@@ -66,8 +66,9 @@ public:
     virtual void editModel(const ModelParam &params) = 0;
     virtual ModelParam getParams() const = 0;
 
+    Utils::Aabb base_aabb() const;
     Utils::Aabb aabb() const;
-    Obb obb() const { return Obb(aabb(), modelEigen()); }
+    Obb obb() const { return Obb(base_aabb(), m_transform); }
 
 protected:
     std::vector<std::unique_ptr<Mesh>> m_meshes;
@@ -75,6 +76,7 @@ protected:
 private:
     glm::mat4 rotation() const;
     glm::mat4 scale() const { return glm::scale(glm::mat4(), m_scale); }
+    Utils::Transform scaleEigen() const { return Utils::Transform::Identity() * Eigen::Scaling(toEigen(m_scale)); }
 
     glm::vec3 m_position {0.f, 0.f, 0.f};
     glm::vec3 m_rotation {0.f, 0.f, 0.f};

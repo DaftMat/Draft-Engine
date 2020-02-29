@@ -194,7 +194,7 @@ void ModelManager::mouse_click(const Ray &ray) {
     bool found = false;
     for (int i = 0 ; i < m_models.size() ; ++i) {
         float temp;
-        if (ray.intersects(m_models[i]->aabb(), temp)) {
+        if (ray.intersects(m_models[i]->obb(), temp)) {
             found = true;
             if (temp < dist) {
                 dist = temp;
