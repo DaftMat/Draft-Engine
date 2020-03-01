@@ -4,6 +4,10 @@
 
 #include "Model.hpp"
 
+Model::Model(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices) {
+    m_meshes.emplace_back(new Mesh(vertices, indices));
+}
+
 void Model::draw(const Shader &shader) const {
     shader.use();
     shader.setMat4("model", model());
@@ -57,6 +61,21 @@ Utils::Aabb Model::base_aabb() const {
     Utils::Aabb res;
     for (int i = 0 ; i < 8 ; ++i) {
         res.extend(scaleEigen() * aabb.corner(Utils::Aabb::CornerType(i)));
+    }
+    return res;
+}
+
+Utils::Aabb Model::uniform_aabb(float zoom) const {
+    Utils::Aabb aabb;
+    for (const auto &m : m_meshes) {
+        aabb.extend(m->aabb());
+    }
+    if (aabb.isEmpty()) return aabb;
+    Utils::Aabb res;
+    for (int i = 0 ; i < 8 ; ++i) {
+        float w = (glm::vec4(glm::vec3(0.f), 1.f) * scale()).w;
+        w *= zoom;
+        res.extend(scaleEigen() * (aabb.corner(Utils::Aabb::CornerType(i)) * w));
     }
     return res;
 }

@@ -11,6 +11,9 @@
 
 void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &projection, const glm::vec3 &viewPos) {
     drawGrid(projection, view);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    m_gizmo->scale(glm::length(viewPos) / 3.f);
+    m_gizmo->draw(projection, view);
     if (m_models.empty())   return;
 
     for (const auto &ind : m_toReset)
@@ -31,7 +34,7 @@ void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         m_colorshader->use();
         if (i == m_selectedmodel) {
-            m_colorshader->setVec3("color", glm::vec3(0.f, 0.8f, 0.2f));
+            m_colorshader->setVec3("color", glm::vec3(0.f, 1.f, 1.f));
             m_models[i]->draw(*m_colorshader);
         } else if (m_wireframe) {
             m_colorshader->setVec3("color", glm::vec3(0.f, 0.f, 0.f));
@@ -153,7 +156,6 @@ void ModelManager::drawGrid(const glm::mat4 &projection, const glm::mat4 &view) 
     /// Draw grid
     m_colorshader->setVec3("color", glm::vec3(0.25f, 0.25f, 0.25f));
     m_grid->draw();
-
     /// Draw unit arrows
     for (int i = 0 ; i < 3 ; ++i) {
         m_colorshader->setMat4("model", glm::mat4());
@@ -192,6 +194,20 @@ void ModelManager::deleteModel() {
 void ModelManager::mouse_click(const Ray &ray) {
     float dist = 100000.f;
     bool found = false;
+    if (ray.intersects(m_gizmo->getXobb(), dist)) {
+        m_gizmo->setSelected(XSELEC);
+        found = true;
+    } else if (ray.intersects(m_gizmo->getYobb(), dist)) {
+        m_gizmo->setSelected(YSELEC);
+        found = true;
+    } else if (ray.intersects(m_gizmo->getZobb(), dist)) {
+        m_gizmo->setSelected(ZSELEC);
+        found = true;
+    } else {
+        m_gizmo->setSelected(NONE);
+        found = false;
+    }
+    if (found)  return;
     for (int i = 0 ; i < m_models.size() ; ++i) {
         float temp;
         if (ray.intersects(m_models[i]->obb(), temp)) {

@@ -40,6 +40,7 @@ enum ModelType {
 class Model {
 public:
     Model() = default;
+    Model(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices);
     virtual ~Model() { m_meshes.clear(); }
 
     Model(const Model &) = delete;
@@ -59,21 +60,26 @@ public:
     void setScale(const glm::vec3 &new_scale);
     const glm::vec3 & getScale() const { return m_scale; }
 
+    const Utils::Transform & transform() const { return m_transform; }
+    Utils::Transform & transform() { return m_transform; }
+
     virtual void reset() {}
 
     virtual ModelType getType() const { return MODEL; }
     virtual std::string getTypeAsString() const { return "Object"; }
-    virtual void editModel(const ModelParam &params) = 0;
-    virtual ModelParam getParams() const = 0;
+    virtual void editModel(const ModelParam &params) {}
+    virtual ModelParam getParams() const { return ModelParam {}; }
 
-    Utils::Aabb base_aabb() const;
     Utils::Aabb aabb() const;
     Obb obb() const { return Obb(base_aabb(), m_transform); }
+    Obb uniformObb(float zoom) const { return Obb(uniform_aabb(zoom), m_transform); }
 
 protected:
     std::vector<std::unique_ptr<Mesh>> m_meshes;
 
 private:
+    Utils::Aabb base_aabb() const;
+    Utils::Aabb uniform_aabb(float zoom) const;
     glm::mat4 rotation() const;
     glm::mat4 scale() const { return glm::scale(glm::mat4(), m_scale); }
     Utils::Transform scaleEigen() const { return Utils::Transform::Identity() * Eigen::Scaling(toEigen(m_scale)); }

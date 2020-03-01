@@ -12,12 +12,14 @@
 #include <memory>
 #include <src/Engine/Geometry/Lights/PointLight.hpp>
 #include <src/Engine/Physics/Ray.hpp>
+#include <src/Engine/Managers/Gizmos/TranslateGizmo.hpp>
 
 class ModelManager {
 public:
     ModelManager() : m_selectedmodel { -1 },
     m_colorshader { new Shader("shaders/color.vert.glsl", "shaders/color.frag.glsl") },
-    m_wireframe { true } { makeGrid(50); makeUnitArrows(); }
+    m_wireframe { true },
+    m_gizmo { new TranslateGizmo(Utils::Transform::Identity()) } { makeGrid(50); makeUnitArrows(); }
 
     ~ModelManager() { m_models.clear(); m_lights.clear(); m_colorshader.reset(); }
 
@@ -102,6 +104,8 @@ private:
     /// Reset utils
     std::set<GLuint> m_toReset;
     bool m_wireframe;
+
+    std::unique_ptr<Gizmo> m_gizmo;
 };
 
 
