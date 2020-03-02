@@ -69,7 +69,7 @@ public:
 
     Model * getSelectedObject() { if (m_selectedmodel == -1) return nullptr; else return m_models[m_selectedmodel].get(); }
     int getSelectedIndex() const { return m_selectedmodel; }
-    void setSelectedIndex(GLuint index) { m_selectedmodel = glm::max(index, (GLuint)(m_models.size() - 1)); }
+    void setSelectedIndex(GLuint index) { m_selectedmodel = glm::max(index, (GLuint)(m_models.size() - 1)); updateGizmo(); }
     unsigned long getSize() const { return m_models.size(); }
 
     void setUVSphereParams(GLuint meridians, GLuint parallels);
@@ -82,6 +82,8 @@ private:
     void drawGrid(const glm::mat4 &projection, const glm::mat4 &view);
     void makeGrid(int size);
     void makeUnitArrows();
+
+    void updateGizmo();
 
     std::vector<glm::vec3> dirs() {
         return {

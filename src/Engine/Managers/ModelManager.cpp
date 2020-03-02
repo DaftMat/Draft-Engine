@@ -16,7 +16,6 @@ void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &
 
     if (m_selectedmodel > -1) {
         m_gizmo->scale(glm::length(viewPos) / 3.5f);
-        m_gizmo->setTransform(m_models[m_selectedmodel]->transform());
         m_gizmo->draw(projection, view);
     }
 
@@ -118,6 +117,7 @@ void ModelManager::switch_selection() {
         m_selectedmodel = (m_selectedmodel + 1) % m_models.size();
     else
         m_selectedmodel = -1;
+    updateGizmo();
 }
 
 void ModelManager::makeGrid(int size) {
@@ -190,6 +190,7 @@ void ModelManager::deleteModel() {
         if (*it == m_models[m_selectedmodel]) {
             m_models.erase(it);
             switch_selection();
+            updateGizmo();
             return;
         }
     }
@@ -212,6 +213,7 @@ void ModelManager::mouse_click(const Ray &ray) {
         found = false;
     }
     if (found)  return;
+    found = false;
     for (int i = 0 ; i < m_models.size() ; ++i) {
         float temp;
         if (ray.intersects(m_models[i]->obb(), temp)) {
@@ -223,4 +225,11 @@ void ModelManager::mouse_click(const Ray &ray) {
         }
     }
     if (!found) m_selectedmodel = -1;
+    updateGizmo();
+}
+
+void ModelManager::updateGizmo() {
+    if (m_selectedmodel > -1 && m_selectedmodel < m_models.size()) {
+        m_gizmo->setTransform(m_models[m_selectedmodel]->transform());
+    }
 }
