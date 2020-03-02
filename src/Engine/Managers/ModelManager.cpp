@@ -245,3 +245,7 @@ void ModelManager::mouse_move(float xpos, float ypos, const glm::mat4 &projectio
     if (m_gizmo->isSelected())
         m_gizmo->move(xpos, ypos, *m_models[m_selectedmodel], projection, view);
 }
+
+void ModelManager::mouserelease() {
+    m_gizmo->setSelected(NONE);
+}

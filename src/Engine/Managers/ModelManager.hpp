@@ -78,6 +78,7 @@ public:
 
     bool mouse_click(const Ray &ray, float xpos, float ypos);
     void mouse_move(float xpos, float ypos, const glm::mat4 &projection, const glm::mat4 &view);
+    void mouserelease();
 
 private:
     void drawGrid(const glm::mat4 &projection, const glm::mat4 &view);

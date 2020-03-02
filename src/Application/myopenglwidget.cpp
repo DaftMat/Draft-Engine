@@ -81,6 +81,7 @@ void MyOpenGLWidget::mousePressEvent(QMouseEvent *event) {
 
 void MyOpenGLWidget::mouseReleaseEvent(QMouseEvent *event) {
     m_engine->mouserelease();
+    update();
 }
 
 void MyOpenGLWidget::mouseMoveEvent(QMouseEvent *event) {

@@ -73,6 +73,7 @@ void Engine::mouseclick(int button, float xpos, float ypos) {
 
 void Engine::mouserelease() {
     m_clicked_object = false;
+    m_modelmanager->mouserelease();
 }
 
 void Engine::mousemove(float xpos, float ypos) {
