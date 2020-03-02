@@ -21,9 +21,6 @@ public:
     Gizmo(const Utils::Transform &transform) : m_transform { transform }, m_selected { NONE } {}
     virtual ~Gizmo() { m_Xmodel.reset(nullptr), m_Ymodel.reset(nullptr), m_Zmodel.reset(nullptr), m_shader.reset(nullptr); }
 
-    const Utils::Transform & transform() const { return m_transform; }
-    Utils::Transform & transform() { return m_transform; }
-
     void draw(const glm::mat4 &projection, const glm::mat4 &view);
 
     Obb getXobb() { return m_Xmodel->obb(); }
@@ -33,6 +30,8 @@ public:
 
     virtual void move(float xoffset, float yoffset) = 0;
     virtual void scale(float scale) = 0;
+    void setTransform(const Utils::Transform & transform);
+    const Utils::Transform & getTransform() const { return m_transform; }
 
 protected:
     std::unique_ptr<Model> m_Xmodel;

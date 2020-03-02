@@ -11,10 +11,14 @@
 
 void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &projection, const glm::vec3 &viewPos) {
     drawGrid(projection, view);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    m_gizmo->scale(glm::length(viewPos) / 3.f);
-    m_gizmo->draw(projection, view);
+
     if (m_models.empty())   return;
+
+    if (m_selectedmodel > -1) {
+        m_gizmo->scale(glm::length(viewPos) / 3.5f);
+        m_gizmo->setTransform(m_models[m_selectedmodel]->transform());
+        m_gizmo->draw(projection, view);
+    }
 
     for (const auto &ind : m_toReset)
         m_models[ind]->reset();
