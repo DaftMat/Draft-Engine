@@ -94,3 +94,29 @@ void TranslateGizmo::scale(float scale) {
     m_Ymodel->setScale(glm::vec3(scale));
     m_Zmodel->setScale(glm::vec3(scale));
 }
+
+void TranslateGizmo::move(float xpos, float ypos, Model &model, const glm::mat4 &projection, const glm::mat4 &view) {
+    glm::vec3 dir = getDir(model.rotation());
+    float xoffset = xpos - m_xmouse;
+    float yoffset = ypos - m_ymouse;
+    m_xmouse = xpos;
+    m_ymouse = ypos;
+    glm::vec2 mousevec = { xoffset, yoffset };
+    glm::vec2 dirscreen = glm::vec2(projection * view * glm::vec4(dir, 1.0));
+    float angle = glm::dot(mousevec, dirscreen);
+    model.translate(angle * dir / 100.f);
+    setTransform(model.transform());
+}
+
+glm::vec3 TranslateGizmo::getDir(const glm::mat4 &rotation) {
+    switch (m_selected) {
+        case XSELEC:
+            return glm::normalize(glm::vec3(rotation * glm::vec4(glm::vec3(1.f, 0.f, 0.f), 1.0)));
+        case YSELEC:
+            return glm::normalize(glm::vec3(rotation * glm::vec4(glm::vec3(0.f, 1.f, 0.f), 1.0)));
+        case ZSELEC:
+            return glm::normalize(glm::vec3(rotation * glm::vec4(glm::vec3(0.f, 0.f, 1.f), 1.0)));
+        default:
+            return glm::vec3(0.f, 0.f, 0.f);
+    }
+}

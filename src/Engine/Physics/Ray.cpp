@@ -5,7 +5,6 @@
 #include "Ray.hpp"
 
 Ray::Ray(float x, float y, float width, float height, const glm::mat4 &projection, const glm::mat4 &view) {
-    y = height - y;
     glm::vec4 rayStart_NDC {
             ( x / width - 0.5f ) * 2.f,
             ( y / height - 0.5f ) * 2.f,

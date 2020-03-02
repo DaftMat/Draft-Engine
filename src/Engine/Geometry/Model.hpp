@@ -74,13 +74,14 @@ public:
     Obb obb() const { return Obb(base_aabb(), m_transform); }
     Obb uniformObb(float zoom) const { return Obb(uniform_aabb(zoom), m_transform); }
 
+    glm::mat4 rotation() const;
+
 protected:
     std::vector<std::unique_ptr<Mesh>> m_meshes;
 
 private:
     Utils::Aabb base_aabb() const;
     Utils::Aabb uniform_aabb(float zoom) const;
-    glm::mat4 rotation() const;
     glm::mat4 scale() const { return glm::scale(glm::mat4(), m_scale); }
     Utils::Transform scaleEigen() const { return Utils::Transform::Identity() * Eigen::Scaling(toEigen(m_scale)); }
 

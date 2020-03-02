@@ -21,6 +21,7 @@ public:
     void draw();
 
     void mouseclick(int button, float xpos, float ypos);
+    void mouserelease();
     void mousemove(float xpos, float ypos);
     void keyboardmove(int key, double time);
     bool keyboard(unsigned char k);
@@ -61,6 +62,7 @@ private:
     int m_button{0}; // 0 --> left. 1 --> right. 2 --> middle. 3 --> other
     float m_mousex{0};
     float m_mousey{0};
+    bool m_clicked_object{false};
 
     // Camera
     using CameraSelector=std::function<Camera*()>;
@@ -69,6 +71,7 @@ private:
     std::unique_ptr<Camera> m_camera;
 
     glm::mat4 m_projection;
+
 };
 
 

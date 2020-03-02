@@ -19,6 +19,8 @@ public:
     /// Triangle intersection
     bool intersects(const glm::vec3 &a, const glm::vec3 &b, const glm::vec3 &c, float &dist) const;
 
+    glm::vec3 position(float dist) { return m_origin + dist * m_direction; }
+
 private:
     glm::vec3 m_origin;
     glm::vec3 m_direction;

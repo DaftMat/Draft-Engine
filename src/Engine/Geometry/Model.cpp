@@ -23,14 +23,9 @@ void Model::setPosition(const glm::vec3 &new_pos) {
 }
 
 void Model::setRotation(const glm::vec3 &new_rot) {
-    glm::vec3 rot = new_rot - m_rotation;
     m_rotation = new_rot;
-    Utils::Transform r, rx, ry, rz;
-    rx = Eigen::AngleAxisf(glm::radians(rot.x), Eigen::Vector3f(1.f, 0.f, 0.f));
-    ry = Eigen::AngleAxisf(glm::radians(rot.y), Eigen::Vector3f(0.f, 1.f, 0.f));
-    rz = Eigen::AngleAxisf(glm::radians(rot.z), Eigen::Vector3f(0.f, 0.f, 1.f));
-    r = rx * ry * rz;
-    m_transform.rotate(r.rotation());
+    m_transform = toEigen(rotation());
+    m_transform.translation() = toEigen(m_position);
 }
 
 void Model::setScale(const glm::vec3 &new_scale) {

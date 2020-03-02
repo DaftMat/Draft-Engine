@@ -27,8 +27,11 @@ public:
     Obb getYobb() { return m_Ymodel->obb(); }
     Obb getZobb() { return m_Zmodel->obb(); }
     void setSelected(Selection selec) { m_selected = selec; }
+    bool isSelected() { return m_selected != NONE; }
 
-    virtual void move(float xoffset, float yoffset) = 0;
+    void clicked(float xpos, float ypos) { m_xmouse = xpos, m_ymouse = ypos; }
+    virtual void move(float xpos, float ypos, Model &model, const glm::mat4 &projection, const glm::mat4 &view) = 0;
+
     virtual void scale(float scale) = 0;
     void setTransform(const Utils::Transform & transform);
     const Utils::Transform & getTransform() const { return m_transform; }
@@ -37,12 +40,15 @@ protected:
     std::unique_ptr<Model> m_Xmodel;
     std::unique_ptr<Model> m_Ymodel;
     std::unique_ptr<Model> m_Zmodel;
+    Selection m_selected;
+
+    float m_xmouse;
+    float m_ymouse;
 
 private:
     virtual void init_models() = 0;
     // rotation/position
     Utils::Transform m_transform;
-    Selection m_selected;
 
     std::unique_ptr<Shader> m_shader { new Shader("shaders/color.vert.glsl", "shaders/color.frag.glsl") };
 };

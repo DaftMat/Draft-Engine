@@ -79,8 +79,13 @@ void MyOpenGLWidget::mousePressEvent(QMouseEvent *event) {
     _lastime = QDateTime::currentMSecsSinceEpoch();
 }
 
+void MyOpenGLWidget::mouseReleaseEvent(QMouseEvent *event) {
+    m_engine->mouserelease();
+}
+
 void MyOpenGLWidget::mouseMoveEvent(QMouseEvent *event) {
     m_engine->mousemove(event->x(), event->y());
+    emit selectionChanged(m_engine->getSelectedIndex());
     update();
 }
 

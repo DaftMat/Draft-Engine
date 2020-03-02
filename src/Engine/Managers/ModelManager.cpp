@@ -15,8 +15,10 @@ void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &
     if (m_models.empty())   return;
 
     if (m_selectedmodel > -1) {
-        m_gizmo->scale(glm::length(viewPos) / 3.5f);
+        updateGizmo(viewPos);
+        glDepthRange(0.0, 0.01);
         m_gizmo->draw(projection, view);
+        glDepthRange(0.01, 1.0);
     }
 
     for (const auto &ind : m_toReset)
@@ -44,6 +46,7 @@ void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &
             m_models[i]->draw(*m_colorshader);
         }
     }
+    glDepthRange(0.0, 1.0);
 
     shader.clearLights();
 }
@@ -117,7 +120,6 @@ void ModelManager::switch_selection() {
         m_selectedmodel = (m_selectedmodel + 1) % m_models.size();
     else
         m_selectedmodel = -1;
-    updateGizmo();
 }
 
 void ModelManager::makeGrid(int size) {
@@ -190,29 +192,33 @@ void ModelManager::deleteModel() {
         if (*it == m_models[m_selectedmodel]) {
             m_models.erase(it);
             switch_selection();
-            updateGizmo();
             return;
         }
     }
 }
 
-void ModelManager::mouse_click(const Ray &ray) {
+bool ModelManager::mouse_click(const Ray &ray, float xpos, float ypos) {
     float dist = 100000.f;
-    bool found = false;
-    if (ray.intersects(m_gizmo->getXobb(), dist)) {
-        m_gizmo->setSelected(XSELEC);
-        found = true;
-    } else if (ray.intersects(m_gizmo->getYobb(), dist)) {
-        m_gizmo->setSelected(YSELEC);
-        found = true;
-    } else if (ray.intersects(m_gizmo->getZobb(), dist)) {
-        m_gizmo->setSelected(ZSELEC);
-        found = true;
-    } else {
-        m_gizmo->setSelected(NONE);
-        found = false;
+    if (m_selectedmodel != -1) {
+        bool found = false;
+        if (ray.intersects(m_gizmo->getXobb(), dist)) {
+            m_gizmo->setSelected(XSELEC);
+            found = true;
+        } else if (ray.intersects(m_gizmo->getYobb(), dist)) {
+            m_gizmo->setSelected(YSELEC);
+            found = true;
+        } else if (ray.intersects(m_gizmo->getZobb(), dist)) {
+            m_gizmo->setSelected(ZSELEC);
+            found = true;
+        } else {
+            m_gizmo->setSelected(NONE);
+        }
+        if (found) {
+            m_gizmo->clicked(xpos, ypos);
+            return found;
+        }
     }
-    if (found)  return;
+    bool found;
     found = false;
     for (int i = 0 ; i < m_models.size() ; ++i) {
         float temp;
@@ -225,11 +231,17 @@ void ModelManager::mouse_click(const Ray &ray) {
         }
     }
     if (!found) m_selectedmodel = -1;
-    updateGizmo();
+    return found;
 }
 
-void ModelManager::updateGizmo() {
+void ModelManager::updateGizmo(const glm::vec3 &viewPos) {
     if (m_selectedmodel > -1 && m_selectedmodel < m_models.size()) {
         m_gizmo->setTransform(m_models[m_selectedmodel]->transform());
+        m_gizmo->scale(glm::length(viewPos - m_models[m_selectedmodel]->getPosition()) / 3.5f);
     }
+}
+
+void ModelManager::mouse_move(float xpos, float ypos, const glm::mat4 &projection, const glm::mat4 &view) {
+    if (m_gizmo->isSelected())
+        m_gizmo->move(xpos, ypos, *m_models[m_selectedmodel], projection, view);
 }

@@ -67,12 +67,19 @@ void Engine::mouseclick(int button, float xpos, float ypos) {
     m_button = button;
     m_mousex = xpos;
     m_mousey = ypos;
-    m_modelmanager->mouse_click(Ray(xpos, ypos, m_width, m_height, m_projection, m_camera->viewmatrix()));
+    m_clicked_object = m_modelmanager->mouse_click(Ray(xpos, m_height-ypos, m_width, m_height, m_projection, m_camera->viewmatrix()), xpos, m_height-ypos);
     m_camera->processmouseclick(m_button, xpos, ypos);
 }
 
+void Engine::mouserelease() {
+    m_clicked_object = false;
+}
+
 void Engine::mousemove(float xpos, float ypos) {
-    m_camera->processmousemovement(m_button, xpos, ypos, true);
+    if (!m_clicked_object)
+        m_camera->processmousemovement(m_button, xpos, ypos, true);
+    else
+        m_modelmanager->mouse_move(xpos, m_height-ypos, m_projection, m_camera->viewmatrix());
 }
 
 void Engine::keyboardmove(int key, double time) {
