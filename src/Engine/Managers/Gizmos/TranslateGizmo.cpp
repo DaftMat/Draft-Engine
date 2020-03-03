@@ -20,7 +20,8 @@ Model * TranslateGizmo::init_arrow(const glm::vec3 &normal) {
     std::vector<Vertex> vertices;
     std::vector<GLuint> indices;
 
-    float scale = 0.025f;
+    float scale = 0.01f;
+    float dist = 4.f;
 
     Vertex vertex {};
     vertex.Position = tangent * scale;
@@ -55,23 +56,23 @@ Model * TranslateGizmo::init_arrow(const glm::vec3 &normal) {
     vertices.push_back(vertex);
     vertex.Position += normal;
     vertices.push_back(vertex);
-    vertex.Position = tangent * 2.f * scale + normal;
+    vertex.Position = tangent * dist * scale + normal;
     vertices.push_back(vertex);
-    vertex.Position = glm::normalize(tangent+bitangent) * 2.f * scale + normal;
+    vertex.Position = glm::normalize(tangent+bitangent) * dist * scale + normal;
     vertices.push_back(vertex);
-    vertex.Position = bitangent * 2.f * scale + normal;
+    vertex.Position = bitangent * dist * scale + normal;
     vertices.push_back(vertex);
-    vertex.Position = glm::normalize(bitangent-tangent) * 2.f * scale + normal;
+    vertex.Position = glm::normalize(bitangent-tangent) * dist * scale + normal;
     vertices.push_back(vertex);
-    vertex.Position = -tangent * 2.f * scale + normal;
+    vertex.Position = -tangent * dist * scale + normal;
     vertices.push_back(vertex);
-    vertex.Position = glm::normalize(-tangent-bitangent) * 2.f * scale + normal;
+    vertex.Position = glm::normalize(-tangent-bitangent) * dist * scale + normal;
     vertices.push_back(vertex);
-    vertex.Position = -bitangent * 2.f * scale + normal;
+    vertex.Position = -bitangent * dist * scale + normal;
     vertices.push_back(vertex);
-    vertex.Position = glm::normalize(tangent-bitangent) * 2.f * scale + normal;
+    vertex.Position = glm::normalize(tangent-bitangent) * dist * scale + normal;
     vertices.push_back(vertex);
-    vertex.Position = normal + (normal * 4.f * scale);
+    vertex.Position = normal + (normal * 8.f * scale);
     vertices.push_back(vertex);
     for (int i = 0 ; i < 16 ; i += 2) {
         indices.push_back(i);
@@ -102,8 +103,10 @@ void TranslateGizmo::move(float xpos, float ypos, Model &model, const glm::mat4 
     m_xmouse = xpos;
     m_ymouse = ypos;
     glm::vec2 mousevec = { xoffset, yoffset };
-    glm::vec2 dirscreen = glm::vec2(projection * view * glm::vec4(dir, 1.0));
+    glm::vec2 dirscreen = glm::normalize(glm::vec2(projection * view * glm::vec4(dir, 1.0)));
     float angle = glm::dot(mousevec, dirscreen);
+    std::cout << angle << std::endl;
+    std::cout << dir.x << std::endl;
     model.translate(angle * dir / 100.f);
     setTransform(model.transform());
 }

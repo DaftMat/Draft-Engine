@@ -237,7 +237,7 @@ bool ModelManager::mouse_click(const Ray &ray, float xpos, float ypos) {
 void ModelManager::updateGizmo(const glm::vec3 &viewPos) {
     if (m_selectedmodel > -1 && m_selectedmodel < m_models.size()) {
         m_gizmo->setTransform(m_models[m_selectedmodel]->transform());
-        m_gizmo->scale(glm::length(viewPos - m_models[m_selectedmodel]->getPosition()) / 3.5f);
+        m_gizmo->scale(glm::length(viewPos - m_models[m_selectedmodel]->getPosition()) / 3.f);
     }
 }
 
