@@ -225,3 +225,12 @@ void MainWindow::on_deleteButton_clicked()
 {
     ui->m_openglwidget->deleteObject();
 }
+
+void MainWindow::on_gizmoType_activated(const QString &arg1)
+{
+    if (arg1 == "Translation") {
+        ui->m_openglwidget->setGizmoType(TRANSLATE);
+    } else if (arg1 == "Scale") {
+        ui->m_openglwidget->setGizmoType(SCALE);
+    }
+}

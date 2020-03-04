@@ -38,6 +38,8 @@ public:
 
     void setModelParams(ModelType type, const ModelParam &params);
 
+    void setGizmoType(GizmoType type) { m_modelmanager->switchGizmo(type); }
+
 private:
     void checkCreation();
 

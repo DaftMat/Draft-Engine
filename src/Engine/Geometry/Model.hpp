@@ -48,10 +48,10 @@ public:
 
     void draw(const Shader &shader) const;
 
-    glm::mat4 model() const { return toGlm(modelEigen().matrix()); }
-    Utils::Transform modelEigen() const { return (m_transform * Eigen::Scaling(toEigen(m_scale))); }
+    glm::mat4 model() const { return m_translateMat * m_rotateMat * scale(); }
 
     void translate(const glm::vec3 & t);
+    void updateScale(const glm::vec3 & t) { setScale(m_scale + t); };
 
     void setPosition(const glm::vec3 &new_pos);
     const glm::vec3 & getPosition() const { return m_position; }
@@ -60,8 +60,7 @@ public:
     void setScale(const glm::vec3 &new_scale);
     const glm::vec3 & getScale() const { return m_scale; }
 
-    const Utils::Transform & transform() const { return m_transform; }
-    Utils::Transform & transform() { return m_transform; }
+    Utils::Transform transform() const { return Utils::Transform(toEigen(m_translateMat * m_rotateMat)); }
 
     virtual void reset() {}
 
@@ -71,8 +70,8 @@ public:
     virtual ModelParam getParams() const { return ModelParam {}; }
 
     Utils::Aabb aabb() const;
-    Obb obb() const { return Obb(base_aabb(), m_transform); }
-    Obb uniformObb(float zoom) const { return Obb(uniform_aabb(zoom), m_transform); }
+    Obb obb() const { return Obb(base_aabb(), transform()); }
+    Obb uniformObb(float zoom) const { return Obb(uniform_aabb(zoom), transform()); }
 
     glm::mat4 rotation() const;
 
@@ -83,14 +82,15 @@ private:
     Utils::Aabb base_aabb() const;
     Utils::Aabb uniform_aabb(float zoom) const;
     glm::mat4 scale() const { return glm::scale(glm::mat4(), m_scale); }
-    Utils::Transform scaleEigen() const { return Utils::Transform::Identity() * Eigen::Scaling(toEigen(m_scale)); }
+
+    void rotate(const glm::vec3 &rot);
 
     glm::vec3 m_position {0.f, 0.f, 0.f};
     glm::vec3 m_rotation {0.f, 0.f, 0.f};
     glm::vec3 m_scale {1.f, 1.f, 1.f};
 
-    glm::mat4 m_translateMat;
-    Utils::Transform m_transform { Utils::Transform::Identity() };
+    glm::mat4 m_translateMat { glm::mat4() };
+    glm::mat4 m_rotateMat { glm::mat4() };
 };
 
 

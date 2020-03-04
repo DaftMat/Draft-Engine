@@ -19,13 +19,12 @@ void Model::draw(const Shader &shader) const {
 
 void Model::setPosition(const glm::vec3 &new_pos) {
     m_position = new_pos;
-    m_transform.translation() = toEigen(m_position);
+    m_translateMat = glm::translate(glm::mat4(), m_position);
 }
 
 void Model::setRotation(const glm::vec3 &new_rot) {
     m_rotation = new_rot;
-    m_transform = toEigen(rotation());
-    m_transform.translation() = toEigen(m_position);
+    m_rotateMat = rotation();
 }
 
 void Model::setScale(const glm::vec3 &new_scale) {
@@ -55,7 +54,7 @@ Utils::Aabb Model::base_aabb() const {
     if (aabb.isEmpty()) return aabb;
     Utils::Aabb res;
     for (int i = 0 ; i < 8 ; ++i) {
-        res.extend(scaleEigen() * aabb.corner(Utils::Aabb::CornerType(i)));
+        res.extend(Utils::Transform(toEigen(scale())) * aabb.corner(Utils::Aabb::CornerType(i)));
     }
     return res;
 }
@@ -70,7 +69,7 @@ Utils::Aabb Model::uniform_aabb(float zoom) const {
     for (int i = 0 ; i < 8 ; ++i) {
         float w = (glm::vec4(glm::vec3(0.f), 1.f) * scale()).w;
         w *= zoom;
-        res.extend(scaleEigen() * (aabb.corner(Utils::Aabb::CornerType(i)) * w));
+        res.extend(Utils::Transform(toEigen(scale())) * (aabb.corner(Utils::Aabb::CornerType(i)) * w));
     }
     return res;
 }
@@ -83,7 +82,7 @@ Utils::Aabb Model::aabb() const {
     if (aabb.isEmpty()) return aabb;
     Utils::Aabb res;
     for (int i = 0 ; i < 8 ; ++i) {
-        res.extend(modelEigen() * aabb.corner(Utils::Aabb::CornerType(i)));
+        res.extend(Utils::Transform(toEigen(model())) * aabb.corner(Utils::Aabb::CornerType(i)));
     }
     return res;
 }

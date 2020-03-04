@@ -16,6 +16,12 @@ enum Selection {
     NONE
 };
 
+enum GizmoType {
+    TRANSLATE,
+    ROTATE,
+    SCALE
+};
+
 class Gizmo {
 public:
     Gizmo(const Utils::Transform &transform) : m_transform { transform }, m_selected { NONE } {}
@@ -33,7 +39,9 @@ public:
     virtual void move(float xpos, float ypos, Model &model, const glm::mat4 &projection, const glm::mat4 &view) = 0;
 
     virtual void scale(float scale) = 0;
-    void setTransform(const Utils::Transform & transform);
+    virtual GizmoType type() const = 0;
+
+    void setTransform(const Model &model);
     const Utils::Transform & getTransform() const { return m_transform; }
 
 protected:

@@ -235,8 +235,10 @@ bool ModelManager::mouse_click(const Ray &ray, float xpos, float ypos) {
 }
 
 void ModelManager::updateGizmo(const glm::vec3 &viewPos) {
+    if (m_gizmoType != m_gizmo->type())
+        switchGizmo();
     if (m_selectedmodel > -1 && m_selectedmodel < m_models.size()) {
-        m_gizmo->setTransform(m_models[m_selectedmodel]->transform());
+        m_gizmo->setTransform(*m_models[m_selectedmodel]);
         m_gizmo->scale(glm::length(viewPos - m_models[m_selectedmodel]->getPosition()) / 3.f);
     }
 }
@@ -248,4 +250,17 @@ void ModelManager::mouse_move(float xpos, float ypos, const glm::mat4 &projectio
 
 void ModelManager::mouserelease() {
     m_gizmo->setSelected(NONE);
+}
+
+void ModelManager::switchGizmo() {
+    switch(m_gizmoType) {
+        case TRANSLATE:
+            m_gizmo.reset(new TranslateGizmo(Utils::Transform::Identity()));
+            break;
+        case SCALE:
+            m_gizmo.reset(new ScaleGizmo(Utils::Transform::Identity()));
+            break;
+        default:
+            break;
+    }
 }

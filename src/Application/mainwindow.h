@@ -47,6 +47,8 @@ private slots:
 
     void on_deleteButton_clicked();
 
+    void on_gizmoType_activated(const QString &arg1);
+
 private:
     void updateSettings(ModelType type);
     void unset_settings();

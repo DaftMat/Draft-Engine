@@ -13,6 +13,7 @@ public:
 
     void move(float xoffset, float yoffset, Model &model, const glm::mat4 &projection, const glm::mat4 &view) override;
     void scale(float scale) override;
+    GizmoType type() const override { return TRANSLATE; }
 
 private:
     void init_models() override;

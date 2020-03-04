@@ -36,6 +36,8 @@ public:
     void mouseMoveEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
 
+    void setGizmoType(GizmoType type) { m_engine->setGizmoType(type); update(); }
+
 public slots:
     void cleanup();
 

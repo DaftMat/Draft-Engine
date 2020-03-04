@@ -24,9 +24,12 @@ void Gizmo::draw(const glm::mat4 &projection, const glm::mat4 &view) {
     m_Zmodel->draw(*m_shader);
 }
 
-void Gizmo::setTransform(const Utils::Transform &transform) {
-    m_transform = transform;
-    m_Xmodel->transform() = m_transform;
-    m_Ymodel->transform() = m_transform;
-    m_Zmodel->transform() = m_transform;
+void Gizmo::setTransform(const Model &model) {
+    m_Xmodel->setPosition(model.getPosition());
+    m_Ymodel->setPosition(model.getPosition());
+    m_Zmodel->setPosition(model.getPosition());
+
+    m_Xmodel->setRotation(model.getRotation());
+    m_Ymodel->setRotation(model.getRotation());
+    m_Zmodel->setRotation(model.getRotation());
 }

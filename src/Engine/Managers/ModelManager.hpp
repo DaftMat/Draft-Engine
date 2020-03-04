@@ -13,6 +13,7 @@
 #include <src/Engine/Geometry/Lights/PointLight.hpp>
 #include <src/Engine/Physics/Ray.hpp>
 #include <src/Engine/Managers/Gizmos/TranslateGizmo.hpp>
+#include <src/Engine/Managers/Gizmos/ScaleGizmo.hpp>
 
 class ModelManager {
 public:
@@ -80,12 +81,15 @@ public:
     void mouse_move(float xpos, float ypos, const glm::mat4 &projection, const glm::mat4 &view);
     void mouserelease();
 
+    void switchGizmo(GizmoType type) { m_gizmoType = type; };
+
 private:
     void drawGrid(const glm::mat4 &projection, const glm::mat4 &view);
     void makeGrid(int size);
     void makeUnitArrows();
 
     void updateGizmo(const glm::vec3 &viewPos);
+    void switchGizmo();
 
     std::vector<glm::vec3> dirs() {
         return {
@@ -110,6 +114,7 @@ private:
     bool m_wireframe;
 
     std::unique_ptr<Gizmo> m_gizmo;
+    GizmoType m_gizmoType {TRANSLATE};
 };
 
 

@@ -1,20 +1,19 @@
 /**
- * Created by mathis on 01/03/2020.
+ * Created by mathis on 04/03/2020.
  */
 
-#include "TranslateGizmo.hpp"
-
-void TranslateGizmo::init_models() {
+#include "ScaleGizmo.hpp"
+void ScaleGizmo::init_models() {
     m_Xmodel.reset(init_arrow(glm::vec3(1.f, 0.f, 0.f)));
     m_Ymodel.reset(init_arrow(glm::vec3(0.f, 1.f, 0.f)));
     m_Zmodel.reset(init_arrow(glm::vec3(0.f, 0.f, 1.f)));
- }
+}
 
-Model * TranslateGizmo::init_arrow(const glm::vec3 &normal) {
+Model * ScaleGizmo::init_arrow(const glm::vec3 &normal) {
     glm::vec3 tangent {
-        normal.z,
-        normal.x,
-        normal.y
+            normal.z,
+            normal.x,
+            normal.y
     };
     glm::vec3 bitangent = glm::cross(normal, tangent);
     std::vector<Vertex> vertices;
@@ -56,24 +55,40 @@ Model * TranslateGizmo::init_arrow(const glm::vec3 &normal) {
     vertices.push_back(vertex);
     vertex.Position += normal;
     vertices.push_back(vertex);
+
     vertex.Position = tangent * dist * scale + normal;
+    vertices.push_back(vertex);
+    vertex.Position += normal * 8.f * scale;
     vertices.push_back(vertex);
     vertex.Position = glm::normalize(tangent+bitangent) * dist * scale + normal;
     vertices.push_back(vertex);
+    vertex.Position += normal * 8.f * scale;
+    vertices.push_back(vertex);
     vertex.Position = bitangent * dist * scale + normal;
+    vertices.push_back(vertex);
+    vertex.Position += normal * 8.f * scale;
     vertices.push_back(vertex);
     vertex.Position = glm::normalize(bitangent-tangent) * dist * scale + normal;
     vertices.push_back(vertex);
+    vertex.Position += normal * 8.f * scale;
+    vertices.push_back(vertex);
     vertex.Position = -tangent * dist * scale + normal;
+    vertices.push_back(vertex);
+    vertex.Position += normal * 8.f * scale;
     vertices.push_back(vertex);
     vertex.Position = glm::normalize(-tangent-bitangent) * dist * scale + normal;
     vertices.push_back(vertex);
+    vertex.Position += normal * 8.f * scale;
+    vertices.push_back(vertex);
     vertex.Position = -bitangent * dist * scale + normal;
+    vertices.push_back(vertex);
+    vertex.Position += normal * 8.f * scale;
     vertices.push_back(vertex);
     vertex.Position = glm::normalize(tangent-bitangent) * dist * scale + normal;
     vertices.push_back(vertex);
-    vertex.Position = normal + (normal * 8.f * scale);
+    vertex.Position += normal * 8.f * scale;
     vertices.push_back(vertex);
+
     for (int i = 0 ; i < 16 ; i += 2) {
         indices.push_back(i);
         indices.push_back((i+3)%16);
@@ -82,22 +97,25 @@ Model * TranslateGizmo::init_arrow(const glm::vec3 &normal) {
         indices.push_back((i+2)%16);
         indices.push_back((i+3)%16);
     }
-    for (int i = 16 ; i < 24 ; ++i) {
+    for (int i = 16 ; i < 32 ; i += 2) {
         indices.push_back(i);
-        indices.push_back(((i+1)%8)+16);
-        indices.push_back(24);
+        indices.push_back((i+3)%16+16);
+        indices.push_back(i+1);
+        indices.push_back(i);
+        indices.push_back((i+2)%16+16);
+        indices.push_back((i+3)%16+16);
     }
     return new Model(vertices, indices);
 }
 
-void TranslateGizmo::scale(float scale) {
+void ScaleGizmo::scale(float scale) {
     m_Xmodel->setScale(glm::vec3(scale));
     m_Ymodel->setScale(glm::vec3(scale));
     m_Zmodel->setScale(glm::vec3(scale));
 }
 
-void TranslateGizmo::move(float xpos, float ypos, Model &model, const glm::mat4 &projection, const glm::mat4 &view) {
-    glm::vec3 dir = getDir(model.rotation());
+void ScaleGizmo::move(float xpos, float ypos, Model &model, const glm::mat4 &projection, const glm::mat4 &view) {
+    glm::vec3 dir = getDir();
     float xoffset = xpos - m_xmouse;
     float yoffset = ypos - m_ymouse;
     m_xmouse = xpos;
@@ -105,18 +123,18 @@ void TranslateGizmo::move(float xpos, float ypos, Model &model, const glm::mat4 
     glm::vec2 mousevec = { xoffset, yoffset };
     glm::vec2 dirscreen = glm::normalize(glm::vec2(projection * view * glm::vec4(dir, 0.0)));
     float angle = glm::dot(mousevec, dirscreen);
-    model.translate(angle * dir / 100.f);
+    model.updateScale(angle * dir / 100.f);
     setTransform(model);
 }
 
-glm::vec3 TranslateGizmo::getDir(const glm::mat4 &rotation) {
+glm::vec3 ScaleGizmo::getDir() {
     switch (m_selected) {
         case XSELEC:
-            return glm::normalize(glm::vec3(rotation * glm::vec4(glm::vec3(1.f, 0.f, 0.f), 0.0)));
+            return glm::vec3(1.f, 0.f, 0.f);
         case YSELEC:
-            return glm::normalize(glm::vec3(rotation * glm::vec4(glm::vec3(0.f, 1.f, 0.f), 0.0)));
+            return glm::vec3(0.f, 1.f, 0.f);
         case ZSELEC:
-            return glm::normalize(glm::vec3(rotation * glm::vec4(glm::vec3(0.f, 0.f, 1.f), 0.0)));
+            return glm::vec3(0.f, 0.f, 1.f);
         default:
             return glm::vec3(0.f, 0.f, 0.f);
     }
