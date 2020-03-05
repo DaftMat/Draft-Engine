@@ -26,7 +26,7 @@ public:
 
     Model * getSelectedObject() { return m_engine->getSelectedModel(); }
 
-    void setModelParams(ModelType type, const ModelParam &params) { m_engine->setModelParams(type, params); }
+    void setModelParams(const ModelParam &params) { m_engine->setModelParams(params); }
 
     void setShader(GLuint index);
 

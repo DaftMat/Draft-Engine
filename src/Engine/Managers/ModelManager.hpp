@@ -31,35 +31,9 @@ public:
 
     void draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &projection, const glm::vec3 &viewPos);
 
-    void addPointLight(
-            const glm::vec3 &pos=glm::vec3(0.f, 0.f, 0.f),
-            GLfloat constant = 1.f,
-            GLfloat linear = 0.09f,
-            GLfloat quadratic = 0.032f,
-            const glm::vec3 &ambient=glm::vec3(0.05f, 0.05f, 0.05f),
-            const glm::vec3 &diffuse=glm::vec3(0.8f, 0.8f, 0.8f),
-            const glm::vec3 &specular=glm::vec3(1.f, 1.f, 1.f));
-    void addDirLight(
-            const glm::vec3 &dir=glm::vec3(-0.2f, -1.0f, -0.3f),
-            const glm::vec3 &ambient=glm::vec3(0.05f, 0.05f, 0.05f),
-            const glm::vec3 &diffuse=glm::vec3(0.6f, 0.6f, 0.6f),
-            const glm::vec3 &specular=glm::vec3(0.8f, 0.8f, 0.8f));
-    void addSpotLight(
-            const glm::vec3 &pos=glm::vec3(0.0f, 0.0f, 0.0f),
-            const glm::vec3 &dir=glm::vec3(0.0f, -1.f, 0.0f),
-            float innerCutoff=20.5f,
-            float outerCutoff=30.0f,
-            float constant=1.0f,
-            float linear=0.09f,
-            float quadratic=0.032f,
-            const glm::vec3 &ambient=glm::vec3(0.05f, 0.05f, 0.05f),
-            const glm::vec3 &diffuse=glm::vec3(0.8f, 0.8f, 0.8f),
-            const glm::vec3 &specular=glm::vec3(1.f, 1.0f, 1.0f));
-
+    void addLight(LightType type);
     //void addModel(std::string file)
-    void addUVSphere(GLuint meridians = 32, GLuint parallels = 16);
-    void addIcoSphere(GLuint subdivisions = 3);
-    void addCubeSphere(GLuint resolution = 16);
+    void addObject(ModelType type);
 
     void deleteModel();
 
@@ -73,9 +47,7 @@ public:
     void setSelectedIndex(GLuint index) { m_selectedmodel = glm::max(index, (GLuint)(m_models.size() - 1)); }
     unsigned long getSize() const { return m_models.size(); }
 
-    void setUVSphereParams(GLuint meridians, GLuint parallels);
-    void setIcoSphereParams(GLuint subdivisions);
-    void setCubeSphereParams(GLuint resolution);
+    void setObjectParams(const ModelParam &params);
 
     bool mouse_click(const Ray &ray, float xpos, float ypos);
     void mouse_move(float xpos, float ypos, const glm::mat4 &projection, const glm::mat4 &view);

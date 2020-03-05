@@ -121,7 +121,10 @@ void MainWindow::on_selectionChanged(GLuint index) {
         ui->object_settings_label->setText("CubeSphere Settings");
         ui->cube_res->setValue(settings.cube_sphere.resolution);
         break;
-    case ModelType::MODEL:
+    case ModelType::CUBE:
+        ui->object_settings_label->setText("Cube Settings");
+        ui->cubec_res->setValue(settings.cube.resolution);
+    default:
         ui->object_settings_label->setText("Model Settings");
         break;
     }
@@ -136,6 +139,8 @@ void MainWindow::on_objectCreator_activated(const QString &arg1)
         ui->m_openglwidget->addObject(ICO_SPHERE);
     else if (arg1 == "CubeSphere")
         ui->m_openglwidget->addObject(CUBE_SPHERE);
+    else if (arg1 == "Cube")
+        ui->m_openglwidget->addObject(CUBE);
     ui->m_openglwidget->setFocus();
     ui->objectCreator->setCurrentIndex(0);
 }
@@ -152,7 +157,7 @@ void MainWindow::on_uv_meridians_valueChanged(int arg1)
     ModelParam settings {};
     settings.uv_sphere.meridians = ui->uv_meridians->value();
     settings.uv_sphere.parallels = ui->uv_parallels->value();
-    ui->m_openglwidget->setModelParams(UV_SPHERE, settings);
+    ui->m_openglwidget->setModelParams(settings);
     ui->m_openglwidget->update();
 }
 
@@ -166,7 +171,7 @@ void MainWindow::on_ico_subdiv_valueChanged(int arg1)
     if (m_state == DaftState::SELECTION) return;
     ModelParam settings {};
     settings.ico_sphere.subdivisions = ui->ico_subdiv->value();
-    ui->m_openglwidget->setModelParams(ICO_SPHERE, settings);
+    ui->m_openglwidget->setModelParams(settings);
     ui->m_openglwidget->update();
 }
 
@@ -175,7 +180,16 @@ void MainWindow::on_cube_res_valueChanged(int arg1)
     if (m_state == DaftState::SELECTION) return;
     ModelParam settings {};
     settings.cube_sphere.resolution = ui->cube_res->value();
-    ui->m_openglwidget->setModelParams(CUBE_SPHERE, settings);
+    ui->m_openglwidget->setModelParams(settings);
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_cubec_res_valueChanged(int arg1)
+{
+    if (m_state == DaftState::SELECTION) return;
+    ModelParam settings {};
+    settings.cube.resolution = arg1;
+    ui->m_openglwidget->setModelParams(settings);
     ui->m_openglwidget->update();
 }
 
@@ -195,7 +209,10 @@ void MainWindow::updateSettings(ModelType type) {
         ui->cube_res->setVisible(true);
         ui->cube_res_label->setVisible(true);
         break;
-    case ModelType::MODEL:
+    case ModelType::CUBE:
+        ui->cubec_res->setVisible(true);
+        ui->cubec_res_label->setVisible(true);
+    default:
         break;
     }
 }
@@ -219,6 +236,8 @@ void MainWindow::unset_settings() {
     ui->ico_subdiv_label->setVisible(false);
     ui->cube_res->setVisible(false);
     ui->cube_res_label->setVisible(false);
+    ui->cubec_res->setVisible(false);
+    ui->cubec_res_label->setVisible(false);
 }
 
 void MainWindow::on_deleteButton_clicked()

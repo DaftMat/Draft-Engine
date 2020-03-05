@@ -36,7 +36,7 @@ public:
     GLuint getSelectedIndex() { return m_modelmanager->getSelectedIndex(); }
     void setSelectedIndex(GLuint index) { m_modelmanager->setSelectedIndex(index); }
 
-    void setModelParams(ModelType type, const ModelParam &params);
+    void setModelParams(const ModelParam &params);
 
     void setGizmoType(GizmoType type) { m_modelmanager->switchGizmo(type); }
 

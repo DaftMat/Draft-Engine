@@ -35,7 +35,7 @@ Engine::Engine(int width, int height) :
 
     m_projection = glm::perspective(m_camera->zoom(), float(m_width) / m_height, 0.1f, 100.0f);
 
-    m_modelmanager->addDirLight(glm::vec3(0.f, -1.f, 0.f), glm::vec3(0.35f, 0.35f, 0.35f));
+    m_modelmanager->addLight(DIR_LIGHT);
 
     m_creationstate.toCreate = false;
     m_creationstate.type = MODEL;
@@ -118,35 +118,11 @@ void Engine::addModel(ModelType type) {
 void Engine::checkCreation() {
     if (m_creationstate.toCreate) {
         m_creationstate.toCreate = false;
-        switch (m_creationstate.type) {
-            case UV_SPHERE:
-                m_modelmanager->addUVSphere();
-                break;
-            case ICO_SPHERE:
-                m_modelmanager->addIcoSphere();
-                break;
-            case CUBE_SPHERE:
-                m_modelmanager->addCubeSphere();
-                break;
-            case MODEL:
-                break;
-        }
+        m_modelmanager->addObject(m_creationstate.type);
         m_modelmanager->setSelectedIndex(m_modelmanager->getSize()-1);
     }
 }
 
-void Engine::setModelParams(ModelType type, const ModelParam &params) {
-    switch (type) {
-    case UV_SPHERE:
-        m_modelmanager->setUVSphereParams(params.uv_sphere.meridians, params.uv_sphere.parallels);
-        break;
-    case ICO_SPHERE:
-        m_modelmanager->setIcoSphereParams(params.ico_sphere.subdivisions);
-        break;
-    case CUBE_SPHERE:
-        m_modelmanager->setCubeSphereParams(params.cube_sphere.resolution);
-        break;
-    case MODEL:
-        break;
-    }
+void Engine::setModelParams(const ModelParam &params) {
+    m_modelmanager->setObjectParams(params);
 }

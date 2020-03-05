@@ -49,6 +49,8 @@ private slots:
 
     void on_gizmoType_activated(const QString &arg1);
 
+    void on_cubec_res_valueChanged(int arg1);
+
 private:
     void updateSettings(ModelType type);
     void unset_settings();

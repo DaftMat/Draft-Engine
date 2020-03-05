@@ -28,13 +28,37 @@ union ModelParam {
     struct cubs_param {
         GLuint resolution;
     }cube_sphere;
+    struct cube_param {
+        GLuint resolution;
+    }cube;
+    struct cylinder_param {
+        GLuint meridians;
+        GLuint parallels;
+    }cylinder;
+    struct cone_param {
+        GLuint meridians;
+        GLuint parallels;
+    }cone;
+    struct pyramid_param {
+        GLuint resolution;
+        GLuint parallels;
+    }pyramid;
+    struct tore_param {
+        GLuint meridians;
+        GLuint parallels;
+    }tore;
 };
 
 enum ModelType {
     MODEL,
     UV_SPHERE,
     ICO_SPHERE,
-    CUBE_SPHERE
+    CUBE_SPHERE,
+    CUBE,
+    CYLINDER,
+    CONE,
+    PYRAMID,
+    TORE
 };
 
 class Model {

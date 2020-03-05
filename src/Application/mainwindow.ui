@@ -90,39 +90,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QWidget" name="widget_4" native="true">
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
-          <item>
-           <widget class="QLabel" name="label_14">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Gizmo :</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QComboBox" name="gizmoType">
-            <item>
-             <property name="text">
-              <string>Translation</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Scale</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -214,6 +181,38 @@
           </layout>
          </item>
          <item>
+          <widget class="QWidget" name="cubec_settings" native="true">
+           <layout class="QFormLayout" name="formLayout_4">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item row="0" column="0">
+             <widget class="QLabel" name="cubec_res_label">
+              <property name="text">
+               <string>Resolution :</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QSpinBox" name="cubec_res">
+              <property name="minimum">
+               <number>2</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
           <layout class="QFormLayout" name="ico_settings">
            <item row="0" column="0">
             <widget class="QLabel" name="ico_subdiv_label">
@@ -241,7 +240,14 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QSpinBox" name="cube_res"/>
+            <widget class="QSpinBox" name="cube_res">
+             <property name="minimum">
+              <number>2</number>
+             </property>
+             <property name="maximum">
+              <number>256</number>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -552,6 +558,11 @@
           <string>CubeSphere</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>Cube</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item>
@@ -579,6 +590,39 @@
          </size>
         </property>
        </spacer>
+      </item>
+      <item>
+       <widget class="QWidget" name="widget_4" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QLabel" name="label_14">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Gizmo :</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="gizmoType">
+           <item>
+            <property name="text">
+             <string>Translation</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Scale</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </item>
      </layout>
     </item>
