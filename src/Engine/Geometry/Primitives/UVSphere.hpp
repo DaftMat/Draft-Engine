@@ -12,7 +12,7 @@
  */
 class UVSphere : public Model {
 public:
-    explicit UVSphere(GLuint meridians = 8, GLuint parallels = 8);
+    explicit UVSphere(GLuint meridians = 32, GLuint parallels = 16);
 
     void setMeridians(GLuint meridians) { m_sectors = glm::max<GLuint>(meridians, 4); }
     void setParallels(GLuint parallels) { m_stacks = glm::max<GLuint>(parallels, 4); }

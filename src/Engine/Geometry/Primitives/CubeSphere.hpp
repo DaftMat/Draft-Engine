@@ -9,7 +9,7 @@
 
 class CubeSphere : public Model {
 public:
-    explicit CubeSphere(GLuint resolution = 8);
+    explicit CubeSphere(GLuint resolution = 16);
 
     void reset() override { setupCubeSphere(); }
 
