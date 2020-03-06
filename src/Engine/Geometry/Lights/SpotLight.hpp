@@ -35,6 +35,8 @@ public:
     LightParam getParams() const override;
     void editLight(const LightParam &params) override;
 
+    void update() override;
+
 private:
     glm::vec3 m_position;
     glm::vec3 m_direction;

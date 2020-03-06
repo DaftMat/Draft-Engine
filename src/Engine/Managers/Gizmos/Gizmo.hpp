@@ -8,6 +8,7 @@
 #include <opengl_stuff.h>
 #include <src/Utils/types.hpp>
 #include <src/Engine/Geometry/Model.hpp>
+#include <Engine/Shader.hpp>
 
 enum Selection {
     XSELEC,
@@ -37,6 +38,7 @@ public:
 
     void clicked(float xpos, float ypos) { m_xmouse = xpos, m_ymouse = ypos; }
     virtual void move(float xpos, float ypos, Model &model, const glm::mat4 &projection, const glm::mat4 &view) = 0;
+    virtual void move(float xpos, float ypos, Light &light, const glm::mat4 &projection, const glm::mat4 &view) = 0;
 
     virtual void scale(float scale) = 0;
     virtual GizmoType type() const = 0;

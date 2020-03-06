@@ -11,7 +11,8 @@ class TranslateGizmo : public Gizmo {
 public:
     TranslateGizmo(const Utils::Transform &transform) : Gizmo(transform) { init_models(); }
 
-    void move(float xoffset, float yoffset, Model &model, const glm::mat4 &projection, const glm::mat4 &view) override;
+    void move(float xpos, float ypos, Model &model, const glm::mat4 &projection, const glm::mat4 &view) override;
+    void move(float xpos, float ypos, Light &light, const glm::mat4 &projection, const glm::mat4 &view) override;
     void scale(float scale) override;
     GizmoType type() const override { return TRANSLATE; }
 

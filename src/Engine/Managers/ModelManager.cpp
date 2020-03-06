@@ -104,22 +104,12 @@ void ModelManager::setObjectParams(const ModelParam &params) {
 
 bool ModelManager::keyboard(unsigned char key) {
     switch (key) {
-        case 'o':
-            switch_selection();
-            return true;
         case 'd':
             deleteModel();
             return true;
         default:
             return false;
     }
-}
-
-void ModelManager::switch_selection() {
-    if (!m_models.empty())
-        m_selectedmodel = (m_selectedmodel + 1) % m_models.size();
-    else
-        m_selectedmodel = -1;
 }
 
 void ModelManager::makeGrid(int size) {
@@ -191,7 +181,6 @@ void ModelManager::deleteModel() {
     for (auto it = m_models.begin() ; it != m_models.end() ; ++it) {
         if (*it == m_models[m_selectedmodel]) {
             m_models.erase(it);
-            switch_selection();
             return;
         }
     }
@@ -231,7 +220,21 @@ bool ModelManager::mouse_click(const Ray &ray, float xpos, float ypos) {
         }
     }
     if (!found) m_selectedmodel = -1;
-    return found;
+    else        m_selectedlight = -1;
+    bool found_light = false;
+    for (int i = 0 ; i < m_lights.size() ; ++i) {
+        float temp;
+        if (ray.intersects(m_lights[i]->model().obb(), temp)) {
+            if (temp < dist) {
+                found_light = true;
+                dist = temp;
+                m_selectedlight = i;
+            }
+        }
+    }
+    if (!found_light) m_selectedlight = -1;
+    else m_selectedmodel = -1;
+    return found || found_light;
 }
 
 void ModelManager::updateGizmo(const glm::vec3 &viewPos) {

@@ -107,7 +107,7 @@ void IcoSphere::setupSubdivisions() {
     }
 
     m_meshes.clear();
-    m_meshes.emplace_back(new Mesh(vertices, indices));
+    m_meshes.emplace_back(new Mesh(vertices, indices, m_wire));
 }
 
 void IcoSphere::editModel(const ModelParam &params) {

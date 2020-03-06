@@ -109,6 +109,13 @@ void TranslateGizmo::move(float xpos, float ypos, Model &model, const glm::mat4 
     setTransform(model);
 }
 
+void TranslateGizmo::move(float xpos, float ypos, Light &light, const glm::mat4 &projection, const glm::mat4 &view) {
+    if (light.getType() != DIR_LIGHT) {
+        move(xpos, ypos, light.model(), projection, view);
+        light.update();
+    }
+}
+
 glm::vec3 TranslateGizmo::getDir(const glm::mat4 &rotation) {
     switch (m_selected) {
         case XSELEC:

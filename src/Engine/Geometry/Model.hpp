@@ -13,9 +13,10 @@
 #include <src/Utils/adapters.hpp>
 
 #include "Mesh.hpp"
-#include "src/Engine/Shader.hpp"
 #include <Engine/Physics/Obb.hpp>
 #include <Utils/types.hpp>
+
+class Shader;
 
 union ModelParam {
     struct uvs_param {
@@ -64,7 +65,7 @@ enum ModelType {
 class Model {
 public:
     Model() = default;
-    Model(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices);
+    Model(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices, bool wire = false);
     virtual ~Model() { m_meshes.clear(); }
 
     Model(const Model &) = delete;
@@ -101,6 +102,7 @@ public:
 
 protected:
     std::vector<std::unique_ptr<Mesh>> m_meshes;
+    bool m_wire { false };
 
 private:
     Utils::Aabb base_aabb() const;

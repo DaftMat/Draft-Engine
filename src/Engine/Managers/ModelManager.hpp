@@ -39,7 +39,6 @@ public:
     void deleteModel();
 
     bool keyboard(unsigned char key);
-    void switch_selection();
 
     void toggledrawmode() { m_wireframe = !m_wireframe; }
 

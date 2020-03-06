@@ -64,7 +64,22 @@ void MainWindow::on_position_valueChanged(double d) {
         ui->y_position->value(),
         ui->z_position->value()
     };
-    ui->m_openglwidget->getSelectedObject()->setPosition(new_position);
+    if (ui->m_openglwidget->getSelectedObject() != nullptr)
+        ui->m_openglwidget->getSelectedObject()->setPosition(new_position);
+    if (ui->m_openglwidget->getSelectedLight() != nullptr) {
+        LightParam parampos = ui->m_openglwidget->getSelectedLight()->getParams();
+        switch(ui->m_openglwidget->getSelectedLight()->getType()) {
+        case POINT_LIGHT:
+            parampos.pointlight.position = new_position;
+            break;
+        case SPOT_LIGHT:
+            parampos.spotlight.position = new_position;
+            break;
+        default:
+            break;
+        }
+        ui->m_openglwidget->getSelectedLight()->editLight(parampos);
+    }
     ui->m_openglwidget->update();
 }
 
@@ -75,7 +90,22 @@ void MainWindow::on_rotation_valueChanged(double d) {
         ui->y_rotation->value(),
         ui->z_rotation->value()
     };
-    ui->m_openglwidget->getSelectedObject()->setRotation(new_rotation);
+    if (ui->m_openglwidget->getSelectedObject() != nullptr)
+        ui->m_openglwidget->getSelectedObject()->setRotation(new_rotation);
+    if (ui->m_openglwidget->getSelectedLight() != nullptr) {
+        LightParam parampos = ui->m_openglwidget->getSelectedLight()->getParams();
+        switch(ui->m_openglwidget->getSelectedLight()->getType()) {
+            case DIR_LIGHT:
+                parampos.dirlight.rotations = new_rotation;
+                break;
+            case SPOT_LIGHT:
+                parampos.spotlight.rotations = new_rotation;
+                break;
+            default:
+                break;
+        }
+        ui->m_openglwidget->getSelectedLight()->editLight(parampos);
+    }
     ui->m_openglwidget->update();
 }
 
@@ -86,7 +116,8 @@ void MainWindow::on_scale_valueChanged(double d) {
         ui->y_scale->value(),
         ui->z_scale->value()
     };
-    ui->m_openglwidget->getSelectedObject()->setScale(new_scale);
+    if (ui->m_openglwidget->getSelectedObject() != nullptr)
+        ui->m_openglwidget->getSelectedObject()->setScale(new_scale);
     ui->m_openglwidget->update();
 }
 
@@ -130,6 +161,7 @@ void MainWindow::objectSelection() {
         case ModelType::CUBE:
             ui->object_settings_label->setText("Cube Settings");
             ui->cubec_res->setValue(settings.cube.resolution);
+            break;
         default:
             ui->object_settings_label->setText("Model Settings");
             break;

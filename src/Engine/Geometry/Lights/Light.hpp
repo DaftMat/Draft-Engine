@@ -5,7 +5,8 @@
 #ifndef DAFT_ENGINE_LIGHT_HPP
 #define DAFT_ENGINE_LIGHT_HPP
 
-#include <opengl_stuff.h>
+//#include <opengl_stuff.h>
+#include <src/Engine/Geometry/Model.hpp>
 
 enum LightType {
     POINT_LIGHT,
@@ -22,10 +23,12 @@ union LightParam {
     }pointlight;
     struct dir_param {
         glm::vec3 direction;
+        glm::vec3 rotations;
     }dirlight;
     struct spot_param {
         glm::vec3 position;
         glm::vec3 direction;
+        glm::vec3 rotations; //for direction transformation
         GLfloat innerCutoff;
         GLfloat outerCutoff;
         GLfloat constant;
@@ -54,7 +57,17 @@ public:
     const glm::vec3 & specular() const { return m_specular; }
     glm::vec3 & specular() { return m_specular; }
 
+    const Model& model() const { return *m_model; }
+    Model& model() { return *m_model; }
+
+    virtual void update() {};
+
+protected:
+    std::unique_ptr<Model> m_model;
+
 private:
+    virtual void setupModel() {};
+
     glm::vec3 m_ambient;
     glm::vec3 m_diffuse;
     glm::vec3 m_specular;

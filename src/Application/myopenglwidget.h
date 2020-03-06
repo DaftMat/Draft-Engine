@@ -25,6 +25,7 @@ public:
     void deleteObject();
 
     Model * getSelectedObject() { return m_engine->getSelectedModel(); }
+    Light * getSelectedLight() { return m_engine->getSelectedLight(); }
 
     void setModelParams(const ModelParam &params) { m_engine->setModelParams(params); }
 

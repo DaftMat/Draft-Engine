@@ -24,4 +24,14 @@ void SpotLight::editLight(const LightParam &params) {
     m_constant = params.spotlight.constant;
     m_linear = params.spotlight.linear;
     m_quadratic = params.spotlight.quadratic;
+    m_model->setPosition(m_position);
+    m_model->setRotation(params.spotlight.rotations);
+    m_direction = m_model->rotation() * glm::vec4(m_direction, 0.f);
+}
+
+void SpotLight::update() {
+    LightParam params = getParams();
+    params.spotlight.position = m_model->getPosition();
+    params.spotlight.rotations = m_model->getRotation();
+    editLight(params);
 }

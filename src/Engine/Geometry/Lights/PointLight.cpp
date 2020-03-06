@@ -18,4 +18,28 @@ void PointLight::editLight(const LightParam &params) {
     m_constant = params.pointlight.constant;
     m_linear = params.pointlight.linear;
     m_quadratic = params.pointlight.quadratic;
+    m_model->setPosition(m_position);
+}
+
+void PointLight::setupModel() {
+    std::vector<glm::vec3> dir {
+            { 0.f, 0.f, 1.f },  // front
+            { 0.f, 0.f,-1.f },  // back
+            { 0.f, 1.f, 0.f },  // top
+            { 0.f,-1.f, 0.f },  // bottom
+            { 1.f, 0.f, 0.f },  // right
+            {-1.f, 0.f, 0.f }   // left
+    };
+
+    std::vector<Vertex> vertices;
+    std::vector<GLuint> indices;
+    Vertex vertex;
+
+    for (int i = 0 ; i < 8 ; ++i) {
+        vertex.Position = dir[i] * 0.2f;
+        vertices.push_back(vertex);
+        indices.push_back(i);
+    }
+
+    m_model.reset(new Model(vertices, indices, true));
 }

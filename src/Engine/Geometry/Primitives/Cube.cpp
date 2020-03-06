@@ -44,7 +44,7 @@ void Cube::setupCube() {
                 }
             }
         }
-        m_meshes.emplace_back(new Mesh(vertices, indices));
+        m_meshes.emplace_back(new Mesh(vertices, indices, m_wire));
         vertices.clear();
         indices.clear();
     }

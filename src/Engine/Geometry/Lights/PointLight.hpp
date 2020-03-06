@@ -20,14 +20,17 @@ public:
                 m_position { pos },
                 m_constant { constant },
                 m_linear { linear },
-                m_quadratic { quadratic } { }
+                m_quadratic { quadratic } { setupModel(); }
 
     LightType getType() const override { return POINT_LIGHT; }
 
     LightParam getParams() const override;
     void editLight(const LightParam &params) override;
 
+    void update() override { m_position = m_model->getPosition(); }
+
 private:
+    void setupModel() override;
 
     glm::vec3 m_position;
 
