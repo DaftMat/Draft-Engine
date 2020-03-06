@@ -29,6 +29,7 @@ public:
     void setModelParams(const ModelParam &params) { m_engine->setModelParams(params); }
 
     void setShader(GLuint index);
+    void toggleEditionMode() { m_engine->toggleEditionMode(); }
 
     // Event management
     void mousePressEvent(QMouseEvent *event) override;

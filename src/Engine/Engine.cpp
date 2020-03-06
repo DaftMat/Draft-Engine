@@ -56,8 +56,6 @@ void Engine::resize(int width, int height) {
 }
 
 void Engine::draw() {
-    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
     checkCreation();
     m_modelmanager->draw(*m_shader, m_camera->viewmatrix(), m_projection, m_camera->position());
 }

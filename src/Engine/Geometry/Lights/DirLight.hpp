@@ -9,7 +9,7 @@
 
 class DirLight : public Light {
 public:
-    DirLight(const glm::vec3 &dir=glm::vec3(-0.2f, -1.0f, -0.3f),
+    DirLight(const glm::vec3 &dir=glm::vec3(0.f, -1.0f, 0.f),
              const glm::vec3 &ambient=glm::vec3(0.05f, 0.05f, 0.05f),
              const glm::vec3 &diffuse=glm::vec3(0.6f, 0.6f, 0.6f),
              const glm::vec3 &specular=glm::vec3(0.8f, 0.8f, 0.8f))

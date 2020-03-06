@@ -11,11 +11,18 @@
 #include "ModelManager.hpp"
 
 void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &projection, const glm::vec3 &viewPos) {
-    drawGrid(projection, view);
+    if (m_edition)
+        glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+    else
+        glClearColor(0.f, 0.f, 0.f, 1.f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    if (m_edition)
+        drawGrid(projection, view);
 
     if (m_models.empty())   return;
 
-    if (m_selectedmodel > -1) {
+    if ((m_selectedmodel > -1 || m_selectedlight > -1) && m_edition) {
         updateGizmo(viewPos);
         glDepthRange(0.0, 0.01);
         m_gizmo->draw(projection, view);
@@ -37,14 +44,17 @@ void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &
     for(GLuint i = 0 ; i < m_models.size() ; ++i) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         m_models[i]->draw(shader);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        m_colorshader->use();
-        if (i == m_selectedmodel) {
-            m_colorshader->setVec3("color", glm::vec3(0.f, 1.f, 1.f));
-            m_models[i]->draw(*m_colorshader);
-        } else if (m_wireframe) {
-            m_colorshader->setVec3("color", glm::vec3(0.f, 0.f, 0.f));
-            m_models[i]->draw(*m_colorshader);
+        if (m_edition) {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            m_colorshader->use();
+            if (i == m_selectedmodel) {
+                m_colorshader->setVec3("color", glm::vec3(0.f, 1.f, 1.f));
+                m_models[i]->draw(*m_colorshader);
+            } else if (m_wireframe) {
+                m_colorshader->setVec3("color", glm::vec3(0.f, 0.f, 0.f));
+                m_models[i]->draw(*m_colorshader);
+            }
+            //draw lights "models"
         }
     }
     glDepthRange(0.0, 1.0);
@@ -253,4 +263,11 @@ void ModelManager::switchGizmo() {
         default:
             break;
     }
+}
+
+void ModelManager::setLightParams(const LightParam &params, const glm::vec3 &ambient, const glm::vec3 &diffuse, const glm::vec3 &specular) {
+    m_lights[m_selectedlight]->editLight(params);
+    m_lights[m_selectedlight]->ambient() = ambient;
+    m_lights[m_selectedlight]->diffuse() = diffuse;
+    m_lights[m_selectedlight]->specular() = specular;
 }

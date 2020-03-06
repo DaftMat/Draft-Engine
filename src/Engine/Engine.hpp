@@ -28,6 +28,7 @@ public:
     void shaderChanged(GLuint selected);
 
     void toggledrawmode() { m_modelmanager->toggledrawmode(); }
+    void toggleEditionMode() { m_modelmanager->toggleEditionMode(); }
 
     void addModel(ModelType type);
     void deleteModel() { m_modelmanager->deleteModel(); }

@@ -93,6 +93,12 @@ void MainWindow::on_scale_valueChanged(double d) {
 void MainWindow::on_selectionChanged(GLuint index) {
     m_state = DaftState::SELECTION;
     unset_settings();
+    objectSelection();
+    lightSelection();
+    m_state = DaftState::EDIT;
+}
+
+void MainWindow::objectSelection() {
     if (ui->m_openglwidget->getSelectedObject() == nullptr) return;
     ui->x_position->setValue(ui->m_openglwidget->getSelectedObject()->getPosition().x);
     ui->y_position->setValue(ui->m_openglwidget->getSelectedObject()->getPosition().y);
@@ -108,27 +114,26 @@ void MainWindow::on_selectionChanged(GLuint index) {
     ModelType type = ui->m_openglwidget->getSelectedObject()->getType();
     updateSettings(type);
     switch (type) {
-    case ModelType::UV_SPHERE:
-        ui->object_settings_label->setText("UVSphere Settings");
-        ui->uv_meridians->setValue(settings.uv_sphere.meridians);
-        ui->uv_parallels->setValue(settings.uv_sphere.parallels);
-        break;
-    case ModelType::ICO_SPHERE:
-        ui->object_settings_label->setText("IcoSphere Settings");
-        ui->ico_subdiv->setValue(settings.ico_sphere.subdivisions);
-        break;
-    case ModelType::CUBE_SPHERE:
-        ui->object_settings_label->setText("CubeSphere Settings");
-        ui->cube_res->setValue(settings.cube_sphere.resolution);
-        break;
-    case ModelType::CUBE:
-        ui->object_settings_label->setText("Cube Settings");
-        ui->cubec_res->setValue(settings.cube.resolution);
-    default:
-        ui->object_settings_label->setText("Model Settings");
-        break;
+        case ModelType::UV_SPHERE:
+            ui->object_settings_label->setText("UVSphere Settings");
+            ui->uv_meridians->setValue(settings.uv_sphere.meridians);
+            ui->uv_parallels->setValue(settings.uv_sphere.parallels);
+            break;
+        case ModelType::ICO_SPHERE:
+            ui->object_settings_label->setText("IcoSphere Settings");
+            ui->ico_subdiv->setValue(settings.ico_sphere.subdivisions);
+            break;
+        case ModelType::CUBE_SPHERE:
+            ui->object_settings_label->setText("CubeSphere Settings");
+            ui->cube_res->setValue(settings.cube_sphere.resolution);
+            break;
+        case ModelType::CUBE:
+            ui->object_settings_label->setText("Cube Settings");
+            ui->cubec_res->setValue(settings.cube.resolution);
+        default:
+            ui->object_settings_label->setText("Model Settings");
+            break;
     }
-    m_state = DaftState::EDIT;
 }
 
 void MainWindow::on_objectCreator_activated(const QString &arg1)
@@ -252,4 +257,11 @@ void MainWindow::on_gizmoType_activated(const QString &arg1)
     } else if (arg1 == "Scale") {
         ui->m_openglwidget->setGizmoType(SCALE);
     }
+}
+
+void MainWindow::on_editionToggle_clicked()
+{
+    ui->m_openglwidget->toggleEditionMode();
+    ui->m_openglwidget->setFocus();
+    ui->m_openglwidget->update();
 }

@@ -20,7 +20,7 @@ public:
                 m_position { pos },
                 m_constant { constant },
                 m_linear { linear },
-                m_quadratic { quadratic } {}
+                m_quadratic { quadratic } { }
 
     LightType getType() const override { return POINT_LIGHT; }
 
@@ -28,6 +28,7 @@ public:
     void editLight(const LightParam &params) override;
 
 private:
+
     glm::vec3 m_position;
 
     GLfloat m_constant;
