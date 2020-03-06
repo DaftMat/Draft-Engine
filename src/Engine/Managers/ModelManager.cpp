@@ -54,9 +54,23 @@ void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &
                 m_colorshader->setVec3("color", glm::vec3(0.f, 0.f, 0.f));
                 m_models[i]->draw(*m_colorshader);
             }
-            //draw lights "models"
         }
     }
+
+    if (m_edition) {
+        m_colorshader->use();
+        for (GLuint i = 0; i < m_lights.size(); ++i) {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            if (i == m_selectedlight) {
+                m_colorshader->setVec3("color", glm::vec3(0.f, 1.f, 1.f));
+                m_lights[i]->model().draw(*m_colorshader);
+            } else if (m_wireframe) {
+                m_colorshader->setVec3("color", glm::vec3(0.f, 0.f, 0.f));
+                m_lights[i]->model().draw(*m_colorshader);
+            }
+        }
+    }
+
     glDepthRange(0.0, 1.0);
 
     shader.clearLights();
@@ -177,18 +191,26 @@ void ModelManager::makeUnitArrows() {
 }
 
 void ModelManager::deleteModel() {
-    if (m_selectedmodel < 0) return;
-    for (auto it = m_models.begin() ; it != m_models.end() ; ++it) {
-        if (*it == m_models[m_selectedmodel]) {
-            m_models.erase(it);
-            return;
+    if (m_selectedmodel > -1) {
+        for (auto it = m_models.begin(); it != m_models.end(); ++it) {
+            if (*it == m_models[m_selectedmodel]) {
+                m_models.erase(it);
+                return;
+            }
+        }
+    } else if (m_selectedlight > -1) {
+        for (auto it = m_lights.begin() ; it != m_lights.end() ; ++it) {
+            if (*it == m_lights[m_selectedlight]) {
+                m_lights.erase(it);
+                return;
+            }
         }
     }
 }
 
 bool ModelManager::mouse_click(const Ray &ray, float xpos, float ypos) {
     float dist = 100000.f;
-    if (m_selectedmodel != -1) {
+    if (m_selectedmodel != -1 || m_selectedlight != -1) {
         bool found = false;
         if (ray.intersects(m_gizmo->getXobb(), dist)) {
             m_gizmo->setSelected(XSELEC);
@@ -243,12 +265,19 @@ void ModelManager::updateGizmo(const glm::vec3 &viewPos) {
     if (m_selectedmodel > -1 && m_selectedmodel < m_models.size()) {
         m_gizmo->setTransform(*m_models[m_selectedmodel]);
         m_gizmo->scale(glm::length(viewPos - m_models[m_selectedmodel]->getPosition()) / 3.f);
+    } else if (m_selectedlight > -1 && m_selectedlight < m_lights.size()) {
+        m_gizmo->setTransform(m_lights[m_selectedlight]->model());
+        m_gizmo->scale(glm::length(viewPos - m_lights[m_selectedlight]->model().getPosition()) / 3.f);
     }
 }
 
 void ModelManager::mouse_move(float xpos, float ypos, const glm::mat4 &projection, const glm::mat4 &view) {
-    if (m_gizmo->isSelected())
-        m_gizmo->move(xpos, ypos, *m_models[m_selectedmodel], projection, view);
+    if (m_gizmo->isSelected()) {
+        if (m_selectedmodel > -1)
+            m_gizmo->move(xpos, ypos, *m_models[m_selectedmodel], projection, view);
+        else if (m_selectedlight > -1)
+            m_gizmo->move(xpos, ypos, *m_lights[m_selectedlight], projection, view);
+    }
 }
 
 void ModelManager::mouserelease() {

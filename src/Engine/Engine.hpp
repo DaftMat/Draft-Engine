@@ -31,6 +31,7 @@ public:
     void toggleEditionMode() { m_modelmanager->toggleEditionMode(); }
 
     void addModel(ModelType type);
+    void addLight(LightType type);
     void deleteModel() { m_modelmanager->deleteModel(); }
 
     Model * getSelectedModel() { return m_modelmanager->getSelectedObject(); }
@@ -53,6 +54,11 @@ private:
         bool toCreate;
         ModelType type;
     } m_creationstate;
+
+    struct LightCreation {
+        bool toCreate;
+        LightType type;
+    } m_lightcreationstate;
 
     // geometries
     std::unique_ptr<ModelManager> m_modelmanager;

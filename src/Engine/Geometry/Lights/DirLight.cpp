@@ -11,9 +11,8 @@ LightParam DirLight::getParams() const {
 }
 
 void DirLight::editLight(const LightParam &params) {
-    m_direction = params.dirlight.direction;
     m_model->setRotation(params.dirlight.rotations);
-    m_direction = m_model->rotation() * glm::vec4(m_direction, 0.f);
+    m_direction = m_model->rotation() * glm::vec4(m_basedirection, 0.f);
 }
 
 void DirLight::update() {

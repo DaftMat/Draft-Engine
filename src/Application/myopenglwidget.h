@@ -22,6 +22,7 @@ public:
     QSize sizeHint() const override;
 
     void addObject(ModelType type);
+    void addLight(LightType type);
     void deleteObject();
 
     Model * getSelectedObject() { return m_engine->getSelectedModel(); }

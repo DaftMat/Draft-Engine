@@ -35,10 +35,12 @@ Engine::Engine(int width, int height) :
 
     m_projection = glm::perspective(m_camera->zoom(), float(m_width) / m_height, 0.1f, 100.0f);
 
-    m_modelmanager->addLight(DIR_LIGHT);
+    //m_modelmanager->addLight(DIR_LIGHT);
 
     m_creationstate.toCreate = false;
     m_creationstate.type = MODEL;
+
+    m_lightcreationstate.toCreate = false;
 }
 
 Engine::~Engine() {
@@ -113,11 +115,21 @@ void Engine::addModel(ModelType type) {
     m_creationstate.type = type;
 }
 
+void Engine::addLight(LightType type) {
+    m_lightcreationstate.toCreate = true;
+    m_lightcreationstate.type = type;
+}
+
 void Engine::checkCreation() {
     if (m_creationstate.toCreate) {
         m_creationstate.toCreate = false;
         m_modelmanager->addObject(m_creationstate.type);
         m_modelmanager->setSelectedIndex(m_modelmanager->getSize()-1);
+    }
+    if (m_lightcreationstate.toCreate) {
+        m_lightcreationstate.toCreate = false;
+        m_modelmanager->addLight(m_lightcreationstate.type);
+        m_modelmanager->setSelectedLight(m_modelmanager->getNumLights()-1);
     }
 }
 

@@ -39,11 +39,14 @@ private slots:
     void on_cubec_res_valueChanged(int arg1);
     void on_editionToggle_clicked();
 
+    void on_lightCreator_activated(const QString &arg1);
+
 private:
     void updateSettings(ModelType type);
+    void updateSettings(LightType type);
     void unset_settings();
     void objectSelection();
-    void lightSelection() {};
+    void lightSelection();
 
     DaftState m_state { EDIT };
     Ui::MainWindow *ui;

@@ -129,6 +129,12 @@ void MyOpenGLWidget::addObject(ModelType type) {
     update();
 }
 
+void MyOpenGLWidget::addLight(LightType type) {
+    m_engine->addLight(type);
+    object_added = true;
+    update();
+}
+
 void MyOpenGLWidget::setShader(GLuint index) {
     m_engine->shaderChanged(index);
     update();

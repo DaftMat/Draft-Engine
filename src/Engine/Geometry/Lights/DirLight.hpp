@@ -13,7 +13,7 @@ public:
              const glm::vec3 &ambient=glm::vec3(0.05f, 0.05f, 0.05f),
              const glm::vec3 &diffuse=glm::vec3(0.6f, 0.6f, 0.6f),
              const glm::vec3 &specular=glm::vec3(0.8f, 0.8f, 0.8f))
-             : Light(ambient, diffuse, specular), m_direction { dir }
+             : Light(ambient, diffuse, specular), m_direction { dir }, m_basedirection { dir }
     { setupModel(); }
 
     LightType getType() const override { return DIR_LIGHT; }
@@ -27,6 +27,7 @@ private:
     void setupModel() override { m_model.reset(new Model({Vertex{{0.f, 0.f, 0.f},{},{}}, Vertex{m_direction,{},{}}}, {0, 1})); }
 
     glm::vec3 m_direction;
+    glm::vec3 m_basedirection;
 };
 
 

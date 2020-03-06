@@ -44,13 +44,13 @@ public:
 
     Model * getSelectedObject() { if (m_selectedmodel == -1) return nullptr; else return m_models[m_selectedmodel].get(); }
     int getSelectedIndex() const { return m_selectedmodel; }
-    void setSelectedIndex(GLuint index) { m_selectedmodel = glm::max(index, (GLuint)(m_models.size() - 1)); }
+    void setSelectedIndex(GLuint index) { m_selectedmodel = glm::max(index, (GLuint)(m_models.size() - 1)); m_selectedlight = -1; }
     unsigned long getSize() const { return m_models.size(); }
     void setObjectParams(const ModelParam &params);
 
     Light * getSelectedLight() { if (m_selectedlight == -1) return nullptr; else return m_lights[m_selectedlight].get(); }
     int getSelectedLightIndex() const { return m_selectedlight; }
-    void setSelectedLight(GLuint index) { m_selectedlight = glm::max(index, GLuint(m_models.size() - 1)); }
+    void setSelectedLight(GLuint index) { m_selectedlight = glm::max(index, GLuint(m_models.size() - 1)); m_selectedmodel = -1; }
     unsigned long getNumLights() const { return m_lights.size(); }
     void setLightParams(const LightParam &params, const glm::vec3 &ambient, const glm::vec3 &diffuse, const glm::vec3 &specular);
 

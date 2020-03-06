@@ -168,6 +168,45 @@ void MainWindow::objectSelection() {
     }
 }
 
+void MainWindow::lightSelection() {
+    if (ui->m_openglwidget->getSelectedLight() == nullptr)  return;
+    ui->x_position->setValue(ui->m_openglwidget->getSelectedLight()->model().getPosition().x);
+    ui->y_position->setValue(ui->m_openglwidget->getSelectedLight()->model().getPosition().y);
+    ui->z_position->setValue(ui->m_openglwidget->getSelectedLight()->model().getPosition().z);
+    ui->x_rotation->setValue(ui->m_openglwidget->getSelectedLight()->model().getRotation().x);
+    ui->y_rotation->setValue(ui->m_openglwidget->getSelectedLight()->model().getRotation().y);
+    ui->z_rotation->setValue(ui->m_openglwidget->getSelectedLight()->model().getRotation().z);
+    ui->x_scale->setValue(1.0);
+    ui->y_scale->setValue(1.0);
+    ui->z_scale->setValue(1.0);
+
+    LightParam settings = ui->m_openglwidget->getSelectedLight()->getParams();
+    glm::vec3 ambient = ui->m_openglwidget->getSelectedLight()->ambient();
+    glm::vec3 diffuse = ui->m_openglwidget->getSelectedLight()->diffuse();
+    glm::vec3 specular = ui->m_openglwidget->getSelectedLight()->specular();
+    LightType type = ui->m_openglwidget->getSelectedLight()->getType();
+    updateSettings(type);
+    switch(type) {
+    case LightType::POINT_LIGHT:
+        ui->object_settings_label->setText("Point Light Settings");
+        ui->constantSpin->setValue(settings.pointlight.constant);
+        ui->linearSpin->setValue(settings.pointlight.linear);
+        ui->quadraticSpin->setValue(settings.pointlight.quadratic);
+        break;
+    default:
+        break;
+    }
+    ui->ambientRSpin->setValue(int(ambient.r * 255.f));
+    ui->ambientGSpin->setValue(int(ambient.g * 255.f));
+    ui->ambientBSpin->setValue(int(ambient.b * 255.f));
+    ui->diffuseRSpin->setValue(int(diffuse.r * 255.f));
+    ui->diffuseGSpin->setValue(int(diffuse.g * 255.f));
+    ui->diffuseBSpin->setValue(int(diffuse.b * 255.f));
+    ui->specularRSpin->setValue(int(specular.r * 255.f));
+    ui->specularGSpin->setValue(int(specular.g * 255.f));
+    ui->specularBSpin->setValue(int(specular.b * 255.f));
+}
+
 void MainWindow::on_objectCreator_activated(const QString &arg1)
 {
     if (arg1 == "UVSphere")
@@ -181,6 +220,19 @@ void MainWindow::on_objectCreator_activated(const QString &arg1)
     ui->m_openglwidget->setFocus();
     ui->objectCreator->setCurrentIndex(0);
 }
+
+void MainWindow::on_lightCreator_activated(const QString &arg1)
+{
+    if (arg1 == "Point Light")
+        ui->m_openglwidget->addLight(POINT_LIGHT);
+    else if (arg1 == "Spot Light")
+        ui->m_openglwidget->addLight(SPOT_LIGHT);
+    else if (arg1 == "Directionnal Light")
+        ui->m_openglwidget->addLight(DIR_LIGHT);
+    ui->m_openglwidget->setFocus();
+    ui->lightCreator->setCurrentIndex(0);
+}
+
 
 void MainWindow::on_shaderChoser_activated(int index)
 {
@@ -254,6 +306,34 @@ void MainWindow::updateSettings(ModelType type) {
     }
 }
 
+void MainWindow::updateSettings(LightType type) {
+    ui->colorLightLabel->setVisible(true);
+    ui->diffuseLabel->setVisible(true);
+    ui->diffuseRSpin->setVisible(true);
+    ui->diffuseGSpin->setVisible(true);
+    ui->diffuseBSpin->setVisible(true);
+    ui->ambientLabel->setVisible(true);
+    ui->ambientRSpin->setVisible(true);
+    ui->ambientGSpin->setVisible(true);
+    ui->ambientBSpin->setVisible(true);
+    ui->specularLabel->setVisible(true);
+    ui->specularRSpin->setVisible(true);
+    ui->specularGSpin->setVisible(true);
+    ui->specularBSpin->setVisible(true);
+    switch (type) {
+    case LightType::POINT_LIGHT:
+        ui->constantSpin->setVisible(true);
+        ui->constantLabel->setVisible(true);
+        ui->linearSpin->setVisible(true);
+        ui->linearLabel->setVisible(true);
+        ui->quadraticSpin->setVisible(true);
+        ui->quadraticLabel->setVisible(true);
+        break;
+    default:
+        break;
+    }
+}
+
 void MainWindow::unset_settings() {
     ui->x_position->setValue(0.0);
     ui->y_position->setValue(0.0);
@@ -264,6 +344,7 @@ void MainWindow::unset_settings() {
     ui->x_scale->setValue(1.0);
     ui->y_scale->setValue(1.0);
     ui->z_scale->setValue(1.0);
+    //object settings
     ui->object_settings_label->setText("Model Settings");
     ui->uv_meridians->setVisible(false);
     ui->uv_parallels->setVisible(false);
@@ -275,6 +356,26 @@ void MainWindow::unset_settings() {
     ui->cube_res_label->setVisible(false);
     ui->cubec_res->setVisible(false);
     ui->cubec_res_label->setVisible(false);
+    //light settings
+    ui->constantSpin->setVisible(false);
+    ui->constantLabel->setVisible(false);
+    ui->linearSpin->setVisible(false);
+    ui->linearLabel->setVisible(false);
+    ui->quadraticSpin->setVisible(false);
+    ui->quadraticLabel->setVisible(false);
+    ui->colorLightLabel->setVisible(false);
+    ui->ambientLabel->setVisible(false);
+    ui->ambientRSpin->setVisible(false);
+    ui->ambientGSpin->setVisible(false);
+    ui->ambientBSpin->setVisible(false);
+    ui->diffuseLabel->setVisible(false);
+    ui->diffuseRSpin->setVisible(false);
+    ui->diffuseGSpin->setVisible(false);
+    ui->diffuseBSpin->setVisible(false);
+    ui->specularLabel->setVisible(false);
+    ui->specularRSpin->setVisible(false);
+    ui->specularGSpin->setVisible(false);
+    ui->specularBSpin->setVisible(false);
 }
 
 void MainWindow::on_deleteButton_clicked()
