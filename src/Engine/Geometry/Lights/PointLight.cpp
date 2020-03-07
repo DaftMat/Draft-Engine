@@ -40,7 +40,7 @@ void PointLight::setupModel() {
         vertex.Position = dir[i] * 0.5f;
         vertices.push_back(vertex);
         indices.push_back(0);
-        indices.push_back(i);
+        indices.push_back(i+1);
     }
 
     m_model.reset(new Model(vertices, indices, true));
