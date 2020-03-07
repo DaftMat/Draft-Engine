@@ -39,6 +39,7 @@ public:
     void setSelectedIndex(GLuint index) { m_modelmanager->setSelectedIndex(index); }
 
     Light * getSelectedLight() { return m_modelmanager->getSelectedLight(); }
+    GLuint getSelectedLightIndex() { return m_modelmanager->getSelectedLightIndex(); }
 
     void setModelParams(const ModelParam &params);
 

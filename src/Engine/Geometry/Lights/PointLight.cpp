@@ -34,13 +34,13 @@ void PointLight::setupModel() {
     std::vector<Vertex> vertices;
     std::vector<GLuint> indices;
     Vertex vertex {};
-
     vertices.push_back(vertex);
-    for (int i = 0 ; i < 8 ; ++i) {
-        vertex.Position = dir[i] * 0.4f;
+
+    for (int i = 0 ; i < 6 ; ++i) {
+        vertex.Position = dir[i] * 0.5f;
         vertices.push_back(vertex);
         indices.push_back(0);
-        indices.push_back(i+1);
+        indices.push_back(i);
     }
 
     m_model.reset(new Model(vertices, indices, true));

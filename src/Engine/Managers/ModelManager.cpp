@@ -20,7 +20,7 @@ void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &
     if (m_edition)
         drawGrid(projection, view);
 
-    if (m_models.empty())   return;
+    if (m_models.empty() && m_lights.empty())   return;
 
     if ((m_selectedmodel > -1 || m_selectedlight > -1) && m_edition) {
         updateGizmo(viewPos);
@@ -65,7 +65,7 @@ void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &
                 m_colorshader->setVec3("color", glm::vec3(0.f, 1.f, 1.f));
                 m_lights[i]->model().draw(*m_colorshader);
             } else if (m_wireframe) {
-                m_colorshader->setVec3("color", glm::vec3(0.f, 0.f, 0.f));
+                m_colorshader->setVec3("color", glm::vec3(0.9f, 0.9f, 0.9f));
                 m_lights[i]->model().draw(*m_colorshader);
             }
         }
