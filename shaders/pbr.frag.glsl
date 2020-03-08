@@ -89,7 +89,7 @@ void main() {
     vec3 ambient = vec3(0.03) * material.albedo * material.ao;
     vec3 color = ambient + Lo;
     color = color / (color + vec3(1.0));
-    color = pow(color, vec3(1.0/3.3));
+    color = pow(color, vec3(1.0/2.2));
     fragColor = vec4(color, 1.0);
 }
 
@@ -129,7 +129,7 @@ vec3 calcPointLight(PointLight light, vec3 N, vec3 fragPos, vec3 V) {
     vec3 L = normalize(light.position - fragPos);
     vec3 H = normalize(V + L);
     float distance = length(light.position - fragPos);
-    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
+    float attenuation = 1.0 / (distance * distance);
     vec3 radiance = light.specular * attenuation;
 
     float NDF = distributionGGX(N, H, material.roughness);
@@ -173,7 +173,7 @@ vec3 calcSpotLight(SpotLight light, vec3 N, vec3 fragPos, vec3 V) {
     vec3 L = normalize(light.position - fragPos);
     vec3 H = normalize(V + L);
     float distance = length(light.position - fragPos);
-    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
+    float attenuation = 1.0 / (distance * distance);
     float theta = dot(L, normalize(-light.direction));
     float epsilon = light.innerCutoff - light.outerCutoff;
     float intensity = clamp((theta - light.outerCutoff) / epsilon, 0.0, 1.0);

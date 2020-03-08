@@ -20,6 +20,7 @@ Engine::Engine(int width, int height) :
     //glCullFace(GL_FRONT);
     //glFrontFace(GL_CW);
     glEnable(GL_MULTISAMPLE);
+    glEnable(GL_FRAMEBUFFER_SRGB);
 
     /// Setup shaders
     m_shaderselector.emplace_back( []()->Shader*{ return new Shader("shaders/phong.vert.glsl", "shaders/phong.frag.glsl"); } );
