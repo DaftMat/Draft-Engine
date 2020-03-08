@@ -50,6 +50,13 @@ void Shader::setMat4(const std::string &name, const glm::mat4 & value) const {
     glUniformMatrix4fv(glGetUniformLocation(m_ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 }
 
+void Shader::setMaterial(const Material &material) const {
+    setVec3("material.albedo", material.albedo());
+    setFloat("material.metalness", material.metalness());
+    setFloat("material.roughness", material.roughness());
+    setFloat("material.ao", material.ambientOcclusion());
+}
+
 void Shader::addLight(Light * light) {
     std::string lightType;
     LightParam params = light->getParams();

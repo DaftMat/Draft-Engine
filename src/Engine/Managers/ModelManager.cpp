@@ -203,6 +203,7 @@ void ModelManager::deleteModel() {
         for (auto it = m_models.begin(); it != m_models.end(); ++it) {
             if (*it == m_models[m_selectedmodel]) {
                 m_models.erase(it);
+                m_selectedmodel = m_models.size() - 1;
                 return;
             }
         }
@@ -210,6 +211,7 @@ void ModelManager::deleteModel() {
         for (auto it = m_lights.begin() ; it != m_lights.end() ; ++it) {
             if (*it == m_lights[m_selectedlight]) {
                 m_lights.erase(it);
+                m_selectedlight = m_lights.size() - 1;
                 return;
             }
         }

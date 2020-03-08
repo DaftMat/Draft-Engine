@@ -22,7 +22,9 @@ Engine::Engine(int width, int height) :
     glEnable(GL_MULTISAMPLE);
 
     /// Setup shaders
+    m_shaderselector.emplace_back( []()->Shader*{ return new Shader("shaders/phong.vert.glsl", "shaders/phong.frag.glsl"); } );
     m_shaderselector.emplace_back( []()->Shader*{ return new Shader("shaders/blinnphong.vert.glsl", "shaders/blinnphong.frag.glsl"); } );
+    m_shaderselector.emplace_back( []()->Shader*{ return new Shader("shaders/pbr.vert.glsl", "shaders/pbr.frag.glsl"); } );
     m_shaderselector.emplace_back( []()->Shader*{ return new Shader("shaders/error.vert.glsl", "shaders/error.frag.glsl"); } );
     m_shaderselector.emplace_back( []()->Shader*{ return new Shader("shaders/default.vert.glsl", "shaders/default.frag.glsl"); } );
     m_shader.reset(m_shaderselector[m_activeshader]());

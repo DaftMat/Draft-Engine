@@ -13,6 +13,7 @@
 #include <src/Utils/adapters.hpp>
 
 #include "Mesh.hpp"
+#include "Material.hpp"
 #include <Engine/Physics/Obb.hpp>
 #include <Utils/types.hpp>
 
@@ -95,6 +96,8 @@ public:
     virtual void editModel(const ModelParam &params) {}
     virtual ModelParam getParams() const { return ModelParam {}; }
 
+    void setMaterial(const Material &material) { m_material = material; }
+
     Utils::Aabb aabb() const;
     Obb obb() const { return Obb(base_aabb(), transform()); }
     Obb uniformObb(float zoom) const { return Obb(uniform_aabb(zoom), transform()); }
@@ -118,6 +121,8 @@ private:
 
     glm::mat4 m_translateMat { glm::mat4() };
     glm::mat4 m_rotateMat { glm::mat4() };
+
+    Material m_material;
 };
 
 

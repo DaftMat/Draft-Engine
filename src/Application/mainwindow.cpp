@@ -253,7 +253,7 @@ void MainWindow::on_lightCreator_activated(const QString &arg1)
 
 void MainWindow::on_shaderChoser_activated(int index)
 {
-    ui->m_openglwidget->setShader((unsigned int)index);
+    ui->m_openglwidget->setShader(GLuint(index));
     ui->m_openglwidget->setFocus();
 }
 

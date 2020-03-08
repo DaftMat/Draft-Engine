@@ -89,7 +89,17 @@
             </property>
             <item>
              <property name="text">
+              <string>Phong</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
               <string>BlinnPhong</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>PBR</string>
              </property>
             </item>
             <item>

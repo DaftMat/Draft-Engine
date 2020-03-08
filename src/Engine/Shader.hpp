@@ -7,6 +7,7 @@
 
 #include <opengl_stuff.h>
 #include <Engine/Geometry/Lights/Light.hpp>
+#include <src/Engine/Geometry/Material.hpp>
 
 class Shader {
 public:
@@ -31,6 +32,8 @@ public:
     void setMat2(const std::string &name, const glm::mat2 & value) const;
     void setMat3(const std::string &name, const glm::mat3 & value) const;
     void setMat4(const std::string &name, const glm::mat4 & value) const;
+
+    void setMaterial(const Material &material) const;
 
     void addLight(Light * light);
     void clearLights();

@@ -13,6 +13,7 @@ Model::Model(const std::vector<Vertex> &vertices, const std::vector<GLuint> &ind
 void Model::draw(const Shader &shader) const {
     shader.use();
     shader.setMat4("model", model());
+    shader.setMaterial(m_material);
 
     for (auto & mesh : m_meshes) {
         mesh->draw();
