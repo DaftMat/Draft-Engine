@@ -30,9 +30,9 @@ void DirLight::setupModel() {
     int index = 1;
     for (float i = -0.2f ; i <= 0.2f ; i+=0.4f) {
         for (float j = -0.2 ; j <= 0.2f ; j+=0.4f) {
-            glm::vec3 axisA { m_direction.y, m_direction.x, m_direction.z };
-            glm::vec3 axisB = glm::cross(m_direction, axisA);
-            vertex.Position = -m_direction * 2.f;
+            glm::vec3 axisA { m_basedirection.y, m_basedirection.x, m_basedirection.z };
+            glm::vec3 axisB = glm::cross(m_basedirection, axisA);
+            vertex.Position = -m_basedirection * 2.f;
             vertex.Position += axisA * i + axisB * j;
             vertices.push_back(vertex);
             indices.push_back(0);
