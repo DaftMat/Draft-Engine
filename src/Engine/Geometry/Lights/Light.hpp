@@ -40,6 +40,7 @@ union LightParam {
 class Light {
 public:
     Light(const glm::vec3 &ambient, const glm::vec3 &diffuse, const glm::vec3 &specular);
+    virtual ~Light() { m_model.reset(); }
 
     Light(const Light &) = delete;
     Light(Light &&) = delete;

@@ -10,7 +10,7 @@
 #include <Engine/Geometry/Lights/SpotLight.hpp>
 #include "ModelManager.hpp"
 
-void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &projection, const glm::vec3 &viewPos) {
+void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &projection, const glm::vec3 &viewPos, const glm::vec3 &viewDir) {
     if (m_edition)
         glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
     else
@@ -39,6 +39,13 @@ void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &
     shader.setMat4("projection", projection);
     for (const auto &light : m_lights) {
         shader.addLight(light.get());
+    }
+
+    if (m_edition) {
+        LightParam new_dir = m_editionlight->getParams();
+        new_dir.dirlight.direction = viewDir;
+        m_editionlight->editLight(new_dir);
+        shader.addLight(m_editionlight.get());
     }
 
     for(GLuint i = 0 ; i < m_models.size() ; ++i) {
@@ -189,7 +196,6 @@ void ModelManager::makeUnitArrows() {
         m_unitarrows.emplace_back(new Mesh(vertices, indices, true));
         vertices.clear();
     }
-
 }
 
 void ModelManager::deleteModel() {

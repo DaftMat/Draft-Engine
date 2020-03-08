@@ -59,7 +59,7 @@ void Engine::resize(int width, int height) {
 
 void Engine::draw() {
     checkCreation();
-    m_modelmanager->draw(*m_shader, m_camera->viewmatrix(), m_projection, m_camera->position());
+    m_modelmanager->draw(*m_shader, m_camera->viewmatrix(), m_projection, m_camera->position(), m_camera->front());
 }
 
 

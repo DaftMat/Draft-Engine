@@ -11,6 +11,7 @@
 #include <set>
 #include <memory>
 #include <src/Engine/Geometry/Lights/PointLight.hpp>
+#include <Engine/Geometry/Lights/DirLight.hpp>
 #include <src/Engine/Physics/Ray.hpp>
 #include <src/Engine/Managers/Gizmos/TranslateGizmo.hpp>
 #include <src/Engine/Managers/Gizmos/ScaleGizmo.hpp>
@@ -18,19 +19,20 @@
 class ModelManager {
 public:
     ModelManager() : m_selectedmodel { -1 }, m_selectedlight { -1 },
+    m_editionlight { new DirLight },
     m_colorshader { new Shader("shaders/color.vert.glsl", "shaders/color.frag.glsl") },
     m_wireframe { true },
     m_edition { true },
     m_gizmo { new TranslateGizmo(Utils::Transform::Identity()) } { makeGrid(50); makeUnitArrows(); }
 
-    ~ModelManager() { m_models.clear(); m_lights.clear(); m_colorshader.reset(); }
+    ~ModelManager() { m_models.clear(); m_lights.clear(); m_editionlight.reset(); m_colorshader.reset(); }
 
     ModelManager(const ModelManager &) = delete;
     ModelManager(ModelManager &&) = delete;
     ModelManager & operator=(const ModelManager &) = delete;
     ModelManager && operator=(ModelManager &&) = delete;
 
-    void draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &projection, const glm::vec3 &viewPos);
+    void draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &projection, const glm::vec3 &viewPos, const glm::vec3 &viewDir);
 
     void addLight(LightType type);
     //void addModel(std::string file)
@@ -86,6 +88,7 @@ private:
 
     std::vector<std::unique_ptr<Light>> m_lights;
     int m_selectedlight;
+    std::unique_ptr<Light> m_editionlight;
 
     std::unique_ptr<Shader> m_colorshader;
 
