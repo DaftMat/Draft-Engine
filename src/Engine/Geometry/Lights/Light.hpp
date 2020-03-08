@@ -61,6 +61,7 @@ public:
     Model& model() { return *m_model; }
 
     virtual void update() {};
+    void reset() { setupModel(); }
 
 protected:
     std::unique_ptr<Model> m_model;

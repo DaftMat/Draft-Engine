@@ -36,6 +36,16 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->y_scale, SIGNAL(valueChanged(double)), this, SLOT(on_scale_valueChanged(double)));
     connect(ui->z_scale, SIGNAL(valueChanged(double)), this, SLOT(on_scale_valueChanged(double)));
 
+    connect(ui->ambientRSpin, SIGNAL(valueChanged(int)), this, SLOT(on_ambientSpin_valueChanged()));
+    connect(ui->ambientGSpin, SIGNAL(valueChanged(int)), this, SLOT(on_ambientSpin_valueChanged()));
+    connect(ui->ambientBSpin, SIGNAL(valueChanged(int)), this, SLOT(on_ambientSpin_valueChanged()));
+    connect(ui->diffuseRSpin, SIGNAL(valueChanged(int)), this, SLOT(on_diffuseSpin_valueChanged()));
+    connect(ui->diffuseGSpin, SIGNAL(valueChanged(int)), this, SLOT(on_diffuseSpin_valueChanged()));
+    connect(ui->diffuseBSpin, SIGNAL(valueChanged(int)), this, SLOT(on_diffuseSpin_valueChanged()));
+    connect(ui->specularRSpin, SIGNAL(valueChanged(int)), this, SLOT(on_specularSpin_valueChanged()));
+    connect(ui->specularGSpin, SIGNAL(valueChanged(int)), this, SLOT(on_specularSpin_valueChanged()));
+    connect(ui->specularBSpin, SIGNAL(valueChanged(int)), this, SLOT(on_specularSpin_valueChanged()));
+
     connect(ui->m_openglwidget, &MyOpenGLWidget::selectionChanged, this, &MainWindow::on_selectionChanged);
 
     unset_settings();
@@ -193,6 +203,13 @@ void MainWindow::lightSelection() {
         ui->linearSpin->setValue(settings.pointlight.linear);
         ui->quadraticSpin->setValue(settings.pointlight.quadratic);
         break;
+    case LightType::SPOT_LIGHT:
+        ui->object_settings_label->setText("Spot Light Settings");
+        ui->constantSpin->setValue(settings.spotlight.constant);
+        ui->linearSpin->setValue(settings.spotlight.linear);
+        ui->quadraticSpin->setValue(settings.spotlight.quadratic);
+        ui->innercutSpin->setValue(settings.spotlight.innerCutoff);
+        ui->outercutSpin->setValue(settings.spotlight.outerCutoff);
     default:
         break;
     }
@@ -329,6 +346,17 @@ void MainWindow::updateSettings(LightType type) {
         ui->quadraticSpin->setVisible(true);
         ui->quadraticLabel->setVisible(true);
         break;
+    case LightType::SPOT_LIGHT:
+        ui->constantSpin->setVisible(true);
+        ui->constantLabel->setVisible(true);
+        ui->linearSpin->setVisible(true);
+        ui->linearLabel->setVisible(true);
+        ui->quadraticSpin->setVisible(true);
+        ui->quadraticLabel->setVisible(true);
+        ui->innercutSpin->setVisible(true);
+        ui->innercutLabel->setVisible(true);
+        ui->outercutSpin->setVisible(true);
+        ui->outercutLabel->setVisible(true);
     default:
         break;
     }
@@ -376,6 +404,10 @@ void MainWindow::unset_settings() {
     ui->specularRSpin->setVisible(false);
     ui->specularGSpin->setVisible(false);
     ui->specularBSpin->setVisible(false);
+    ui->innercutSpin->setVisible(false);
+    ui->innercutLabel->setVisible(false);
+    ui->outercutSpin->setVisible(false);
+    ui->outercutLabel->setVisible(false);
 }
 
 void MainWindow::on_deleteButton_clicked()
@@ -396,5 +428,130 @@ void MainWindow::on_editionToggle_clicked()
 {
     ui->m_openglwidget->toggleEditionMode();
     ui->m_openglwidget->setFocus();
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_ambientSpin_valueChanged() {
+    if (m_state == SELECTION)   return;
+    glm::vec3 new_ambient {
+        ui->ambientRSpin->value() / 255.f,
+        ui->ambientGSpin->value() / 255.f,
+        ui->ambientBSpin->value() / 255.f
+    };
+    if (ui->m_openglwidget->getSelectedLight() != nullptr)
+        ui->m_openglwidget->getSelectedLight()->ambient() = new_ambient;
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_diffuseSpin_valueChanged() {
+    if (m_state == SELECTION)   return;
+    glm::vec3 new_diffuse {
+        ui->diffuseRSpin->value() / 255.f,
+        ui->diffuseGSpin->value() / 255.f,
+        ui->diffuseBSpin->value() / 255.f
+    };
+    if (ui->m_openglwidget->getSelectedLight() != nullptr)
+        ui->m_openglwidget->getSelectedLight()->diffuse() = new_diffuse;
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_specularSpin_valueChanged() {
+    if (m_state == SELECTION)   return;
+    glm::vec3 new_specular {
+        ui->specularRSpin->value() / 255.f,
+        ui->specularGSpin->value() / 255.f,
+        ui->specularBSpin->value() / 255.f
+    };
+    if (ui->m_openglwidget->getSelectedLight() != nullptr)
+        ui->m_openglwidget->getSelectedLight()->specular() = new_specular;
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_constantSpin_valueChanged(double arg1)
+{
+    if (m_state == SELECTION)   return;
+    if (ui->m_openglwidget->getSelectedLight() == nullptr)  return;
+    LightParam params = ui->m_openglwidget->getSelectedLight()->getParams();
+    switch(ui->m_openglwidget->getSelectedLight()->getType()) {
+    case POINT_LIGHT:
+        params.pointlight.constant = float(arg1);
+        break;
+    case SPOT_LIGHT:
+        params.spotlight.constant = float(arg1);
+        break;
+    default:
+        break;
+    }
+    ui->m_openglwidget->getSelectedLight()->editLight(params);
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_linearSpin_valueChanged(double arg1)
+{
+    if (m_state == SELECTION)   return;
+    if (ui->m_openglwidget->getSelectedLight() == nullptr)  return;
+    LightParam params = ui->m_openglwidget->getSelectedLight()->getParams();
+    switch(ui->m_openglwidget->getSelectedLight()->getType()) {
+    case POINT_LIGHT:
+        params.pointlight.linear = float(arg1);
+        break;
+    case SPOT_LIGHT:
+        params.spotlight.linear = float(arg1);
+        break;
+    default:
+        break;
+    }
+    ui->m_openglwidget->getSelectedLight()->editLight(params);
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_quadraticSpin_valueChanged(double arg1)
+{
+    if (m_state == SELECTION)   return;
+    if (ui->m_openglwidget->getSelectedLight() == nullptr)  return;
+    LightParam params = ui->m_openglwidget->getSelectedLight()->getParams();
+    switch(ui->m_openglwidget->getSelectedLight()->getType()) {
+    case POINT_LIGHT:
+        params.pointlight.quadratic = float(arg1);
+        break;
+    case SPOT_LIGHT:
+        params.spotlight.quadratic = float(arg1);
+        break;
+    default:
+        break;
+    }
+    ui->m_openglwidget->getSelectedLight()->editLight(params);
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_innercutSpin_valueChanged(double arg1)
+{
+    if (m_state == SELECTION) return;
+    if (ui->m_openglwidget->getSelectedLight() == nullptr)  return;
+    LightParam params = ui->m_openglwidget->getSelectedLight()->getParams();
+    if (ui->m_openglwidget->getSelectedLight()->getType() == LightType::SPOT_LIGHT) {
+        if (float(arg1) > params.spotlight.outerCutoff) {
+            ui->innercutSpin->setValue(params.spotlight.innerCutoff);
+            return;
+        }
+        params.spotlight.innerCutoff = float(arg1);
+        ui->m_openglwidget->getSelectedLight()->editLight(params);
+    }
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_outercutSpin_valueChanged(double arg1)
+{
+    if (m_state == SELECTION) return;
+    if (ui->m_openglwidget->getSelectedLight() == nullptr)  return;
+    LightParam params = ui->m_openglwidget->getSelectedLight()->getParams();
+    if (ui->m_openglwidget->getSelectedLight()->getType() == LightType::SPOT_LIGHT) {
+        if (float(arg1) < params.spotlight.innerCutoff) {
+            ui->outercutSpin->setValue(params.spotlight.outerCutoff);
+            return;
+        }
+        params.spotlight.outerCutoff = float(arg1);
+        ui->m_openglwidget->getSelectedLight()->editLight(params);
+    }
     ui->m_openglwidget->update();
 }

@@ -88,6 +88,7 @@ public:
     Utils::Transform transform() const { return Utils::Transform(toEigen(m_translateMat * m_rotateMat)); }
 
     virtual void reset() {}
+    void reset(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices) { m_meshes.clear(); m_meshes.emplace_back(new Mesh(vertices, indices, m_wire)); }
 
     virtual ModelType getType() const { return MODEL; }
     virtual std::string getTypeAsString() const { return "Object"; }

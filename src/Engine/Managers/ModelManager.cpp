@@ -63,9 +63,11 @@ void ModelManager::draw(Shader &shader, const glm::mat4 &view, const glm::mat4 &
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             if (i == m_selectedlight) {
                 m_colorshader->setVec3("color", glm::vec3(0.f, 1.f, 1.f));
+                m_lights[i]->reset();
                 m_lights[i]->model().draw(*m_colorshader);
             } else if (m_wireframe) {
                 m_colorshader->setVec3("color", glm::vec3(0.9f, 0.9f, 0.9f));
+                m_lights[i]->reset();
                 m_lights[i]->model().draw(*m_colorshader);
             }
         }

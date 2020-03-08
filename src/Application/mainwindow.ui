@@ -223,6 +223,34 @@
               </property>
              </widget>
             </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="innercutLabel">
+              <property name="text">
+               <string>Inner Cutoff :</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QDoubleSpinBox" name="innercutSpin">
+              <property name="maximum">
+               <double>180.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="outercutLabel">
+              <property name="text">
+               <string>Outer Cutoff :</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QDoubleSpinBox" name="outercutSpin">
+              <property name="maximum">
+               <double>180.000000000000000</double>
+              </property>
+             </widget>
+            </item>
            </layout>
           </widget>
          </item>
@@ -284,10 +312,18 @@
                 </widget>
                </item>
                <item>
-                <widget class="QSpinBox" name="ambientGSpin"/>
+                <widget class="QSpinBox" name="ambientGSpin">
+                 <property name="maximum">
+                  <number>255</number>
+                 </property>
+                </widget>
                </item>
                <item>
-                <widget class="QSpinBox" name="ambientBSpin"/>
+                <widget class="QSpinBox" name="ambientBSpin">
+                 <property name="maximum">
+                  <number>255</number>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>
@@ -315,13 +351,25 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QSpinBox" name="diffuseRSpin"/>
+                <widget class="QSpinBox" name="diffuseRSpin">
+                 <property name="maximum">
+                  <number>255</number>
+                 </property>
+                </widget>
                </item>
                <item>
-                <widget class="QSpinBox" name="diffuseGSpin"/>
+                <widget class="QSpinBox" name="diffuseGSpin">
+                 <property name="maximum">
+                  <number>255</number>
+                 </property>
+                </widget>
                </item>
                <item>
-                <widget class="QSpinBox" name="diffuseBSpin"/>
+                <widget class="QSpinBox" name="diffuseBSpin">
+                 <property name="maximum">
+                  <number>255</number>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>
@@ -349,13 +397,25 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QSpinBox" name="specularRSpin"/>
+                <widget class="QSpinBox" name="specularRSpin">
+                 <property name="maximum">
+                  <number>255</number>
+                 </property>
+                </widget>
                </item>
                <item>
-                <widget class="QSpinBox" name="specularGSpin"/>
+                <widget class="QSpinBox" name="specularGSpin">
+                 <property name="maximum">
+                  <number>255</number>
+                 </property>
+                </widget>
                </item>
                <item>
-                <widget class="QSpinBox" name="specularBSpin"/>
+                <widget class="QSpinBox" name="specularBSpin">
+                 <property name="maximum">
+                  <number>255</number>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>

@@ -38,8 +38,17 @@ private slots:
     void on_gizmoType_activated(const QString &arg1);
     void on_cubec_res_valueChanged(int arg1);
     void on_editionToggle_clicked();
-
     void on_lightCreator_activated(const QString &arg1);
+    void on_ambientSpin_valueChanged();
+    void on_diffuseSpin_valueChanged();
+    void on_specularSpin_valueChanged();
+    void on_constantSpin_valueChanged(double arg1);
+    void on_linearSpin_valueChanged(double arg1);
+    void on_quadraticSpin_valueChanged(double arg1);
+
+    void on_innercutSpin_valueChanged(double arg1);
+
+    void on_outercutSpin_valueChanged(double arg1);
 
 private:
     void updateSettings(ModelType type);

@@ -23,12 +23,13 @@ public:
             ) : Light(ambient, diffuse, specular),
                 m_position { pos },
                 m_direction { dir},
+                m_baseDirection { dir},
                 m_innerCutoff { innerCutoff },
                 m_outerCutoff { outerCutoff },
                 m_constant { constant },
                 m_linear { linear },
                 m_quadratic { quadratic }
-    {}
+    { setupModel(); }
 
     LightType getType() const override { return SPOT_LIGHT; }
 
@@ -38,8 +39,11 @@ public:
     void update() override;
 
 private:
+    void setupModel() override;
+
     glm::vec3 m_position;
     glm::vec3 m_direction;
+    glm::vec3 m_baseDirection;
     float m_innerCutoff;
     float m_outerCutoff;
     float m_constant;

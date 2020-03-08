@@ -24,7 +24,7 @@ public:
     void update() override;
 
 private:
-    void setupModel() override { m_model.reset(new Model({Vertex{{0.f, 0.f, 0.f},{},{}}, Vertex{m_direction,{},{}}}, {0, 1})); }
+    void setupModel() override;
 
     glm::vec3 m_direction;
     glm::vec3 m_basedirection;

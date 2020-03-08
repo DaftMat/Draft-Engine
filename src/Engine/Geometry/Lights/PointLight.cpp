@@ -43,5 +43,5 @@ void PointLight::setupModel() {
         indices.push_back(i+1);
     }
 
-    m_model.reset(new Model(vertices, indices, true));
+    m_model->reset(vertices, indices);
 }
