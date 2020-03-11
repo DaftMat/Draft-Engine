@@ -17,9 +17,7 @@ enum LightType {
 union LightParam {
     struct point_param {
         glm::vec3 position;
-        GLfloat constant;
-        GLfloat linear;
-        GLfloat quadratic;
+        GLfloat intensity;
     }pointlight;
     struct dir_param {
         glm::vec3 direction;
@@ -31,15 +29,13 @@ union LightParam {
         glm::vec3 rotations; //for direction transformation
         GLfloat innerCutoff;
         GLfloat outerCutoff;
-        GLfloat constant;
-        GLfloat linear;
-        GLfloat quadratic;
+        GLfloat intensity;
     }spotlight;
 };
 
 class Light {
 public:
-    Light(const glm::vec3 &ambient, const glm::vec3 &diffuse, const glm::vec3 &specular);
+    Light(const glm::vec3 &color);
     virtual ~Light() { m_model.reset(); }
 
     Light(const Light &) = delete;
@@ -51,12 +47,8 @@ public:
     virtual LightParam getParams() const = 0;
     virtual void editLight(const LightParam &params) = 0;
 
-    const glm::vec3 & ambient() const { return m_ambient; }
-    glm::vec3 & ambient() { return m_ambient; }
-    const glm::vec3 & diffuse() const { return m_diffuse; }
-    glm::vec3 & diffuse() { return m_diffuse; }
-    const glm::vec3 & specular() const { return m_specular; }
-    glm::vec3 & specular() { return m_specular; }
+    const glm::vec3 & color() const { return m_color; }
+    glm::vec3 & color() { return m_color; }
 
     const Model& model() const { return *m_model; }
     Model& model() { return *m_model; }
@@ -70,9 +62,7 @@ protected:
 private:
     virtual void setupModel() {};
 
-    glm::vec3 m_ambient;
-    glm::vec3 m_diffuse;
-    glm::vec3 m_specular;
+    glm::vec3 m_color;
 };
 
 

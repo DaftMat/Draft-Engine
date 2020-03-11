@@ -7,17 +7,13 @@
 LightParam PointLight::getParams() const {
     LightParam result {};
     result.pointlight.position = m_position;
-    result.pointlight.constant = m_constant;
-    result.pointlight.linear = m_linear;
-    result.pointlight.quadratic = m_quadratic;
+    result.pointlight.intensity = m_intensity;
     return result;
 }
 
 void PointLight::editLight(const LightParam &params) {
     m_position = params.pointlight.position;
-    m_constant = params.pointlight.constant;
-    m_linear = params.pointlight.linear;
-    m_quadratic = params.pointlight.quadratic;
+    m_intensity = params.pointlight.intensity;
     m_model->setPosition(m_position);
 }
 

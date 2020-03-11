@@ -52,7 +52,7 @@
       </property>
       <property name="minimumSize">
        <size>
-        <width>300</width>
+        <width>360</width>
         <height>0</height>
        </size>
       </property>
@@ -183,117 +183,58 @@
              <number>0</number>
             </property>
             <item row="0" column="0">
-             <widget class="QLabel" name="constantLabel">
+             <widget class="QLabel" name="intensityLabel">
               <property name="text">
-               <string>Constant :</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="linearLabel">
-              <property name="text">
-               <string>Linear :</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="quadraticLabel">
-              <property name="text">
-               <string>Quadratic :</string>
+               <string>Intensity :</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="constantSpin">
+             <widget class="QDoubleSpinBox" name="intensitySpin">
               <property name="decimals">
-               <number>3</number>
+               <number>2</number>
               </property>
               <property name="singleStep">
-               <double>0.010000000000000</double>
+               <double>1.000000000000000</double>
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="linearSpin">
-              <property name="decimals">
-               <number>3</number>
-              </property>
-              <property name="singleStep">
-               <double>0.001000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QDoubleSpinBox" name="quadraticSpin">
-              <property name="decimals">
-               <number>3</number>
-              </property>
-              <property name="singleStep">
-               <double>0.001000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="0">
+            <item row="1" column="0">
              <widget class="QLabel" name="innercutLabel">
               <property name="text">
                <string>Inner Cutoff :</string>
               </property>
              </widget>
             </item>
-            <item row="3" column="1">
+            <item row="1" column="1">
              <widget class="QDoubleSpinBox" name="innercutSpin">
               <property name="maximum">
                <double>180.000000000000000</double>
               </property>
              </widget>
             </item>
-            <item row="4" column="0">
+            <item row="2" column="0">
              <widget class="QLabel" name="outercutLabel">
               <property name="text">
                <string>Outer Cutoff :</string>
               </property>
              </widget>
             </item>
-            <item row="4" column="1">
+            <item row="2" column="1">
              <widget class="QDoubleSpinBox" name="outercutSpin">
               <property name="maximum">
                <double>180.000000000000000</double>
               </property>
              </widget>
             </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QWidget" name="widget_5" native="true">
-           <layout class="QFormLayout" name="formLayout_6">
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item row="0" column="0">
-             <widget class="QLabel" name="colorLightLabel">
+            <item row="3" column="0">
+             <widget class="QLabel" name="colorLabel">
               <property name="text">
-               <string>Light Colors :</string>
+               <string>Color :</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="ambientLabel">
-              <property name="text">
-               <string>Ambient :</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
+            <item row="3" column="1">
              <widget class="QWidget" name="widget_6" native="true">
               <layout class="QHBoxLayout" name="horizontalLayout_3">
                <property name="leftMargin">
@@ -309,7 +250,7 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QSpinBox" name="ambientRSpin">
+                <widget class="QSpinBox" name="colorRSpin">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -322,106 +263,14 @@
                 </widget>
                </item>
                <item>
-                <widget class="QSpinBox" name="ambientGSpin">
+                <widget class="QSpinBox" name="colorGSpin">
                  <property name="maximum">
                   <number>255</number>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QSpinBox" name="ambientBSpin">
-                 <property name="maximum">
-                  <number>255</number>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="diffuseLabel">
-              <property name="text">
-               <string>Diffuse :</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QWidget" name="widget_7" native="true">
-              <layout class="QHBoxLayout" name="horizontalLayout_5">
-               <property name="leftMargin">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <property name="rightMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
-                <number>0</number>
-               </property>
-               <item>
-                <widget class="QSpinBox" name="diffuseRSpin">
-                 <property name="maximum">
-                  <number>255</number>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QSpinBox" name="diffuseGSpin">
-                 <property name="maximum">
-                  <number>255</number>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QSpinBox" name="diffuseBSpin">
-                 <property name="maximum">
-                  <number>255</number>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item row="3" column="0">
-             <widget class="QLabel" name="specularLabel">
-              <property name="text">
-               <string>Specular :</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="1">
-             <widget class="QWidget" name="widget_8" native="true">
-              <layout class="QHBoxLayout" name="horizontalLayout_6">
-               <property name="leftMargin">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <property name="rightMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
-                <number>0</number>
-               </property>
-               <item>
-                <widget class="QSpinBox" name="specularRSpin">
-                 <property name="maximum">
-                  <number>255</number>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QSpinBox" name="specularGSpin">
-                 <property name="maximum">
-                  <number>255</number>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QSpinBox" name="specularBSpin">
+                <widget class="QSpinBox" name="colorBSpin">
                  <property name="maximum">
                   <number>255</number>
                  </property>

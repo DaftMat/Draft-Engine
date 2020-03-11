@@ -7,26 +7,22 @@ in vec2 fragTex;
 
 struct Material {
     vec3 albedo;
+    vec3 diffuse;
     float metalness;
     float roughness;
     float ao;
+    float ior;
 };
 
 struct PointLight {
     vec3 position;
-    float constant;
-    float linear;
-    float quadratic;
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
+    float intensity;
+    vec3 color;
 };
 
 struct DirLight {
     vec3 direction;
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
+    vec3 color;
 };
 
 struct SpotLight {
@@ -34,12 +30,8 @@ struct SpotLight {
     vec3 direction;
     float innerCutoff;
     float outerCutoff;
-    float constant;
-    float linear;
-    float quadratic;
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
+    float intensity;
+    vec3 color;
 };
 
 #define MAX_LIGHTS 32
@@ -59,14 +51,17 @@ uniform Material material;
 
 const float PI = 3.14159265359;
 
-float distributionGGX(vec3 N, vec3 H, float roughness);
-float geometrySchlickGGX(float NdotV, float roughness);
-float geometrySmith(vec3 N, vec3 V, vec3 L, float roughness);
-vec3 fresnelSchlick(float cosTheta, vec3 F0);
-
-vec3 calcPointLight(PointLight light, vec3 N, vec3 fragPos, vec3 V);
-vec3 calcDirLight(DirLight light, vec3 N, vec3 V);
-vec3 calcSpotLight(SpotLight light, vec3 N, vec3 fragPos, vec3 V);
+float RDM_chiplus(float c) { return (c > 0.f) ? 1.f : 0.f; }
+float RDM_Beckmann(float NdotH, float alpha);
+float RDM_Fresnel(float LdotH, float extIOR, float intIOR);
+float RDM_G1(float DdotH, float DdotN, float alpha);
+float RDM_Smith(float LdotH, float LdotN, float VdotH, float VdotN, float alpha);
+vec3 RDM_bsdf_s(float LdotH, float NdotH, float VdotH, float LdotN, float VdotN);
+vec3 RDM_bsdf_d();
+vec3 RDM_bsdf(float LdotH, float NdotH, float VdotH, float LdotN, float VdotN);
+vec3 shade(PointLight light, vec3 N, vec3 V, vec3 fragPos);
+vec3 shade(DirLight light, vec3 N, vec3 V);
+vec3 shade(SpotLight light, vec3 N, vec3 V, vec3 fragPos);
 
 void main() {
     vec3 N = normalize(fragNormal);
@@ -75,122 +70,119 @@ void main() {
 
     //treat all lights
     for (int i = 0 ; i < num_point_light ; ++i) {
-        Lo += calcPointLight(point_light[i], N, fragPos, V);
+        Lo += shade(point_light[i], N, V, fragPos);
     }
 
     for (int i = 0 ; i < num_dir_light ; ++i) {
-        Lo += calcDirLight(dir_light[i], N, V);
+        Lo += shade(dir_light[i], N, V);
     }
 
     for (int i = 0 ; i < num_spot_light ; ++i) {
-        Lo += calcSpotLight(spot_light[i], N, fragPos, V);
+        Lo += shade(spot_light[i], N, V, fragPos);
     }
 
-    vec3 ambient = vec3(0.03) * material.albedo * material.ao;
+    vec3 ambient = vec3(0.03) * material.diffuse * material.ao;
     vec3 color = ambient + Lo;
     color = color / (color + vec3(1.0));
     color = pow(color, vec3(1.0/2.2));
     fragColor = vec4(color, 1.0);
 }
 
-float distributionGGX(vec3 N, vec3 H, float roughness) {
-    float a = roughness * roughness;
-    float a2 = a * a;
-    float NdotH = max(dot(N, H), 0.0);
-    float NdotH2 = NdotH * NdotH;
-
-    float b = (NdotH2 * (a2 - 1.0) + 1.0);
-    b = PI * b * b;
-    return a2 / max(b, 0.001);
+float RDM_Beckmann(float NdotH, float alpha) {
+    float cosS = NdotH * NdotH;
+    float tanS = (1.f - cosS) * 1.f / cosS;
+    float alphaS = alpha * alpha;
+    float ret = RDM_chiplus(NdotH) * (exp(-tanS / alphaS) * (1.f / (PI * alphaS * (cosS * cosS))));
+    return ret;
 }
 
-float geometrySchlickGGX(float NdotV, float roughness) {
-    float r = roughness + 1.0;
-    float k = (r * r) / 8.0;
-    float a = NdotV * (1.0 - k) + k;
-    return NdotV / a;
+float F0 = material.metalness;
+
+float RDM_Fresnel(float LdotH, float extIOR, float intIOR) {
+    float sinSt = ((extIOR * extIOR) / (intIOR * intIOR)) * (1.f - LdotH * LdotH);
+    if (sinSt > 1.f)    return 1.f;
+    float cosT = sqrt(1.f - sinSt);
+    float s1 = (extIOR * LdotH - intIOR * cosT);
+    float s2 = (extIOR * LdotH + intIOR * cosT);
+    float p1 = (extIOR * cosT - intIOR * LdotH);
+    float p2 = (extIOR * cosT + intIOR * LdotH);
+    float Rs = (s1 * s1) / (s2 * s2);
+    float Rp = (p1 * p1) / (p2 * p2);
+    return F0 + (1.f - F0) * 0.5f * (Rs + Rp);
 }
 
-float geometrySmith(vec3 N, vec3 V, vec3 L, float roughness) {
-    float NdotV = max(dot(N, V), 0.0);
-    float NdotL = max(dot(N, L), 0.0);
-    float ggx2 = geometrySchlickGGX(NdotV, roughness);
-    float ggx1 = geometrySchlickGGX(NdotL, roughness);
-    return ggx1 * ggx2;
+float RDM_G1(float DdotH, float DdotN, float alpha) {
+    float tanTheta = sqrt(1.f-(DdotN*DdotN))*(1.0f/DdotN);
+    float b = 1.f/(alpha * tanTheta);
+    float k = DdotH * (1.f/DdotN);
+    float G1 = RDM_chiplus(k);
+    if (b < 1.6f){
+        G1 *= (3.535f*b + 2.181f*b*b)/(1.0f+2.276f*b+2.577f*b*b);
+    }
+    return G1;
 }
 
-vec3 fresnelSchlick(float cosTheta, vec3 F0) {
-    return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
+float RDM_Smith(float LdotH, float LdotN, float VdotH, float VdotN, float alpha) {
+    return RDM_G1(LdotH, LdotN, alpha) * RDM_G1(VdotH, VdotN, alpha);
 }
 
-vec3 F0 = mix(vec3(0.04), material.albedo, material.metalness);
+vec3 RDM_bsdf_s(float LdotH, float NdotH, float VdotH, float LdotN, float VdotN) {
+    float D = RDM_Beckmann(NdotH, material.roughness);
+    float F = RDM_Fresnel(LdotH, 1.f, material.ior);
+    float G = RDM_Smith(LdotH, LdotN, VdotH, VdotN, material.roughness);
+    return material.albedo * ((D*F*G)/(4.f*LdotN*VdotN));
+}
 
-vec3 calcPointLight(PointLight light, vec3 N, vec3 fragPos, vec3 V) {
+vec3 RDM_bsdf_d() {
+    return (material.diffuse * (1.f / PI)) * (1.f - material.metalness);
+}
+
+vec3 RDM_bsdf(float LdotH, float NdotH, float VdotH, float LdotN, float VdotN) {
+    return RDM_bsdf_s(LdotH, NdotH, VdotH, LdotN, VdotN) + RDM_bsdf_d();
+}
+
+vec3 shade(PointLight light, vec3 N, vec3 V, vec3 fragPos) {
     vec3 L = normalize(light.position - fragPos);
     vec3 H = normalize(V + L);
     float distance = length(light.position - fragPos);
-    float attenuation = 1.0 / (distance * distance);
-    vec3 radiance = light.specular * attenuation;
+    float attenuation = light.intensity / (distance * distance);
 
-    float NDF = distributionGGX(N, H, material.roughness);
-    float G = geometrySmith(N, V, L, material.roughness);
-    vec3 F = fresnelSchlick(clamp(dot(H, V), 0.0, 1.0), F0);
+    float LdotH = dot(L, H);
+    float NdotH = dot(N, H);
+    float VdotH = dot(V, H);
+    float LdotN = dot(L, N);
+    float VdotN = dot(V, N);
 
-    vec3 a = F * NDF * G;
-    float b = 4 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.001;
-    vec3 specular = a / b;
-
-    vec3 kS = F;
-    vec3 kD = vec3(1.0) - kS;
-    kD *= 1.0 - material.metalness;
-    float NdotL = max(dot(N, L), 0.0);
-
-    return (kD * material.albedo / PI + specular) * radiance * NdotL;
+    return light.color * RDM_bsdf(LdotH, NdotH, VdotH, LdotN, VdotN) * attenuation * max(LdotN, 0.f);
 }
 
-vec3 calcDirLight(DirLight light, vec3 N, vec3 V) {
+vec3 shade(DirLight light, vec3 N, vec3 V) {
     vec3 L = normalize(-light.direction);
     vec3 H = normalize(V + L);
-    vec3 radiance = light.specular;
 
-    float NDF = distributionGGX(N, H, material.roughness);
-    float G = geometrySmith(N, V, L, material.roughness);
-    vec3 F = fresnelSchlick(clamp(dot(H, V), 0.0, 1.0), F0);
+    float LdotH = dot(L, H);
+    float NdotH = dot(N, H);
+    float VdotH = dot(V, H);
+    float LdotN = dot(L, N);
+    float VdotN = dot(V, N);
 
-    vec3 a = NDF * G * F;
-    float b = 4 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.001;
-    vec3 specular = a / b;
-
-    vec3 kS = F;
-    vec3 kD = vec3(1.0) - kS;
-    kD *= 1.0 - material.metalness;
-    float NdotL = max(dot(N, L), 0.0);
-
-    return (kD * material.albedo / PI + specular) * radiance * NdotL;
+    return light.color * RDM_bsdf(LdotH, NdotH, VdotH, LdotN, VdotN) * max(LdotN, 0.f);
 }
 
-vec3 calcSpotLight(SpotLight light, vec3 N, vec3 fragPos, vec3 V) {
+vec3 shade(SpotLight light, vec3 N, vec3 V, vec3 fragPos) {
     vec3 L = normalize(light.position - fragPos);
     vec3 H = normalize(V + L);
     float distance = length(light.position - fragPos);
-    float attenuation = 1.0 / (distance * distance);
+    float attenuation = light.intensity / (distance * distance);
     float theta = dot(L, normalize(-light.direction));
     float epsilon = light.innerCutoff - light.outerCutoff;
     float intensity = clamp((theta - light.outerCutoff) / epsilon, 0.0, 1.0);
-    vec3 radiance = light.specular * attenuation * intensity;
 
-    float NDF = distributionGGX(N, H, material.roughness);
-    float G = geometrySmith(N, V, L, material.roughness);
-    vec3 F = fresnelSchlick(clamp(dot(H, V), 0.0, 1.0), F0);
+    float LdotH = dot(L, H);
+    float NdotH = dot(N, H);
+    float VdotH = dot(V, H);
+    float LdotN = dot(L, N);
+    float VdotN = dot(V, N);
 
-    vec3 a = NDF * G * F;
-    float b = 4 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.001;
-    vec3 specular = a / b;
-
-    vec3 kS = F;
-    vec3 kD = vec3(1.0) - kS;
-    kD *= 1.0 - material.metalness;
-    float NdotL = max(dot(N, L), 0.0);
-
-    return (kD * material.albedo / PI + specular) * radiance * NdotL;
+    return light.color * RDM_bsdf(LdotH, NdotH, VdotH, LdotN, VdotN) * attenuation * intensity * max(LdotN, 0.f);
 }

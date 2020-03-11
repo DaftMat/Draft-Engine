@@ -14,21 +14,15 @@ public:
             const glm::vec3 &dir=glm::vec3(0.0f, -1.f, 0.0f),
             float innerCutoff=12.5f,
             float outerCutoff=15.0f,
-            float constant=1.0f,
-            float linear=0.09f,
-            float quadratic=0.032f,
-            const glm::vec3 &ambient=glm::vec3(0.05f, 0.05f, 0.05f),
-            const glm::vec3 &diffuse=glm::vec3(0.8f, 0.8f, 0.8f),
-            const glm::vec3 &specular=glm::vec3(1.f, 1.0f, 1.0f)
-            ) : Light(ambient, diffuse, specular),
+            float intensity=1.0f,
+            const glm::vec3 &color=glm::vec3(0.8f, 0.8f, 0.8f))
+            : Light(color),
                 m_position { pos },
                 m_direction { dir},
                 m_baseDirection { dir},
                 m_innerCutoff { innerCutoff },
                 m_outerCutoff { outerCutoff },
-                m_constant { constant },
-                m_linear { linear },
-                m_quadratic { quadratic }
+                m_intensity { intensity }
     { setupModel(); }
 
     LightType getType() const override { return SPOT_LIGHT; }
@@ -46,9 +40,7 @@ private:
     glm::vec3 m_baseDirection;
     float m_innerCutoff;
     float m_outerCutoff;
-    float m_constant;
-    float m_linear;
-    float m_quadratic;
+    float m_intensity;
 };
 
 

@@ -54,7 +54,6 @@ public:
     int getSelectedLightIndex() const { return m_selectedlight; }
     void setSelectedLight(GLuint index) { m_selectedlight = glm::max(index, GLuint(m_models.size() - 1)); m_selectedmodel = -1; }
     unsigned long getNumLights() const { return m_lights.size(); }
-    void setLightParams(const LightParam &params, const glm::vec3 &ambient, const glm::vec3 &diffuse, const glm::vec3 &specular);
 
     bool mouse_click(const Ray &ray, float xpos, float ypos);
     void mouse_move(float xpos, float ypos, const glm::mat4 &projection, const glm::mat4 &view);

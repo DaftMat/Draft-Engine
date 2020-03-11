@@ -10,10 +10,8 @@
 class DirLight : public Light {
 public:
     explicit DirLight(const glm::vec3 &dir=glm::vec3(0.f, -1.0f, 0.f),
-             const glm::vec3 &ambient=glm::vec3(0.05f, 0.05f, 0.05f),
-             const glm::vec3 &diffuse=glm::vec3(0.6f, 0.6f, 0.6f),
-             const glm::vec3 &specular=glm::vec3(0.8f, 0.8f, 0.8f))
-             : Light(ambient, diffuse, specular), m_direction { dir }, m_basedirection { dir }
+             const glm::vec3 &color=glm::vec3(0.8f, 0.8f, 0.8f))
+             : Light(color), m_direction { dir }, m_basedirection { dir }
     { setupModel(); }
 
     LightType getType() const override { return DIR_LIGHT; }

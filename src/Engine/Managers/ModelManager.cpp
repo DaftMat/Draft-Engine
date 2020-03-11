@@ -306,10 +306,3 @@ void ModelManager::switchGizmo() {
             break;
     }
 }
-
-void ModelManager::setLightParams(const LightParam &params, const glm::vec3 &ambient, const glm::vec3 &diffuse, const glm::vec3 &specular) {
-    m_lights[m_selectedlight]->editLight(params);
-    m_lights[m_selectedlight]->ambient() = ambient;
-    m_lights[m_selectedlight]->diffuse() = diffuse;
-    m_lights[m_selectedlight]->specular() = specular;
-}
