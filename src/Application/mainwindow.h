@@ -43,6 +43,12 @@ private slots:
     void on_innercutSpin_valueChanged(double arg1);
     void on_outercutSpin_valueChanged(double arg1);
     void on_intensitySpin_valueChanged(double arg1);
+    void on_albedoSpin_valueChanged();
+    void on_specularSpin_valueChanged();
+    void on_roughnessSpin_valueChanged(double arg1);
+    void on_metalSpin_valueChanged(double arg1);
+    void on_aoSpin_valueChanged(double arg1);
+    void on_iorSpin_valueChanged(double arg1);
 
 private:
     void updateSettings(ModelType type);

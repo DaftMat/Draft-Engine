@@ -97,6 +97,8 @@ public:
     virtual ModelParam getParams() const { return ModelParam {}; }
 
     void setMaterial(const Material &material) { m_material = material; }
+    const Material& material() const { return m_material; }
+    Material& material() { return m_material; }
 
     Utils::Aabb aabb() const;
     Obb obb() const { return Obb(base_aabb(), transform()); }

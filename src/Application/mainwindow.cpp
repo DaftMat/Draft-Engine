@@ -40,6 +40,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->colorGSpin, SIGNAL(valueChanged(int)), this, SLOT(on_colorSpin_valueChanged()));
     connect(ui->colorBSpin, SIGNAL(valueChanged(int)), this, SLOT(on_colorSpin_valueChanged()));
 
+    connect(ui->albedoRspin, SIGNAL(valueChanged(int)), this, SLOT(on_albedoSpin_valueChanged()));
+    connect(ui->albedoGspin, SIGNAL(valueChanged(int)), this, SLOT(on_albedoSpin_valueChanged()));
+    connect(ui->albedoBspin, SIGNAL(valueChanged(int)), this, SLOT(on_albedoSpin_valueChanged()));
+    connect(ui->specularRspin, SIGNAL(valueChanged(int)), this, SLOT(on_specularSpin_valueChanged()));
+    connect(ui->specularGspin, SIGNAL(valueChanged(int)), this, SLOT(on_specularSpin_valueChanged()));
+    connect(ui->specularBspin, SIGNAL(valueChanged(int)), this, SLOT(on_specularSpin_valueChanged()));
+
     connect(ui->m_openglwidget, &MyOpenGLWidget::selectionChanged, this, &MainWindow::on_selectionChanged);
 
     unset_settings();
@@ -170,6 +177,19 @@ void MainWindow::objectSelection() {
             ui->object_settings_label->setText("Model Settings");
             break;
     }
+
+    ui->materialSettingsWidget->setEnabled(true);
+    Material material = ui->m_openglwidget->getSelectedObject()->material();
+    ui->albedoRspin->setValue(int(material.albedo().r * 255.f));
+    ui->albedoGspin->setValue(int(material.albedo().g * 255.f));
+    ui->albedoBspin->setValue(int(material.albedo().b * 255.f));
+    ui->specularRspin->setValue(int(material.specular().r * 255.f));
+    ui->specularGspin->setValue(int(material.specular().g * 255.f));
+    ui->specularBspin->setValue(int(material.specular().b * 255.f));
+    ui->roughnessSpin->setValue(material.roughness());
+    ui->metalSpin->setValue(material.metalness());
+    ui->aoSpin->setValue(material.ambientOcclusion());
+    ui->iorSpin->setValue(material.IOR());
 }
 
 void MainWindow::lightSelection() {
@@ -360,6 +380,8 @@ void MainWindow::unset_settings() {
     ui->innercutLabel->setVisible(false);
     ui->outercutSpin->setVisible(false);
     ui->outercutLabel->setVisible(false);
+    //material settings
+    ui->materialSettingsWidget->setEnabled(false);
 }
 
 void MainWindow::on_deleteButton_clicked()
@@ -443,5 +465,61 @@ void MainWindow::on_intensitySpin_valueChanged(double arg1)
         break;
     }
     ui->m_openglwidget->getSelectedLight()->editLight(params);
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_albedoSpin_valueChanged() {
+    if (m_state == SELECTION) return;
+    if (ui->m_openglwidget->getSelectedObject() == nullptr) return;
+    glm::vec3 new_albedo {
+        ui->albedoRspin->value() / 255.f,
+        ui->albedoGspin->value() / 255.f,
+        ui->albedoBspin->value() / 255.f
+    };
+    ui->m_openglwidget->getSelectedObject()->material().albedo() = new_albedo;
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_specularSpin_valueChanged() {
+    if (m_state == SELECTION) return;
+    if (ui->m_openglwidget->getSelectedObject() == nullptr) return;
+    glm::vec3 new_specular {
+        ui->specularRspin->value() / 255.f,
+        ui->specularGspin->value() / 255.f,
+        ui->specularBspin->value() / 255.f
+    };
+    ui->m_openglwidget->getSelectedObject()->material().specular() = new_specular;
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_roughnessSpin_valueChanged(double arg1)
+{
+    if (m_state == SELECTION) return;
+    if (ui->m_openglwidget->getSelectedObject() == nullptr) return;
+    ui->m_openglwidget->getSelectedObject()->material().roughness() = float(arg1);
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_metalSpin_valueChanged(double arg1)
+{
+    if (m_state == SELECTION) return;
+    if (ui->m_openglwidget->getSelectedObject() == nullptr) return;
+    ui->m_openglwidget->getSelectedObject()->material().metalness() = float(arg1);
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_aoSpin_valueChanged(double arg1)
+{
+    if (m_state == SELECTION) return;
+    if (ui->m_openglwidget->getSelectedObject() == nullptr) return;
+    ui->m_openglwidget->getSelectedObject()->material().ambientOcclusion() = float(arg1);
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_iorSpin_valueChanged(double arg1)
+{
+    if (m_state == SELECTION) return;
+    if (ui->m_openglwidget->getSelectedObject() == nullptr) return;
+    ui->m_openglwidget->getSelectedObject()->material().IOR() = float(arg1);
     ui->m_openglwidget->update();
 }

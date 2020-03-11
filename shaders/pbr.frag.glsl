@@ -7,7 +7,7 @@ in vec2 fragTex;
 
 struct Material {
     vec3 albedo;
-    vec3 diffuse;
+    vec3 specular;
     float metalness;
     float roughness;
     float ao;
@@ -81,7 +81,7 @@ void main() {
         Lo += shade(spot_light[i], N, V, fragPos);
     }
 
-    vec3 ambient = vec3(0.03) * material.diffuse * material.ao;
+    vec3 ambient = vec3(0.03) * material.albedo * material.ao;
     vec3 color = ambient + Lo;
     color = color / (color + vec3(1.0));
     color = pow(color, vec3(1.0/2.2));
@@ -96,7 +96,7 @@ float RDM_Beckmann(float NdotH, float alpha) {
     return ret;
 }
 
-float F0 = mix(0.04, length(material.diffuse), material.metalness);
+float F0 = mix(0.04, length(material.albedo), material.metalness);
 
 float RDM_Fresnel(float LdotH, float extIOR, float intIOR) {
     float sinSt = ((extIOR * extIOR) / (intIOR * intIOR)) * (1.f - LdotH * LdotH);
@@ -130,11 +130,11 @@ vec3 RDM_bsdf_s(float LdotH, float NdotH, float VdotH, float LdotN, float VdotN)
     float D = RDM_Beckmann(NdotH, material.roughness);
     float F = RDM_Fresnel(LdotH, 1.f, material.ior);
     float G = RDM_Smith(LdotH, LdotN, VdotH, VdotN, material.roughness);
-    return material.albedo * ((D*F*G)/(4.f*LdotN*VdotN));
+    return material.specular * ((D*F*G)/(4.f*LdotN*VdotN));
 }
 
 vec3 RDM_bsdf_d() {
-    return (material.diffuse * (1.f / PI)) * (1.f - material.metalness);
+    return (material.albedo * (1.f / PI)) * (1.f - material.metalness);
 }
 
 vec3 RDM_bsdf(float LdotH, float NdotH, float VdotH, float LdotN, float VdotN) {

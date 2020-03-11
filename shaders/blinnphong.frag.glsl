@@ -2,7 +2,7 @@
 out vec4 fragColor;
 
 struct Material {
-    vec3 diffuse;
+    vec3 specular;
     vec3 albedo;
     float shininess;
 };
@@ -51,8 +51,8 @@ vec3 calcDirLight(DirLight light, vec3 normal, vec3 viewDir);
 vec3 calcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 
 void main() {
-    default_material.diffuse = vec3(0.6);
-    default_material.albedo = vec3(0.9);
+    default_material.albedo = vec3(0.6);
+    default_material.specular = vec3(0.9);
     default_material.shininess = 32.0;
 
     vec3 normal = normalize(fragNormal);
@@ -71,7 +71,7 @@ void main() {
         resultColor += calcSpotLight(spot_light[i], normal, fragPos, viewDir);
     }
 
-    vec3 ambient = vec3(0.03) * default_material.diffuse;
+    vec3 ambient = vec3(0.03) * default_material.albedo;
     vec3 color = ambient + resultColor;
     color = color / (color + vec3(1.0));
     color = pow(color, vec3(1.0/2.2));
@@ -85,8 +85,8 @@ vec3 calcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir) {
     float spec = pow(max(dot(normal, halfwayDir), 0.0), default_material.shininess);
     float distance = length(light.position - fragPos);
     float attenuation = light.intensity / (distance * distance);
-    vec3 diffuse = light.color * diff * vec3(default_material.diffuse) * attenuation;
-    vec3 specular = light.color * spec * vec3(default_material.albedo) * attenuation;
+    vec3 diffuse = light.color * diff * vec3(default_material.albedo) * attenuation;
+    vec3 specular = light.color * spec * vec3(default_material.specular) * attenuation;
     return diffuse + specular;
 }
 
@@ -95,8 +95,8 @@ vec3 calcDirLight(DirLight light, vec3 normal, vec3 viewDir){
     float diff = max(dot(normal, lightDir), 0.0);
     vec3 halfwayDir = normalize(lightDir + viewDir);
     float spec = pow(max(dot(normal, halfwayDir), 0.0), default_material.shininess);
-    vec3 diffuse = light.color * diff * vec3(default_material.diffuse);
-    vec3 specular = light.color * spec * vec3(default_material.albedo);
+    vec3 diffuse = light.color * diff * vec3(default_material.albedo);
+    vec3 specular = light.color * spec * vec3(default_material.specular);
     return diffuse + specular;
 }
 
@@ -110,8 +110,8 @@ vec3 calcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir) {
     float theta = dot(lightDir, normalize(-light.direction));
     float epsilon = light.innerCutoff - light.outerCutoff;
     float intensity = clamp((theta - light.outerCutoff) / epsilon, 0.0, 1.0);;
-    vec3 diffuse = light.color * diff * vec3(default_material.diffuse);
-    vec3 specular = light.color * spec * vec3(default_material.albedo);
+    vec3 diffuse = light.color * diff * vec3(default_material.albedo);
+    vec3 specular = light.color * spec * vec3(default_material.specular);
     diffuse *= attenuation * intensity;
     specular *= attenuation * intensity;
     return diffuse + specular;
