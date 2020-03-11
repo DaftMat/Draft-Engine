@@ -96,7 +96,7 @@ float RDM_Beckmann(float NdotH, float alpha) {
     return ret;
 }
 
-float F0 = material.metalness;
+float F0 = mix(0.04, length(material.diffuse), material.metalness);
 
 float RDM_Fresnel(float LdotH, float extIOR, float intIOR) {
     float sinSt = ((extIOR * extIOR) / (intIOR * intIOR)) * (1.f - LdotH * LdotH);

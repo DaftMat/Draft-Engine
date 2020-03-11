@@ -9,7 +9,7 @@
 
 class Material {
 public:
-    Material() : m_albedo { 0.9f, 0.9f, 0.9f }, m_diffuse { 0.8f, 0.f, 0.f }, m_metalness { 0.9f }, m_roughness { 0.1f }, m_ao { 1.f }, m_ior { 1.777 } {}
+    Material() : m_albedo { 0.9f, 0.9f, 0.9f }, m_diffuse { 0.8f, 0.f, 0.8f }, m_metalness { 0.1f }, m_roughness { 0.1f }, m_ao { 1.f }, m_ior { 1.777 } {}
     Material(const glm::vec3 &albedo, const glm::vec3 &diffuse, float metalness, float roughness, float ao, float ior) :
     m_albedo { albedo },
     m_diffuse { diffuse },
