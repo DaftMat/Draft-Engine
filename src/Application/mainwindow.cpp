@@ -187,7 +187,6 @@ void MainWindow::objectSelection() {
     ui->specularGspin->setValue(int(material.specular().g * 255.f));
     ui->specularBspin->setValue(int(material.specular().b * 255.f));
     ui->roughnessSpin->setValue(material.roughness());
-    ui->metalSpin->setValue(material.metalness());
     ui->aoSpin->setValue(material.ambientOcclusion());
     ui->iorSpin->setValue(material.IOR());
 }
@@ -497,14 +496,6 @@ void MainWindow::on_roughnessSpin_valueChanged(double arg1)
     if (m_state == SELECTION) return;
     if (ui->m_openglwidget->getSelectedObject() == nullptr) return;
     ui->m_openglwidget->getSelectedObject()->material().roughness() = float(arg1);
-    ui->m_openglwidget->update();
-}
-
-void MainWindow::on_metalSpin_valueChanged(double arg1)
-{
-    if (m_state == SELECTION) return;
-    if (ui->m_openglwidget->getSelectedObject() == nullptr) return;
-    ui->m_openglwidget->getSelectedObject()->material().metalness() = float(arg1);
     ui->m_openglwidget->update();
 }
 

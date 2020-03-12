@@ -9,11 +9,10 @@
 
 class Material {
 public:
-    Material() : m_albedo { 0.8f, 0.f, 0.8f }, m_specular { 0.9f, 0.9f, 0.9f }, m_metalness { 0.1f }, m_roughness { 0.1f }, m_ao { 1.f }, m_ior { 1.777 } {}
-    Material(const glm::vec3 &albedo, const glm::vec3 &specular, float metalness, float roughness, float ao, float ior) :
+    Material() : m_albedo { 0.8f, 0.f, 0.8f }, m_specular { 0.9f, 0.9f, 0.9f }, m_roughness { 0.1f }, m_ao { 1.f }, m_ior { 1.777 } {}
+    Material(const glm::vec3 &albedo, const glm::vec3 &specular, float roughness, float ao, float ior) :
     m_albedo { albedo },
     m_specular { specular },
-    m_metalness { metalness },
     m_roughness { roughness },
     m_ao { ao }, m_ior { ior } {}
 
@@ -21,8 +20,6 @@ public:
     const glm::vec3 &albedo() const { return m_albedo; }
     glm::vec3 &specular() { return m_specular; }
     const glm::vec3 &specular() const { return m_specular; }
-    float &metalness() { return m_metalness; }
-    float metalness() const { return m_metalness; }
     float &roughness() { return m_roughness; }
     float roughness() const { return m_roughness; }
     float &ambientOcclusion() { return m_ao; }
@@ -33,7 +30,6 @@ public:
 private:
     glm::vec3 m_albedo;
     glm::vec3 m_specular;
-    float m_metalness;
     float m_roughness;
     float m_ao;
     float m_ior;

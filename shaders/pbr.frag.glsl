@@ -8,7 +8,6 @@ in vec2 fragTex;
 struct Material {
     vec3 albedo;
     vec3 specular;
-    float metalness;
     float roughness;
     float ao;
     float ior;
@@ -96,8 +95,6 @@ float RDM_Beckmann(float NdotH, float alpha) {
     return ret;
 }
 
-float F0 = mix(0.04, length(material.albedo), material.metalness);
-
 float RDM_Fresnel(float LdotH, float extIOR, float intIOR) {
     float sinSt = ((extIOR * extIOR) / (intIOR * intIOR)) * (1.f - LdotH * LdotH);
     if (sinSt > 1.f)    return 1.f;
@@ -108,7 +105,7 @@ float RDM_Fresnel(float LdotH, float extIOR, float intIOR) {
     float p2 = (extIOR * cosT + intIOR * LdotH);
     float Rs = (s1 * s1) / (s2 * s2);
     float Rp = (p1 * p1) / (p2 * p2);
-    return F0 + (1.f - F0) * 0.5f * (Rs + Rp);
+    return 0.5f * (Rs + Rp);
 }
 
 float RDM_G1(float DdotH, float DdotN, float alpha) {
@@ -134,7 +131,7 @@ vec3 RDM_bsdf_s(float LdotH, float NdotH, float VdotH, float LdotN, float VdotN)
 }
 
 vec3 RDM_bsdf_d() {
-    return (material.albedo * (1.f / PI)) * (1.f - material.metalness);
+    return (material.albedo * (1.f / PI));
 }
 
 vec3 RDM_bsdf(float LdotH, float NdotH, float VdotH, float LdotN, float VdotN) {

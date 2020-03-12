@@ -53,7 +53,6 @@ void Shader::setMat4(const std::string &name, const glm::mat4 & value) const {
 void Shader::setMaterial(const Material &material) const {
     setVec3("material.albedo", material.albedo());
     setVec3("material.specular", material.specular());
-    setFloat("material.metalness", material.metalness());
     setFloat("material.roughness", material.roughness());
     setFloat("material.ao", material.ambientOcclusion());
     setFloat("material.ior", material.IOR());
