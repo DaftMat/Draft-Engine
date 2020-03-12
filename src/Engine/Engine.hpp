@@ -12,13 +12,28 @@
 #include <src/Engine/Cameras/camera.h>
 #include <src/Engine/Managers/ModelManager.hpp>
 
+/** Engine Class.
+ *  Defines the whole drew scene.
+ */
 class Engine
 {
   public:
+    /** Constructor.
+     *
+     * @param width - width of the OpenGL window.
+     * @param height - height of the OpenGL window.
+     */
     explicit Engine( int width, int height );
     ~Engine();
 
+    /** resize the OpenGL window.
+     *
+     * @param width - new OpenGL's width.
+     * @param height - new OpenGL's height.
+     */
     void resize( int width, int height );
+
+    /** draw the scene. */
     void draw();
 
     void mouseclick( int button, float xpos, float ypos );
@@ -31,19 +46,54 @@ class Engine
     void toggledrawmode() { m_modelmanager->toggledrawmode(); }
     void toggleEditionMode() { m_modelmanager->toggleEditionMode(); }
 
+    /** Add a Model to the scene.
+     *
+     * @param type - type of the added Model.
+     */
     void addModel( ModelType type );
+
+    /** Add a Light to the scene.
+     *
+     * @param type - type of the added Light.
+     */
     void addLight( LightType type );
+
+    /** Delete the selected entity.
+     *  Can either be a model or a light.
+     */
     void deleteModel() { m_modelmanager->deleteModel(); }
 
+    /** Selected Model getter.
+     *
+     * @return nullptr if no model selected, the selected Model otherwise.
+     */
     Model* getSelectedModel() { return m_modelmanager->getSelectedObject(); }
+
+    /** Selected Model's index getter.
+     *
+     * @return -1 if no model selected, the selected Model's index otherwise.
+     */
     GLuint getSelectedIndex() { return m_modelmanager->getSelectedIndex(); }
+
+    /** Selected Model's index setter */
     void setSelectedIndex( GLuint index ) { m_modelmanager->setSelectedIndex( index ); }
 
+    /** Selected Light getter.
+     *
+     * @return nullptr if no light selected, the selected Light otherwise.
+     */
     Light* getSelectedLight() { return m_modelmanager->getSelectedLight(); }
+
+    /** Selected Light's index getter.
+     *
+     * @return -1 if no light selected, the selected Light's index otherwise.
+     */
     GLuint getSelectedLightIndex() { return m_modelmanager->getSelectedLightIndex(); }
 
+    /** Selected Model's settings setter. */
     void setModelParams( const ModelParam& params );
 
+    /** Gizmo's type setter */
     void setGizmoType( GizmoType type ) { m_modelmanager->switchGizmo( type ); }
 
   private:

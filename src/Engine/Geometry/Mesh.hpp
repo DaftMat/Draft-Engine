@@ -1,15 +1,15 @@
-/**
- * Created by mathis on 01/02/2020.
- */
+//
+// Created by mathis on 01/02/2020.
+//
 
 #ifndef DAFT_ENGINE_MESH_HPP
 #define DAFT_ENGINE_MESH_HPP
 
-#include <vector>
 #include <opengl_stuff.h>
+#include <vector>
 
-#include <Utils/types.hpp>
 #include <Utils/adapters.hpp>
+#include <Utils/types.hpp>
 
 class Shader;
 
@@ -17,28 +17,29 @@ class Shader;
  *  defines all the information needed in a vertex.
  */
 struct Vertex {
-    glm::vec3 Position; ///< world position of the vertex.
-    glm::vec3 Normal; ///< normal to the vertex.
+    glm::vec3 Position;  ///< world position of the vertex.
+    glm::vec3 Normal;    ///< normal to the vertex.
     glm::vec2 TexCoords; ///< texture coordinates of the vertex.
 };
 
 /** Mesh class.
  *  Defines a mesh with a geometry and a topology
  */
-class Mesh {
-public:
+class Mesh
+{
+  public:
     /** Constructor.
      *  Creates an empty mesh.
      * @param grid - will draw the mesh with lines if true, with triangles otherwise.
      */
-    explicit Mesh(bool grid = false) : m_vertices {}, m_indices {}, m_grid { grid } { setupMesh(); };
+    explicit Mesh( bool grid = false ) : m_vertices{}, m_indices{}, m_grid{grid} { setupMesh(); };
     /** Constructor.
      *
      * @param vertices - geometry of the mesh.
      * @param indices - topology of the mesh.
      * @param grid - will draw the mesh with lines if true, with triangles otherwise.
      */
-    Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, bool grid = false);
+    Mesh( std::vector<Vertex> vertices, std::vector<GLuint> indices, bool grid = false );
     ~Mesh();
 
     /** Draws the mesh */
@@ -49,7 +50,7 @@ public:
      * @param vertices - new geometry.
      * @param indices - new topology.
      */
-    void reset(std::vector<Vertex> vertices, std::vector<GLuint> indices);
+    void reset( std::vector<Vertex> vertices, std::vector<GLuint> indices );
 
     /** Geometry getter. */
     const std::vector<Vertex>& vertices() const { return m_vertices; }
@@ -58,7 +59,7 @@ public:
     /** Aligned Axis Bounding Box getter */
     Utils::Aabb aabb() const;
 
-private:
+  private:
     void setupMesh();
     void deleteMesh();
 
@@ -71,4 +72,4 @@ private:
     bool m_grid;
 };
 
-#endif //DAFT_ENGINE_MESH_HPP
+#endif // DAFT_ENGINE_MESH_HPP
