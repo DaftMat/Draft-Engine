@@ -37,3 +37,9 @@
 
 # Jetbrain's
 .idea/
+
+# QtCreator's
+CMakeLists.txt.user*
+
+#clang format
+.clang_format
