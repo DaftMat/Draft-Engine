@@ -53,7 +53,7 @@ vec3 calcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 void main() {
     default_material.albedo = vec3(0.6);
     default_material.specular = vec3(0.9);
-    default_material.shininess = 32.0;
+    default_material.shininess = 16.0;
 
     vec3 normal = normalize(fragNormal);
     vec3 viewDir = normalize(viewPos - fragPos);

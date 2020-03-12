@@ -127,7 +127,7 @@ vec3 RDM_bsdf_s(float LdotH, float NdotH, float VdotH, float LdotN, float VdotN)
     float D = RDM_Beckmann(NdotH, material.roughness);
     float F = RDM_Fresnel(LdotH, 1.f, material.ior);
     float G = RDM_Smith(LdotH, LdotN, VdotH, VdotN, material.roughness);
-    return material.specular * ((D*F*G)/(4.f*LdotN*VdotN));
+    return material.specular * (D*F*G)/(4.f*LdotN*VdotN);
 }
 
 vec3 RDM_bsdf_d() {

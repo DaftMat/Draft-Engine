@@ -72,7 +72,7 @@ void Shader::addLight(Light * light) {
         } case DIR_LIGHT: {
             lightType = "dir_light";
             setBaseLight(light, lightType, m_num_dir_light);
-            setVec3(lightType + "[" + std::to_string(m_num_dir_light) + "].direction", params.dirlight.direction);
+            setVec3(lightType + "[" + std::to_string(m_num_dir_light) + "].direction", light->model().rotation() * glm::vec4(params.dirlight.direction, 0.f));
             setInt("num_dir_light", ++m_num_dir_light);
             break;
         } case SPOT_LIGHT: {
