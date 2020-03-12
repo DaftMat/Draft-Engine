@@ -44,4 +44,5 @@ CMakeLists.txt.user*
 #clang format
 .clang-format
 
-./doc/docs/
+#doxygen
+doc/docs/
