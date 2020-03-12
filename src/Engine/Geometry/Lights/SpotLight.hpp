@@ -7,8 +7,20 @@
 
 #include "Light.hpp"
 
+/** Spot Light.
+ *  A Light that emits within a directed angle from a point.
+ */
 class SpotLight : public Light{
 public:
+    /** Constructor.
+     *
+     * @param pos - position of the SpotLight.
+     * @param dir - direction of the SpotLight.
+     * @param innerCutoff - inner angle of the SpotLight.
+     * @param outerCutoff - outer angle of the SpotLight.
+     * @param intensity - intensity of the SpotLight.
+     * @param color - color emitted by the SpotLight.
+     */
     SpotLight(
             const glm::vec3 &pos=glm::vec3(0.0f, 0.0f, 0.0f),
             const glm::vec3 &dir=glm::vec3(0.0f, -1.f, 0.0f),
@@ -25,9 +37,11 @@ public:
                 m_intensity { intensity }
     { setupModel(); }
 
+    /** SpotLight's type getter. */
     LightType getType() const override { return SPOT_LIGHT; }
-
+    /** SpotLight's settings getter. */
     LightParam getParams() const override;
+    /** SpotLight's settings setter. */
     void editLight(const LightParam &params) override;
 
     void update() override;

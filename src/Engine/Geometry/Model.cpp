@@ -62,21 +62,6 @@ Utils::Aabb Model::base_aabb() const {
     return res;
 }
 
-Utils::Aabb Model::uniform_aabb(float zoom) const {
-    Utils::Aabb aabb;
-    for (const auto &m : m_meshes) {
-        aabb.extend(m->aabb());
-    }
-    if (aabb.isEmpty()) return aabb;
-    Utils::Aabb res;
-    for (int i = 0 ; i < 8 ; ++i) {
-        float w = (glm::vec4(glm::vec3(0.f), 1.f) * scale()).w;
-        w *= zoom;
-        res.extend(Utils::Transform(toEigen(scale())) * (aabb.corner(Utils::Aabb::CornerType(i)) * w));
-    }
-    return res;
-}
-
 Utils::Aabb Model::aabb() const {
     Utils::Aabb aabb;
     for (const auto &m : m_meshes) {
