@@ -19,7 +19,7 @@ else
 fi
 
 if file_or_link "${ROOT}/.clang-format"; then
-  echo "Create synlink for clang-format style file";
+  echo "Create symlink for clang-format style file";
   ln -rs "${ROOT}/scripts/clang-format" "${ROOT}/.clang-format"
 else
   echo "clang-format link already present, please remove .clang-format"
