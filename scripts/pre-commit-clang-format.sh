@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # from https://github.com/STORM-IRIT/Radium-Engine/blob/master/scripts/pre-commit-clang-format.sh
 ##################################################################
 # SETTINGS
