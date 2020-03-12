@@ -42,4 +42,6 @@
 CMakeLists.txt.user*
 
 #clang format
-.clang_format
+.clang-format
+
+./doc/docs/
