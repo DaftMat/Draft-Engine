@@ -10,16 +10,16 @@
 #include <src/Engine/Geometry/Model.hpp>
 #include <src/Utils/types.hpp>
 
-enum Selection { XSELEC, YSELEC, ZSELEC, NONE };
-
-enum GizmoType { TRANSLATE, SCALE };
-
-/**
- * A nice post-GIMP Scene handler.
- */
+/** A nice post-GIMP Scene handler. */
 class Gizmo
 {
   public:
+    /** Defines what axis is currently being moved by the mouse */
+    enum Selection { XSELEC, YSELEC, ZSELEC, NONE };
+
+    /** Defines how the gizmo transform the concerned model or light */
+    enum GizmoType { TRANSLATE, SCALE };
+
     /** Constructor.
      *
      * @param transform - transformation applied to the affiliated object.
@@ -34,16 +34,32 @@ class Gizmo
      */
     void draw( const glm::mat4& projection, const glm::mat4& view );
 
-    /** X axis Model 's OBB getter. */
+    /** X axis Model 's OBB getter.
+     * c.f. Obb - used for mouse click detection.
+     * @return the model's OBB of the gizmo's X axis.
+     */
     Obb getXobb() { return m_Xmodel->obb(); }
-    /** Y axis Model 's OBB getter. */
+
+    /** Y axis Model 's OBB getter.
+     * c.f. Obb - used for mouse click detection.
+     * @return the model's OBB of the gizmo's Y axis.
+     */
     Obb getYobb() { return m_Ymodel->obb(); }
-    /** Z axis Model 's OBB getter. */
+
+    /** Z axis Model 's OBB getter.
+     * c.f. Obb - used for mouse click detection.
+     * @return the model's OBB of the gizmo's Z axis.
+     */
     Obb getZobb() { return m_Zmodel->obb(); }
-    /** Change the Selection of the Axis. */
+
+    /** Change the Selection of the Axis.
+     * c.f. Selection
+     * @param selec - new selection.
+     */
     void setSelected( Selection selec ) { m_selected = selec; }
-    /**
-     *
+
+    /** Is the gizmo being moved.
+     * used to check if any axis is clicked.
      * @return false if no Axis selected.
      */
     bool isSelected() { return m_selected != NONE; }
@@ -57,8 +73,8 @@ class Gizmo
 
     /** Move action when a Model is selected.
      *
-     * @param xpos - new mouse's x position
-     * @param ypos - new mouse's y position
+     * @param xpos - new mouse's x position.
+     * @param ypos - new mouse's y position.
      * @param model - affiliated Model
      * @param projection - projection matrix of the Camera.
      * @param view - view matrix of the Camera.
@@ -71,8 +87,8 @@ class Gizmo
 
     /** Move action when a Light is selected.
      *
-     * @param xpos - new mouse's x position
-     * @param ypos - new mouse's y position
+     * @param xpos - new mouse's x position.
+     * @param ypos - new mouse's y position.
      * @param light - affiliated Light
      * @param projection - projection matrix of the Camera.
      * @param view - view matrix of the Camera.
@@ -85,13 +101,26 @@ class Gizmo
 
     /** Scale the gizmo.
      *  Used before drawing.
-     * @param scale - new scale
+     * @param scale - new scale.
      */
     virtual void scale( float scale ) = 0;
-    /** gizmo's type getter */
+
+    /** gizmo's type getter.
+     * c.f. GizmoType
+     * @return type of the gizmo.
+     */
     virtual GizmoType type() const = 0;
 
+    /** gizmo's transform setter.
+     * set the gizmo's transformation to a Model 's transformation.
+     * @param model - model with the right transformation.
+     */
     void setTransform( const Model& model );
+
+    /** gizmo's transform getter.
+     *
+     * @return gizmo's transformation.
+     */
     const Utils::Transform& getTransform() const { return m_transform; }
 
   protected:

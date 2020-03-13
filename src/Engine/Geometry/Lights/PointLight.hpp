@@ -7,9 +7,7 @@
 
 #include "Light.hpp"
 
-/** Point Light.
- *  A Light that emits in all direction from one point.
- */
+/** A Light that emits in all direction from one point. */
 class PointLight : public Light
 {
   public:
@@ -28,13 +26,27 @@ class PointLight : public Light
         setupModel();
     }
 
-    /** PointLight's type getter. */
+    /** point light's type getter.
+     * c.f. LightType
+     * @return POINT_LIGHT
+     */
     LightType getType() const override { return POINT_LIGHT; }
-    /** PointLight's settings getter. */
+
+    /** point light's settings getter.
+     * c.f. LightParam
+     * @return point light settings.
+     */
     LightParam getParams() const override;
-    /** PointLight's settings setter. */
+
+    /** point light's settings setter.
+     * c.f. LightParam
+     * @param params - new point light's settings.
+     */
     void editLight( const LightParam& params ) override;
 
+    /** update point light.
+     * update position of the light using its model.
+     */
     void update() override { m_position = m_model->getPosition(); }
 
   private:

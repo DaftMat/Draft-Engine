@@ -7,9 +7,7 @@
 
 #include <src/Engine/Geometry/Model.hpp>
 
-/** Cube class.
- *  A Model that draws a cube.
- */
+/** A Model that draws a cube. */
 class Cube : public Model
 {
   public:
@@ -19,15 +17,33 @@ class Cube : public Model
      */
     explicit Cube( GLuint resolution = 2 ) : m_resolution{resolution} { setupCube(); }
 
+    /** reset the cube.
+     * delete and create cube AOs and BOs in OpenGL context.
+     */
     void reset() override { setupCube(); }
 
-    /** cube's type getter. */
+    /** cube's type getter.
+     * c.f. ModelType
+     * @return CUBE
+     */
     ModelType getType() const override { return CUBE; }
-    /** cube's string type getter. */
+
+    /** cube's string type getter.
+     *
+     * @return "Cube"
+     */
     std::string getTypeAsString() const override { return "Cube"; }
-    /** cube's settings setter */
+
+    /** cube's settings setter.
+     * c.f. ModelParam
+     * @param params - new settings of the cube.
+     */
     void editModel( const ModelParam& params ) override;
-    /** cube's settings getter */
+
+    /** cube's settings getter.
+     * c.f. ModelParam
+     * @return cube settings.
+     */
     ModelParam getParams() const override;
 
   private:

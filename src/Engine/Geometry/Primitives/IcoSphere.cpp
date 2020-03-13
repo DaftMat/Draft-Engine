@@ -8,14 +8,14 @@ void IcoSphere::setupIcosahedron() {
     const float H_ANGLE = glm::pi<float>() / 180 * 72;
     const float V_ANGLE = glm::atan( .5f );
 
-    std::vector<Vertex> vertices;
+    std::vector<Mesh::Vertex> vertices;
     std::vector<GLuint> indices;
     float z, xy;
     float h_angle1 = -glm::pi<float>() / 2.f - H_ANGLE / 2.f;
     float h_angle2 = -glm::pi<float>() / 2.f;
 
     // first vertex
-    Vertex vertex;
+    Mesh::Vertex vertex;
     vertex.Position = vertex.Normal = glm::vec3( 0.f, 1.f, 0.f );
     vertex.TexCoords                = glm::vec2( 0.f, 0.f );
     vertices.push_back( vertex );
@@ -68,12 +68,12 @@ void IcoSphere::setupIcosahedron() {
 }
 
 void IcoSphere::setupSubdivisions() {
-    std::vector<Vertex> tmpVertices = m_meshes[0]->vertices();
-    std::vector<GLuint> tmpIndices  = m_meshes[0]->indices();
-    std::vector<Vertex> vertices;
+    std::vector<Mesh::Vertex> tmpVertices = m_meshes[0]->vertices();
+    std::vector<GLuint> tmpIndices        = m_meshes[0]->indices();
+    std::vector<Mesh::Vertex> vertices;
     std::vector<GLuint> indices;
     GLuint v1_ind, v2_ind, v3_ind;
-    Vertex new_v1, new_v2, new_v3;
+    Mesh::Vertex new_v1, new_v2, new_v3;
     GLuint index = 0;
 
     for ( GLuint i = 0; i < tmpIndices.size(); i += 3 )
@@ -122,14 +122,20 @@ void IcoSphere::editModel( const ModelParam& params ) {
     setSubdivisions( params.ico_sphere.subdivisions );
 }
 
-ModelParam IcoSphere::getParams() const {
+Model::ModelParam IcoSphere::getParams() const {
     ModelParam result{};
-    result.ico_sphere.subdivisions = getSubdivisions();
+    result.ico_sphere.subdivisions = m_subs;
     return result;
 }
 
 IcoSphere::IcoSphere( GLuint subs ) : m_subs{subs} {
     setupIcoSphere();
+}
+
+void IcoSphere::setupIcoSphere() {
+    setupIcosahedron();
+    for ( GLuint i = 0; i < m_subs; ++i )
+        setupSubdivisions();
 }
 
 GLuint mod1( GLuint x, GLuint m ) {

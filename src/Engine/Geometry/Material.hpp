@@ -7,19 +7,20 @@
 
 #include <opengl_stuff.h>
 
-/** Material.
- *  Only for PBR shader.
- */
+/** Only for PBR shader. */
 class Material
 {
   public:
-    /** Default Constructor. */
+    /** Default Constructor.
+     *  set material settings to default values.
+     */
     Material() :
         m_albedo{0.8f, 0.f, 0.8f},
         m_specular{0.9f, 0.9f, 0.9f},
         m_roughness{0.1f},
         m_ao{1.f},
         m_ior{1.777} {}
+
     /** Constructor.
      *
      * @param albedo - albedo color of the Material.
@@ -39,25 +40,63 @@ class Material
         m_ao{ao},
         m_ior{ior} {}
 
-    /** albedo color setter. */
+    /** albedo color ref.
+     *
+     * @return reference to albedo color of the material.
+     */
     glm::vec3& albedo() { return m_albedo; }
-    /** albedo color getter. */
+
+    /** albedo color const ref.
+     *
+     * @return constant reference to albedo color of the material.
+     */
     const glm::vec3& albedo() const { return m_albedo; }
-    /** specular color setter. */
+
+    /** specular color ref.
+     *
+     * @return reference to specular color of the material.
+     */
     glm::vec3& specular() { return m_specular; }
-    /** specular color getter. */
+
+    /** specular color const ref.
+     *
+     * @return constant reference to specular color of the material.
+     */
     const glm::vec3& specular() const { return m_specular; }
-    /** roughness setter. */
+
+    /** roughness ref.
+     *
+     * @return reference to roughness of the material.
+     */
     float& roughness() { return m_roughness; }
-    /** roughness getter. */
+    /** roughness getter.
+     *
+     * @return roughness of the material.
+     */
     float roughness() const { return m_roughness; }
-    /** ambient occlusion setter. */
+
+    /** ambient occlusion ref.
+     *
+     * @return reference to the AO of the material.
+     */
     float& ambientOcclusion() { return m_ao; }
-    /** ambient occlusion getter. */
+
+    /** ambient occlusion getter.
+     *
+     * @return AO of the material.
+     */
     float ambientOcclusion() const { return m_ao; }
-    /** index of refraction setter. */
+
+    /** index of refraction ref.
+     *
+     * @return reference to the IOR of the material.
+     */
     float& IOR() { return m_ior; }
-    /** index of refraction getter. */
+
+    /** index of refraction getter.
+     *
+     * @return IOR of the material.
+     */
     float IOR() const { return m_ior; }
 
   private:

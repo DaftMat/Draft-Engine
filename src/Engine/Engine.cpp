@@ -55,7 +55,7 @@ Engine::Engine( int width, int height ) :
     // m_modelmanager->addLight(DIR_LIGHT);
 
     m_creationstate.toCreate = false;
-    m_creationstate.type     = MODEL;
+    m_creationstate.type     = Model::MODEL;
 
     m_lightcreationstate.toCreate = false;
 }
@@ -129,12 +129,12 @@ void Engine::shaderChanged( GLuint selected ) {
     m_shader.reset( m_shaderselector[m_activeshader]() );
 }
 
-void Engine::addModel( ModelType type ) {
+void Engine::addModel( Model::ModelType type ) {
     m_creationstate.toCreate = true;
     m_creationstate.type     = type;
 }
 
-void Engine::addLight( LightType type ) {
+void Engine::addLight( Light::LightType type ) {
     m_lightcreationstate.toCreate = true;
     m_lightcreationstate.type     = type;
 }
@@ -154,6 +154,6 @@ void Engine::checkCreation() {
     }
 }
 
-void Engine::setModelParams( const ModelParam& params ) {
+void Engine::setModelParams( const Model::ModelParam& params ) {
     m_modelmanager->setObjectParams( params );
 }

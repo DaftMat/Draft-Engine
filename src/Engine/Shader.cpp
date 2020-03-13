@@ -63,10 +63,10 @@ void Shader::setMaterial( const Material& material ) const {
 
 void Shader::addLight( Light* light ) {
     std::string lightType;
-    LightParam params = light->getParams();
+    Light::LightParam params = light->getParams();
     switch ( light->getType() )
     {
-    case POINT_LIGHT:
+    case Light::POINT_LIGHT:
     {
         lightType = "point_light";
         setBaseLight( light, lightType, m_num_point_light );
@@ -77,7 +77,7 @@ void Shader::addLight( Light* light ) {
         setInt( "num_point_light", ++m_num_point_light );
         break;
     }
-    case DIR_LIGHT:
+    case Light::DIR_LIGHT:
     {
         lightType = "dir_light";
         setBaseLight( light, lightType, m_num_dir_light );
@@ -86,7 +86,7 @@ void Shader::addLight( Light* light ) {
         setInt( "num_dir_light", ++m_num_dir_light );
         break;
     }
-    case SPOT_LIGHT:
+    case Light::SPOT_LIGHT:
     {
         lightType = "spot_light";
         setBaseLight( light, lightType, m_num_spot_light );

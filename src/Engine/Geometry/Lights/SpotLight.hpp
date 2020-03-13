@@ -7,9 +7,7 @@
 
 #include "Light.hpp"
 
-/** Spot Light.
- *  A Light that emits within a directed angle from a point.
- */
+/** A Light that emits within a directed angle from a point. */
 class SpotLight : public Light
 {
   public:
@@ -38,13 +36,27 @@ class SpotLight : public Light
         setupModel();
     }
 
-    /** SpotLight's type getter. */
+    /** spot light's type getter.
+     * c.f. LightType
+     * @return SPOT_LIGHT
+     */
     LightType getType() const override { return SPOT_LIGHT; }
-    /** SpotLight's settings getter. */
+
+    /** spot light's settings getter.
+     * c.f. LightParam
+     * @return spot light settings.
+     */
     LightParam getParams() const override;
-    /** SpotLight's settings setter. */
+
+    /** spot light's settings setter.
+     * c.f. LightParam
+     * @param params - new spot light settings.
+     */
     void editLight( const LightParam& params ) override;
 
+    /** update the point light.
+     * update the point light position and rotation using its model
+     */
     void update() override;
 
   private:

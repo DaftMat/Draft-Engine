@@ -7,9 +7,7 @@
 
 #include <src/Engine/Geometry/Model.hpp>
 
-/** IcoSphere Class.
- *  A Model that draws a sphere from a subdivided Icosahedron.
- */
+/** A Model that draws a sphere from a subdivided Icosahedron. */
 class IcoSphere : public Model
 {
   public:
@@ -19,35 +17,38 @@ class IcoSphere : public Model
      */
     explicit IcoSphere( GLuint subs = 3 );
 
+    /** reset the ico sphere.
+     * delete and create ico sphere AOs and BOs in OpenGL context.
+     */
     void reset() override { setupIcoSphere(); }
 
-    /** Adds a subdivision layer. **/
-    void subdivide() { ++m_subs; }
-    /** Removes a subdivision layer. **/
-    void unsubdivide() {
-        if ( m_subs > 0 ) --m_subs;
-    }
-
-    /** Subdivision number getter. */
-    GLuint getSubdivisions() const { return m_subs; }
-    /** Subdivision number setter. */
-    void setSubdivisions( int subs ) { m_subs = subs >= 0 ? subs : 0; }
-
-    /** ico sphere's type getter. */
+    /** ico sphere's type getter.
+     * c.f. ModelType
+     * @return ICO_SPHERE
+     */
     ModelType getType() const override { return ICO_SPHERE; }
-    /** ico sphere's string type getter. */
+
+    /** ico sphere's string type getter.
+     *
+     * @return "Ico Sphere"
+     */
     std::string getTypeAsString() const override { return "Ico Sphere"; }
-    /** ico sphere's settings setter. */
+
+    /** ico sphere's settings setter.
+     * c.f. ModelParam
+     * @param params - new settings of the ico sphere.
+     */
     void editModel( const ModelParam& params ) override;
-    /** ico sphere's settings getter. */
+
+    /** ico sphere's settings getter.
+     * c.f. ModelParam
+     * @return settings of the ico sphere.
+     */
     ModelParam getParams() const override;
 
   private:
-    void setupIcoSphere() {
-        setupIcosahedron();
-        for ( GLuint i = 0; i < m_subs; ++i )
-            setupSubdivisions();
-    }
+    void setupIcoSphere();
+    void setSubdivisions( int subs ) { m_subs = subs >= 0 ? subs : 0; }
     void setupIcosahedron();
     void setupSubdivisions();
     static glm::vec3 computeHalfVertex( const glm::vec3& a, glm::vec3& b ) {

@@ -9,9 +9,7 @@
 #include <opengl_stuff.h>
 #include <src/Engine/Geometry/Material.hpp>
 
-/** Shader Class.
- *  Regroups a vertex and a fragment shader in a program shader.
- */
+/** Regroups a vertex and a fragment shader in a program shader. */
 class Shader
 {
   public:
@@ -28,7 +26,9 @@ class Shader
 
     ~Shader();
 
-    /** Activates the shaders. */
+    /** Activates the shaders.
+     * call OpenGL's glUseShader().
+     */
     void use() const;
 
     /** Boolean uniform setter.
@@ -106,9 +106,14 @@ class Shader
      */
     void addLight( Light* light );
 
-    /** Clears all lights from the shader. */
+    /** Clears all lights from the shader.
+     * reset all light uniform arrays in the shader.
+     */
     void clearLights();
 
+    /** Resets the shader.
+     * delete and create the shader within OpenGL context.
+     */
     void reset();
 
   private:

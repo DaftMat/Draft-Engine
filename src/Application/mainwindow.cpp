@@ -122,13 +122,13 @@ void MainWindow::on_position_valueChanged( double d ) {
         ui->m_openglwidget->getSelectedObject()->setPosition( new_position );
     if ( ui->m_openglwidget->getSelectedLight() != nullptr )
     {
-        LightParam parampos = ui->m_openglwidget->getSelectedLight()->getParams();
+        Light::LightParam parampos = ui->m_openglwidget->getSelectedLight()->getParams();
         switch ( ui->m_openglwidget->getSelectedLight()->getType() )
         {
-        case POINT_LIGHT:
+        case Light::POINT_LIGHT:
             parampos.pointlight.position = new_position;
             break;
-        case SPOT_LIGHT:
+        case Light::SPOT_LIGHT:
             parampos.spotlight.position = new_position;
             break;
         default:
@@ -147,13 +147,13 @@ void MainWindow::on_rotation_valueChanged( double d ) {
         ui->m_openglwidget->getSelectedObject()->setRotation( new_rotation );
     if ( ui->m_openglwidget->getSelectedLight() != nullptr )
     {
-        LightParam parampos = ui->m_openglwidget->getSelectedLight()->getParams();
+        Light::LightParam parampos = ui->m_openglwidget->getSelectedLight()->getParams();
         switch ( ui->m_openglwidget->getSelectedLight()->getType() )
         {
-        case DIR_LIGHT:
+        case Light::DIR_LIGHT:
             parampos.dirlight.rotations = new_rotation;
             break;
-        case SPOT_LIGHT:
+        case Light::SPOT_LIGHT:
             parampos.spotlight.rotations = new_rotation;
             break;
         default:
@@ -192,25 +192,25 @@ void MainWindow::objectSelection() {
     ui->y_scale->setValue( ui->m_openglwidget->getSelectedObject()->getScale().y );
     ui->z_scale->setValue( ui->m_openglwidget->getSelectedObject()->getScale().z );
 
-    ModelParam settings = ui->m_openglwidget->getSelectedObject()->getParams();
-    ModelType type      = ui->m_openglwidget->getSelectedObject()->getType();
+    Model::ModelParam settings = ui->m_openglwidget->getSelectedObject()->getParams();
+    Model::ModelType type      = ui->m_openglwidget->getSelectedObject()->getType();
     updateSettings( type );
     switch ( type )
     {
-    case ModelType::UV_SPHERE:
+    case Model::ModelType::UV_SPHERE:
         ui->object_settings_label->setText( "UVSphere Settings" );
         ui->uv_meridians->setValue( settings.uv_sphere.meridians );
         ui->uv_parallels->setValue( settings.uv_sphere.parallels );
         break;
-    case ModelType::ICO_SPHERE:
+    case Model::ModelType::ICO_SPHERE:
         ui->object_settings_label->setText( "IcoSphere Settings" );
         ui->ico_subdiv->setValue( settings.ico_sphere.subdivisions );
         break;
-    case ModelType::CUBE_SPHERE:
+    case Model::ModelType::CUBE_SPHERE:
         ui->object_settings_label->setText( "CubeSphere Settings" );
         ui->cube_res->setValue( settings.cube_sphere.resolution );
         break;
-    case ModelType::CUBE:
+    case Model::ModelType::CUBE:
         ui->object_settings_label->setText( "Cube Settings" );
         ui->cubec_res->setValue( settings.cube.resolution );
         break;
@@ -244,17 +244,17 @@ void MainWindow::lightSelection() {
     ui->y_scale->setValue( 1.0 );
     ui->z_scale->setValue( 1.0 );
 
-    LightParam settings = ui->m_openglwidget->getSelectedLight()->getParams();
-    glm::vec3 color     = ui->m_openglwidget->getSelectedLight()->color();
-    LightType type      = ui->m_openglwidget->getSelectedLight()->getType();
+    Light::LightParam settings = ui->m_openglwidget->getSelectedLight()->getParams();
+    glm::vec3 color            = ui->m_openglwidget->getSelectedLight()->color();
+    Light::LightType type      = ui->m_openglwidget->getSelectedLight()->getType();
     updateSettings( type );
     switch ( type )
     {
-    case LightType::POINT_LIGHT:
+    case Light::LightType::POINT_LIGHT:
         ui->object_settings_label->setText( "Point Light Settings" );
         ui->intensitySpin->setValue( settings.pointlight.intensity );
         break;
-    case LightType::SPOT_LIGHT:
+    case Light::LightType::SPOT_LIGHT:
         ui->object_settings_label->setText( "Spot Light Settings" );
         ui->intensitySpin->setValue( settings.spotlight.intensity );
         ui->innercutSpin->setValue( settings.spotlight.innerCutoff );
@@ -269,24 +269,24 @@ void MainWindow::lightSelection() {
 
 void MainWindow::on_objectCreator_activated( const QString& arg1 ) {
     if ( arg1 == "UVSphere" )
-        ui->m_openglwidget->addObject( UV_SPHERE );
+        ui->m_openglwidget->addObject( Model::UV_SPHERE );
     else if ( arg1 == "IcoSphere" )
-        ui->m_openglwidget->addObject( ICO_SPHERE );
+        ui->m_openglwidget->addObject( Model::ICO_SPHERE );
     else if ( arg1 == "CubeSphere" )
-        ui->m_openglwidget->addObject( CUBE_SPHERE );
+        ui->m_openglwidget->addObject( Model::CUBE_SPHERE );
     else if ( arg1 == "Cube" )
-        ui->m_openglwidget->addObject( CUBE );
+        ui->m_openglwidget->addObject( Model::CUBE );
     ui->m_openglwidget->setFocus();
     ui->objectCreator->setCurrentIndex( 0 );
 }
 
 void MainWindow::on_lightCreator_activated( const QString& arg1 ) {
     if ( arg1 == "Point Light" )
-        ui->m_openglwidget->addLight( POINT_LIGHT );
+        ui->m_openglwidget->addLight( Light::POINT_LIGHT );
     else if ( arg1 == "Spot Light" )
-        ui->m_openglwidget->addLight( SPOT_LIGHT );
+        ui->m_openglwidget->addLight( Light::SPOT_LIGHT );
     else if ( arg1 == "Directionnal Light" )
-        ui->m_openglwidget->addLight( DIR_LIGHT );
+        ui->m_openglwidget->addLight( Light::DIR_LIGHT );
     ui->m_openglwidget->setFocus();
     ui->lightCreator->setCurrentIndex( 0 );
 }
@@ -298,7 +298,7 @@ void MainWindow::on_shaderChoser_activated( int index ) {
 
 void MainWindow::on_uv_meridians_valueChanged( int arg1 ) {
     if ( m_state == DaftState::SELECTION ) return;
-    ModelParam settings{};
+    Model::ModelParam settings{};
     settings.uv_sphere.meridians = ui->uv_meridians->value();
     settings.uv_sphere.parallels = ui->uv_parallels->value();
     ui->m_openglwidget->setModelParams( settings );
@@ -311,7 +311,7 @@ void MainWindow::on_uv_parallels_valueChanged( int arg1 ) {
 
 void MainWindow::on_ico_subdiv_valueChanged( int arg1 ) {
     if ( m_state == DaftState::SELECTION ) return;
-    ModelParam settings{};
+    Model::ModelParam settings{};
     settings.ico_sphere.subdivisions = ui->ico_subdiv->value();
     ui->m_openglwidget->setModelParams( settings );
     ui->m_openglwidget->update();
@@ -319,7 +319,7 @@ void MainWindow::on_ico_subdiv_valueChanged( int arg1 ) {
 
 void MainWindow::on_cube_res_valueChanged( int arg1 ) {
     if ( m_state == DaftState::SELECTION ) return;
-    ModelParam settings{};
+    Model::ModelParam settings{};
     settings.cube_sphere.resolution = ui->cube_res->value();
     ui->m_openglwidget->setModelParams( settings );
     ui->m_openglwidget->update();
@@ -327,30 +327,30 @@ void MainWindow::on_cube_res_valueChanged( int arg1 ) {
 
 void MainWindow::on_cubec_res_valueChanged( int arg1 ) {
     if ( m_state == DaftState::SELECTION ) return;
-    ModelParam settings{};
+    Model::ModelParam settings{};
     settings.cube.resolution = arg1;
     ui->m_openglwidget->setModelParams( settings );
     ui->m_openglwidget->update();
 }
 
-void MainWindow::updateSettings( ModelType type ) {
+void MainWindow::updateSettings( Model::ModelType type ) {
     switch ( type )
     {
-    case ModelType::UV_SPHERE:
+    case Model::ModelType::UV_SPHERE:
         ui->uv_meridians->setVisible( true );
         ui->uv_parallels->setVisible( true );
         ui->uv_meridians_label->setVisible( true );
         ui->uv_parallels_label->setVisible( true );
         break;
-    case ModelType::ICO_SPHERE:
+    case Model::ModelType::ICO_SPHERE:
         ui->ico_subdiv->setVisible( true );
         ui->ico_subdiv_label->setVisible( true );
         break;
-    case ModelType::CUBE_SPHERE:
+    case Model::ModelType::CUBE_SPHERE:
         ui->cube_res->setVisible( true );
         ui->cube_res_label->setVisible( true );
         break;
-    case ModelType::CUBE:
+    case Model::ModelType::CUBE:
         ui->cubec_res->setVisible( true );
         ui->cubec_res_label->setVisible( true );
     default:
@@ -358,18 +358,18 @@ void MainWindow::updateSettings( ModelType type ) {
     }
 }
 
-void MainWindow::updateSettings( LightType type ) {
+void MainWindow::updateSettings( Light::LightType type ) {
     ui->colorLabel->setVisible( true );
     ui->colorRSpin->setVisible( true );
     ui->colorGSpin->setVisible( true );
     ui->colorBSpin->setVisible( true );
     switch ( type )
     {
-    case LightType::POINT_LIGHT:
+    case Light::LightType::POINT_LIGHT:
         ui->intensitySpin->setVisible( true );
         ui->intensityLabel->setVisible( true );
         break;
-    case LightType::SPOT_LIGHT:
+    case Light::LightType::SPOT_LIGHT:
         ui->intensitySpin->setVisible( true );
         ui->intensityLabel->setVisible( true );
         ui->innercutSpin->setVisible( true );
@@ -423,9 +423,9 @@ void MainWindow::on_deleteButton_clicked() {
 }
 
 void MainWindow::on_gizmoType_activated( const QString& arg1 ) {
-    if ( arg1 == "Translation" ) { ui->m_openglwidget->setGizmoType( TRANSLATE ); }
+    if ( arg1 == "Translation" ) { ui->m_openglwidget->setGizmoType( Gizmo::TRANSLATE ); }
     else if ( arg1 == "Scale" )
-    { ui->m_openglwidget->setGizmoType( SCALE ); }
+    { ui->m_openglwidget->setGizmoType( Gizmo::SCALE ); }
 }
 
 void MainWindow::on_editionToggle_clicked() {
@@ -447,8 +447,8 @@ void MainWindow::on_colorSpin_valueChanged() {
 void MainWindow::on_innercutSpin_valueChanged( double arg1 ) {
     if ( m_state == SELECTION ) return;
     if ( ui->m_openglwidget->getSelectedLight() == nullptr ) return;
-    LightParam params = ui->m_openglwidget->getSelectedLight()->getParams();
-    if ( ui->m_openglwidget->getSelectedLight()->getType() == LightType::SPOT_LIGHT )
+    Light::LightParam params = ui->m_openglwidget->getSelectedLight()->getParams();
+    if ( ui->m_openglwidget->getSelectedLight()->getType() == Light::LightType::SPOT_LIGHT )
     {
         if ( float( arg1 ) > params.spotlight.outerCutoff )
         {
@@ -464,8 +464,8 @@ void MainWindow::on_innercutSpin_valueChanged( double arg1 ) {
 void MainWindow::on_outercutSpin_valueChanged( double arg1 ) {
     if ( m_state == SELECTION ) return;
     if ( ui->m_openglwidget->getSelectedLight() == nullptr ) return;
-    LightParam params = ui->m_openglwidget->getSelectedLight()->getParams();
-    if ( ui->m_openglwidget->getSelectedLight()->getType() == LightType::SPOT_LIGHT )
+    Light::LightParam params = ui->m_openglwidget->getSelectedLight()->getParams();
+    if ( ui->m_openglwidget->getSelectedLight()->getType() == Light::LightType::SPOT_LIGHT )
     {
         if ( float( arg1 ) < params.spotlight.innerCutoff )
         {
@@ -481,13 +481,13 @@ void MainWindow::on_outercutSpin_valueChanged( double arg1 ) {
 void MainWindow::on_intensitySpin_valueChanged( double arg1 ) {
     if ( m_state == SELECTION ) return;
     if ( ui->m_openglwidget->getSelectedLight() == nullptr ) return;
-    LightParam params = ui->m_openglwidget->getSelectedLight()->getParams();
+    Light::LightParam params = ui->m_openglwidget->getSelectedLight()->getParams();
     switch ( ui->m_openglwidget->getSelectedLight()->getType() )
     {
-    case POINT_LIGHT:
+    case Light::POINT_LIGHT:
         params.pointlight.intensity = float( arg1 );
         break;
-    case SPOT_LIGHT:
+    case Light::SPOT_LIGHT:
         params.spotlight.intensity = float( arg1 );
         break;
     default:

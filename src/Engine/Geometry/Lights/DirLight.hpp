@@ -7,9 +7,7 @@
 
 #include "Light.hpp"
 
-/** Directional Light.
- *  Emits in one direction, from everywhere.
- */
+/** Emits in one direction, from everywhere. */
 class DirLight : public Light
 {
   public:
@@ -26,13 +24,27 @@ class DirLight : public Light
         setupModel();
     }
 
-    /** DirLight's type getter. */
+    /** directional light's type getter.
+     * c.f. LightType
+     * @return DIR_LIGHT
+     */
     LightType getType() const override { return DIR_LIGHT; }
-    /** DirLight's settings getter. */
+
+    /** directional light's settings getter.
+     * c.f. LightParam
+     * @return directional light settings.
+     */
     LightParam getParams() const override;
-    /** DirLight's settings setter. */
+
+    /** directional light's settings setter.
+     * c.f. LightParam
+     * @param params - new settings of the directionnal light.
+     */
     void editLight( const LightParam& params ) override;
 
+    /** Update directional light.
+     * update the rotation of the direction of the light.
+     */
     void update() override;
 
   private:

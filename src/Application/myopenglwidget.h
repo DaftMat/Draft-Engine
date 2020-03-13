@@ -28,13 +28,13 @@ class MyOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_1_Core
      *  Function called by a MainWindow's event handler.
      * @param type - type of the created object.
      */
-    void addObject( ModelType type );
+    void addObject( Model::ModelType type );
 
     /** Adds light with default settings to the scene.
      *  Function called by a MainWindow's event handler.
      * @param type - type of the created light.
      */
-    void addLight( LightType type );
+    void addLight( Light::LightType type );
 
     /** Deletes the selected entity (can either be a light or an object)
      *  Function called by a MainWindow's event handler.
@@ -57,7 +57,7 @@ class MyOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_1_Core
      *  Helper function used in MainWindow to set the settings of the objects.
      * @param params - Settings of the object
      */
-    void setModelParams( const ModelParam& params ) { m_engine->setModelParams( params ); }
+    void setModelParams( const Model::ModelParam& params ) { m_engine->setModelParams( params ); }
 
     /** Shader setter.
      *  Set the wanted shader used to render the scene.
@@ -81,7 +81,7 @@ class MyOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_1_Core
      *  Set the wanted gizmo type used to transform objects
      * @param type - type of the gizmo
      */
-    void setGizmoType( GizmoType type ) {
+    void setGizmoType( Gizmo::GizmoType type ) {
         m_engine->setGizmoType( type );
         update();
     }

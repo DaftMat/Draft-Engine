@@ -4,7 +4,7 @@
 
 #include "DirLight.hpp"
 
-LightParam DirLight::getParams() const {
+Light::LightParam DirLight::getParams() const {
     LightParam result{};
     result.dirlight.direction  = m_basedirection;
     result.spotlight.rotations = model().getRotation();
@@ -24,9 +24,9 @@ void DirLight::update() {
 }
 
 void DirLight::setupModel() {
-    std::vector<Vertex> vertices;
+    std::vector<Mesh::Vertex> vertices;
     std::vector<GLuint> indices{1, 2, 2, 3, 3, 4, 4, 1, 1, 3, 2, 4};
-    Vertex vertex{};
+    Mesh::Vertex vertex{};
     vertices.push_back( vertex );
     int index = 1;
     for ( float i = -0.2f; i <= 0.2f; i += 0.4f )

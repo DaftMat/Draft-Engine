@@ -128,13 +128,13 @@ void MyOpenGLWidget::keyPressEvent( QKeyEvent* event ) {
     }
 }
 
-void MyOpenGLWidget::addObject( ModelType type ) {
+void MyOpenGLWidget::addObject( Model::ModelType type ) {
     m_engine->addModel( type );
     object_added = true;
     update();
 }
 
-void MyOpenGLWidget::addLight( LightType type ) {
+void MyOpenGLWidget::addLight( Light::LightType type ) {
     m_engine->addLight( type );
     object_added = true;
     update();

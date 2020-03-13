@@ -4,7 +4,7 @@
 
 #include "PointLight.hpp"
 
-LightParam PointLight::getParams() const {
+Light::LightParam PointLight::getParams() const {
     LightParam result{};
     result.pointlight.position  = m_position;
     result.pointlight.intensity = m_intensity;
@@ -27,9 +27,9 @@ void PointLight::setupModel() {
         {-1.f, 0.f, 0.f}  // left
     };
 
-    std::vector<Vertex> vertices;
+    std::vector<Mesh::Vertex> vertices;
     std::vector<GLuint> indices;
-    Vertex vertex{};
+    Mesh::Vertex vertex{};
     vertices.push_back( vertex );
 
     for ( int i = 0; i < 6; ++i )

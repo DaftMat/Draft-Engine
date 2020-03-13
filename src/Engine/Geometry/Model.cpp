@@ -5,7 +5,9 @@
 #include "Model.hpp"
 #include <Engine/Shader.hpp>
 
-Model::Model( const std::vector<Vertex>& vertices, const std::vector<GLuint>& indices, bool wire ) :
+Model::Model( const std::vector<Mesh::Vertex>& vertices,
+              const std::vector<GLuint>& indices,
+              bool wire ) :
     m_wire{wire} {
     m_meshes.clear();
     m_meshes.emplace_back( new Mesh( vertices, indices, m_wire ) );

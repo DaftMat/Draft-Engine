@@ -23,7 +23,9 @@
 class ModelManager
 {
   public:
-    /** Constructor. */
+    /** Constructor.
+     * creates the model manager for the engine.
+     */
     ModelManager() :
         m_selectedmodel{-1},
         m_selectedlight{-1},
@@ -66,22 +68,29 @@ class ModelManager
      *
      * @param type - type of the Light to be added.
      */
-    void addLight( LightType type );
+    void addLight( Light::LightType type );
     // void addModel(std::string file)
     /** Add a Model with default settings to the scene.
      *
      * @param type - type of the Model to be added.
      */
-    void addObject( ModelType type );
+    void addObject( Model::ModelType type );
 
     /** Delete the selected Model or Light.
      *  Does nothing is nothing is selected.
      */
     void deleteModel();
 
+    /** keyboard key press event handler.
+     *
+     * @param key - key pressed
+     * @return true if the key triggered an action.
+     */
     bool keyboard( unsigned char key );
 
-    /** Toggles edges drawing on models. */
+    /** Toggles edges drawing on models.
+     * In edition mode only.
+     */
     void toggledrawmode() { m_wireframe = !m_wireframe; }
 
     /** Selected Model ptr getter.
@@ -95,12 +104,24 @@ class ModelManager
      * @return -1 if no Model selected.
      */
     int getSelectedIndex() const { return m_selectedmodel; }
-    /** Selected Model 's index setter. */
+
+    /** Selected model's index setter.
+     *
+     * @param index - new index to select.
+     */
     void setSelectedIndex( GLuint index );
-    /** Number of Model in scene getter. */
+
+    /** Number of models in scene getter.
+     *
+     * @return number of models in the scene.
+     */
     unsigned long getSize() const { return m_models.size(); }
-    /** Selected object settings setter. Does nothing if no object selected. */
-    void setObjectParams( const ModelParam& params );
+
+    /** Selected object settings setter.
+     * Does nothing if no object selected.
+     * @param params - new settings for the selected model.
+     */
+    void setObjectParams( const Model::ModelParam& params );
 
     /** Selected Light ptr getter.
      *
@@ -114,21 +135,46 @@ class ModelManager
      */
     int getSelectedLightIndex() const { return m_selectedlight; }
 
-    /** Selected Light index setter. */
+    /** Selected Light index setter.
+     *
+     * @param index - new index for the selected model.
+     */
     void setSelectedLight( GLuint index );
 
-    /** Number of Light in scene getter. */
+    /** Number of Light in scene getter.
+     *
+     * @return number of lights in the scene.
+     */
     unsigned long getNumLights() const { return m_lights.size(); }
 
+    /** mouse click event handler.
+     *
+     * @param ray - calculated from Ray "mouse click" constructor.
+     * @param xpos - x position of mouse.
+     * @param ypos - y position of mouse.
+     * @return true if an action has been triggered.
+     */
     bool mouse_click( const Ray& ray, float xpos, float ypos );
+
+    /** mouse move event handler.
+     *
+     * @param xpos - x position of the mouse.
+     * @param ypos - y position of the mouse.
+     * @param projection - projection matrix of the Camera.
+     * @param view - view matrix of the Camera.
+     */
     void mouse_move( float xpos, float ypos, const glm::mat4& projection, const glm::mat4& view );
+
+    /** mouse release event.
+     * used in gizmo selection.
+     */
     void mouserelease();
 
     /** Change Gizmo 's transformation style
      *  Can be translation of scale gizmo
      * @param type - new type of the gizmo
      */
-    void switchGizmo( GizmoType type ) { m_gizmoType = type; };
+    void switchGizmo( Gizmo::GizmoType type ) { m_gizmoType = type; };
 
     /** Toggle Edition Mode.
      *  Edition Mode draws scene with stuff for edition, if disabled,
@@ -164,7 +210,7 @@ class ModelManager
     bool m_edition;
 
     std::unique_ptr<Gizmo> m_gizmo;
-    GizmoType m_gizmoType{TRANSLATE};
+    Gizmo::GizmoType m_gizmoType{Gizmo::TRANSLATE};
 };
 
 #endif // DAFT_ENGINE_MODELMANAGER_HPP

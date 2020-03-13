@@ -5,10 +5,10 @@
 #include "UVSphere.hpp"
 
 void UVSphere::setupUvSphere() {
-    std::vector<Vertex> vertices;
+    std::vector<Mesh::Vertex> vertices;
     std::vector<GLuint> indices;
 
-    Vertex vertex;
+    Mesh::Vertex vertex;
 
     /// Vertices
     float z, xy;
@@ -70,7 +70,7 @@ void UVSphere::editModel( const ModelParam& params ) {
     setParallels( params.uv_sphere.parallels );
 }
 
-ModelParam UVSphere::getParams() const {
+Model::ModelParam UVSphere::getParams() const {
     ModelParam result{};
     result.uv_sphere.meridians = getMeridians();
     result.uv_sphere.parallels = getParallels();

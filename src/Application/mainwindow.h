@@ -9,13 +9,13 @@ namespace Ui {
 class MainWindow;
 }
 
-enum DaftState { EDIT, SELECTION };
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
   public:
+    enum DaftState { EDIT, SELECTION };
+
     explicit MainWindow( QWidget* parent = nullptr );
     ~MainWindow() override;
 
@@ -47,8 +47,8 @@ class MainWindow : public QMainWindow
     void on_iorSpin_valueChanged( double arg1 );
 
   private:
-    void updateSettings( ModelType type );
-    void updateSettings( LightType type );
+    void updateSettings( Model::ModelType type );
+    void updateSettings( Light::LightType type );
     void unset_settings();
     void objectSelection();
     void lightSelection();

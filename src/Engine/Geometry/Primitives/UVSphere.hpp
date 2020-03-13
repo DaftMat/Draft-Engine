@@ -7,9 +7,7 @@
 
 #include "src/Engine/Geometry/Model.hpp"
 
-/** UVSphere Class.
- *  A Model that draws a sphere from UV.
- */
+/** A Model that draws a sphere from UV. */
 class UVSphere : public Model
 {
   public:
@@ -20,29 +18,41 @@ class UVSphere : public Model
      */
     explicit UVSphere( GLuint meridians = 32, GLuint parallels = 16 );
 
-    /** Meridians setter. */
-    void setMeridians( GLuint meridians ) { m_sectors = glm::max<GLuint>( meridians, 4 ); }
-    /** Parallels setter. */
-    void setParallels( GLuint parallels ) { m_stacks = glm::max<GLuint>( parallels, 4 ); }
-
-    /** Meridians getter. */
-    GLuint getMeridians() const { return m_sectors; }
-    /** Meridians setter. */
-    GLuint getParallels() const { return m_stacks; }
-
+    /** reset the uv sphere.
+     * delete and create uv sphere AOs and BOs in OpenGL context.
+     */
     void reset() override { setupUvSphere(); }
 
-    /** uv sphere's type getter */
+    /** uv sphere's type getter.
+     * c.f. ModelType
+     * @return UV_SPHERE
+     */
     ModelType getType() const override { return UV_SPHERE; }
-    /** uv sphere's string type getter */
+
+    /** uv sphere's string type getter.
+     *
+     * @return "UV Sphere"
+     */
     std::string getTypeAsString() const override { return "UV Sphere"; }
-    /** uv sphere's settings setter */
+
+    /** uv sphere's settings setter.
+     * c.f. ModelParam
+     * @param params - new settings of uv sphere
+     */
     void editModel( const ModelParam& params ) override;
-    /** uv sphere's settings getter */
+
+    /** uv sphere's settings getter.
+     * c.f. ModelParam
+     * @return settings of uv sphere
+     */
     ModelParam getParams() const override;
 
   private:
     void setupUvSphere();
+    void setMeridians( GLuint meridians ) { m_sectors = glm::max<GLuint>( meridians, 4 ); }
+    void setParallels( GLuint parallels ) { m_stacks = glm::max<GLuint>( parallels, 4 ); }
+    GLuint getMeridians() const { return m_sectors; }
+    GLuint getParallels() const { return m_stacks; }
 
     GLuint m_stacks;
     GLuint m_sectors;

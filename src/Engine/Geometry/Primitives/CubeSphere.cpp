@@ -9,7 +9,7 @@ void CubeSphere::editModel( const ModelParam& params ) {
     if ( m_resolution < 2 ) m_resolution = 2;
 }
 
-ModelParam CubeSphere::getParams() const {
+Model::ModelParam CubeSphere::getParams() const {
     ModelParam result{};
     result.cube_sphere.resolution = m_resolution;
     return result;
@@ -27,9 +27,9 @@ void CubeSphere::setupCubeSphere() {
 
     m_meshes.clear();
 
-    std::vector<Vertex> vertices;
+    std::vector<Mesh::Vertex> vertices;
     std::vector<GLuint> indices;
-    Vertex vertex;
+    Mesh::Vertex vertex;
     glm::vec3 axisA, axisB;
 
     for ( GLuint i = 0; i < 6; ++i )

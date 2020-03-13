@@ -8,43 +8,39 @@
 //#include <opengl_stuff.h>
 #include <src/Engine/Geometry/Model.hpp>
 
-/** Type of the light.
- *  Each light has its type
- */
-enum LightType {
-    POINT_LIGHT, ///< A point emitting light in every directions.
-    SPOT_LIGHT,  ///< A point emitting light within an angle following a specific direction.
-    DIR_LIGHT    ///< Constant light arriving from one direction anywhere in the scene.
-};
-
-/** Settings specific to a light.
- *  Each lights type has its specifics settings.
- */
-union LightParam {
-    struct point_param {
-        glm::vec3 position; ///< position of the point light.
-        GLfloat intensity;  ///< intensity of the point light.
-    } pointlight;
-    struct dir_param {
-        glm::vec3 direction; ///< direction of the directional light.
-        glm::vec3 rotations; ///< rotation applied to the directional light.
-    } dirlight;
-    struct spot_param {
-        glm::vec3 position;  ///< position of the spot light.
-        glm::vec3 direction; ///< direction of the spot light.
-        glm::vec3 rotations; ///< rotation applied to the spot light.
-        GLfloat innerCutoff; ///< inner angle.
-        GLfloat outerCutoff; ///< outer angle.
-        GLfloat intensity;   ///< intensity of the spot light.
-    } spotlight;
-};
-
-/** Light base class.
- *  Base class of any type of Light.
+/**
+ *  Base class of any type of light.
  */
 class Light
 {
   public:
+    /** Type of the light. */
+    enum LightType {
+        POINT_LIGHT, ///< A point emitting light in every directions.
+        SPOT_LIGHT,  ///< A point emitting light within an angle following a specific direction.
+        DIR_LIGHT    ///< Constant light arriving from one direction anywhere in the scene.
+    };
+
+    /** Settings specific to a light. */
+    union LightParam {
+        struct point_param {
+            glm::vec3 position; ///< position of the point light.
+            GLfloat intensity;  ///< intensity of the point light.
+        } pointlight;
+        struct dir_param {
+            glm::vec3 direction; ///< direction of the directional light.
+            glm::vec3 rotations; ///< rotation applied to the directional light.
+        } dirlight;
+        struct spot_param {
+            glm::vec3 position;  ///< position of the spot light.
+            glm::vec3 direction; ///< direction of the spot light.
+            glm::vec3 rotations; ///< rotation applied to the spot light.
+            GLfloat innerCutoff; ///< inner angle.
+            GLfloat outerCutoff; ///< outer angle.
+            GLfloat intensity;   ///< intensity of the spot light.
+        } spotlight;
+    };
+
     /** Constructor.
      *  Base constructor of a Light.
      * @param color - color emitted by the light.
@@ -57,21 +53,46 @@ class Light
     Light& operator=( const Light& ) = delete;
     Light&& operator=( Light&& ) = delete;
 
-    /** Light's type getter. */
+    /** light's type getter.
+     * c.f. LightType
+     * @return type of the light's instance.
+     */
     virtual LightType getType() const = 0;
-    /** Light's settings getter. */
+
+    /** light's settings getter.
+     * c.f. LightParam
+     * @return
+     */
     virtual LightParam getParams() const = 0;
-    /** Light's settings setter. */
+
+    /** light's settings setter.
+     * c.f. LightParam
+     * @param params - current settings of the light.
+     */
     virtual void editLight( const LightParam& params ) = 0;
 
-    /** Light's color getter. */
+    /** light's color const ref.
+     *
+     * @return constant reference to the color emitted by the light.
+     */
     const glm::vec3& color() const { return m_color; }
-    /** Light's color setter. */
+
+    /** light's color ref.
+     *
+     * @return reference to the color emitted by the light.
+     */
     glm::vec3& color() { return m_color; }
 
-    /** Light's Model getter. */
+    /** light's Model const ref.
+     * light's model is used in edition mode.
+     * @return constant reference to the model of the light.
+     */
     const Model& model() const { return *m_model; }
-    /** Light's Model setter. */
+
+    /** light's Model ref.
+     * light's model is used in edition mode.
+     * @return reference to the model of the light.
+     */
     Model& model() { return *m_model; }
 
     virtual void update(){};

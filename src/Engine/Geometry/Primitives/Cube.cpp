@@ -14,9 +14,9 @@ void Cube::setupCube() {
         {-1.f, 0.f, 0.f}  // left
     };
     m_meshes.clear();
-    std::vector<Vertex> vertices;
+    std::vector<Mesh::Vertex> vertices;
     std::vector<GLuint> indices;
-    Vertex vertex;
+    Mesh::Vertex vertex;
     glm::vec3 axisA, axisB;
 
     for ( GLuint i = 0; i < 6; ++i )
@@ -58,7 +58,7 @@ void Cube::editModel( const ModelParam& params ) {
     if ( m_resolution < 2 ) m_resolution = 2;
 }
 
-ModelParam Cube::getParams() const {
+Model::ModelParam Cube::getParams() const {
     ModelParam params{};
     params.cube.resolution = m_resolution;
     return params;

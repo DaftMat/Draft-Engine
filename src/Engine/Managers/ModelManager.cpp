@@ -48,7 +48,7 @@ void ModelManager::draw( Shader& shader,
 
     if ( m_edition )
     {
-        LightParam new_dir         = m_editionlight->getParams();
+        Light::LightParam new_dir  = m_editionlight->getParams();
         new_dir.dirlight.direction = viewDir;
         m_editionlight->editLight( new_dir );
         shader.addLight( m_editionlight.get() );
@@ -101,16 +101,16 @@ void ModelManager::draw( Shader& shader,
     shader.clearLights();
 }
 
-void ModelManager::addLight( LightType type ) {
+void ModelManager::addLight( Light::LightType type ) {
     switch ( type )
     {
-    case POINT_LIGHT:
+    case Light::POINT_LIGHT:
         m_lights.emplace_back( new PointLight() );
         break;
-    case DIR_LIGHT:
+    case Light::DIR_LIGHT:
         m_lights.emplace_back( new DirLight() );
         break;
-    case SPOT_LIGHT:
+    case Light::SPOT_LIGHT:
         m_lights.emplace_back( new SpotLight() );
         break;
     default:
@@ -118,19 +118,19 @@ void ModelManager::addLight( LightType type ) {
     }
 }
 
-void ModelManager::addObject( ModelType type ) {
+void ModelManager::addObject( Model::ModelType type ) {
     switch ( type )
     {
-    case UV_SPHERE:
+    case Model::UV_SPHERE:
         m_models.emplace_back( new UVSphere() );
         break;
-    case ICO_SPHERE:
+    case Model::ICO_SPHERE:
         m_models.emplace_back( new IcoSphere() );
         break;
-    case CUBE_SPHERE:
+    case Model::CUBE_SPHERE:
         m_models.emplace_back( new CubeSphere() );
         break;
-    case CUBE:
+    case Model::CUBE:
         m_models.emplace_back( new Cube() );
         break;
     default:
@@ -138,7 +138,7 @@ void ModelManager::addObject( ModelType type ) {
     }
 }
 
-void ModelManager::setObjectParams( const ModelParam& params ) {
+void ModelManager::setObjectParams( const Model::ModelParam& params ) {
     m_models[m_selectedmodel]->editModel( params );
     m_toReset.insert( m_selectedmodel );
 }
@@ -155,11 +155,11 @@ bool ModelManager::keyboard( unsigned char key ) {
 }
 
 void ModelManager::makeGrid( int size ) {
-    std::vector<Vertex> vertices;
+    std::vector<Mesh::Vertex> vertices;
     std::vector<GLuint> indices;
 
     GLuint index;
-    Vertex vertex{};
+    Mesh::Vertex vertex{};
     glm::vec3 normal{0.f, 1.f, 0.f};
     for ( int i = 0; i < size; ++i )
     {
@@ -210,10 +210,10 @@ void ModelManager::drawGrid( const glm::mat4& projection, const glm::mat4& view 
 }
 
 void ModelManager::makeUnitArrows() {
-    std::vector<Vertex> vertices;
+    std::vector<Mesh::Vertex> vertices;
     std::vector<GLuint> indices{0, 1};
-    Vertex vertex{};
-    Vertex center{};
+    Mesh::Vertex vertex{};
+    Mesh::Vertex center{};
     for ( int i = 0; i < 3; ++i )
     {
         vertices.push_back( center );
@@ -258,21 +258,21 @@ bool ModelManager::mouse_click( const Ray& ray, float xpos, float ypos ) {
         bool found = false;
         if ( ray.intersects( m_gizmo->getXobb(), dist ) )
         {
-            m_gizmo->setSelected( XSELEC );
+            m_gizmo->setSelected( Gizmo::XSELEC );
             found = true;
         }
         else if ( ray.intersects( m_gizmo->getYobb(), dist ) )
         {
-            m_gizmo->setSelected( YSELEC );
+            m_gizmo->setSelected( Gizmo::YSELEC );
             found = true;
         }
         else if ( ray.intersects( m_gizmo->getZobb(), dist ) )
         {
-            m_gizmo->setSelected( ZSELEC );
+            m_gizmo->setSelected( Gizmo::ZSELEC );
             found = true;
         }
         else
-        { m_gizmo->setSelected( NONE ); }
+        { m_gizmo->setSelected( Gizmo::NONE ); }
         if ( found )
         {
             m_gizmo->clicked( xpos, ypos );
@@ -348,16 +348,16 @@ void ModelManager::mouse_move( float xpos,
 }
 
 void ModelManager::mouserelease() {
-    m_gizmo->setSelected( NONE );
+    m_gizmo->setSelected( Gizmo::NONE );
 }
 
 void ModelManager::switchGizmo() {
     switch ( m_gizmoType )
     {
-    case TRANSLATE:
+    case Gizmo::TRANSLATE:
         m_gizmo.reset( new TranslateGizmo( Utils::Transform::Identity() ) );
         break;
-    case SCALE:
+    case Gizmo::SCALE:
         m_gizmo.reset( new ScaleGizmo( Utils::Transform::Identity() ) );
         break;
     default:

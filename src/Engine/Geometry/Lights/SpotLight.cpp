@@ -4,7 +4,7 @@
 
 #include "SpotLight.hpp"
 
-LightParam SpotLight::getParams() const {
+Light::LightParam SpotLight::getParams() const {
     LightParam result{};
     result.spotlight.position    = m_position;
     result.spotlight.direction   = m_direction;
@@ -43,9 +43,9 @@ void SpotLight::setupModel() {
         {-1.f, 0.f, 0.f}  // left
     };
 
-    std::vector<Vertex> vertices;
+    std::vector<Mesh::Vertex> vertices;
     std::vector<GLuint> indices;
-    Vertex vertex{};
+    Mesh::Vertex vertex{};
     vertices.push_back( vertex );
 
     for ( int i = 0; i < 6; ++i )

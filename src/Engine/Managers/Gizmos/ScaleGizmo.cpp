@@ -12,13 +12,13 @@ void ScaleGizmo::init_models() {
 Model* ScaleGizmo::init_arrow( const glm::vec3& normal ) {
     glm::vec3 tangent{normal.z, normal.x, normal.y};
     glm::vec3 bitangent = glm::cross( normal, tangent );
-    std::vector<Vertex> vertices;
+    std::vector<Mesh::Vertex> vertices;
     std::vector<GLuint> indices;
 
     float scale = 0.01f;
     float dist  = 4.f;
 
-    Vertex vertex{};
+    Mesh::Vertex vertex{};
     vertex.Position = tangent * scale;
     vertices.push_back( vertex );
     vertex.Position += normal;

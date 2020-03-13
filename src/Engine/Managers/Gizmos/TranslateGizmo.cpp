@@ -13,13 +13,13 @@ void TranslateGizmo::init_models() {
 Model* TranslateGizmo::init_arrow( const glm::vec3& normal ) {
     glm::vec3 tangent{normal.z, normal.x, normal.y};
     glm::vec3 bitangent = glm::cross( normal, tangent );
-    std::vector<Vertex> vertices;
+    std::vector<Mesh::Vertex> vertices;
     std::vector<GLuint> indices;
 
     float scale = 0.01f;
     float dist  = 4.f;
 
-    Vertex vertex{};
+    Mesh::Vertex vertex{};
     vertex.Position = tangent * scale;
     vertices.push_back( vertex );
     vertex.Position += normal;
@@ -116,7 +116,7 @@ void TranslateGizmo::move( float xpos,
                            Light& light,
                            const glm::mat4& projection,
                            const glm::mat4& view ) {
-    if ( light.getType() != DIR_LIGHT )
+    if ( light.getType() != Light::DIR_LIGHT )
     {
         move( xpos, ypos, light.model(), projection, view );
         light.update();
