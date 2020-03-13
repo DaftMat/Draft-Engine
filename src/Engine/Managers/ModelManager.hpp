@@ -16,9 +16,14 @@
 #include <src/Engine/Physics/Ray.hpp>
 #include <vector>
 
+/**
+ *  Set of Model and Light to be drawn.
+ *  Class used in Engine.
+ */
 class ModelManager
 {
   public:
+    /** Constructor. */
     ModelManager() :
         m_selectedmodel{-1},
         m_selectedlight{-1},
@@ -43,55 +48,92 @@ class ModelManager
     ModelManager& operator=( const ModelManager& ) = delete;
     ModelManager&& operator=( ModelManager&& ) = delete;
 
+    /** Draw all models and lights of the scene.
+     *
+     * @param shader - Shader to be used for drawing.
+     * @param view - view matrix of the Camera.
+     * @param projection - projection matrix of the Camera.
+     * @param viewPos - position of the Camera.
+     * @param viewDir - view direction (look at) of the Camera.
+     */
     void draw( Shader& shader,
                const glm::mat4& view,
                const glm::mat4& projection,
                const glm::vec3& viewPos,
                const glm::vec3& viewDir );
 
+    /** Add a Light with default settings to the scene.
+     *
+     * @param type - type of the Light to be added.
+     */
     void addLight( LightType type );
     // void addModel(std::string file)
+    /** Add a Model with default settings to the scene.
+     *
+     * @param type - type of the Model to be added.
+     */
     void addObject( ModelType type );
 
+    /** Delete the selected Model or Light.
+     *  Does nothing is nothing is selected.
+     */
     void deleteModel();
 
     bool keyboard( unsigned char key );
 
+    /** Toggles edges drawing on models. */
     void toggledrawmode() { m_wireframe = !m_wireframe; }
 
-    Model* getSelectedObject() {
-        if ( m_selectedmodel == -1 )
-            return nullptr;
-        else
-            return m_models[m_selectedmodel].get();
-    }
+    /** Selected Model ptr getter.
+     *
+     * @return nullptr if no Model selected.
+     */
+    Model* getSelectedObject();
+
+    /** Selected Model 's index getter.
+     *
+     * @return -1 if no Model selected.
+     */
     int getSelectedIndex() const { return m_selectedmodel; }
-    void setSelectedIndex( GLuint index ) {
-        m_selectedmodel = glm::max( index, ( GLuint )( m_models.size() - 1 ) );
-        m_selectedlight = -1;
-    }
+    /** Selected Model 's index setter. */
+    void setSelectedIndex( GLuint index );
+    /** Number of Model in scene getter. */
     unsigned long getSize() const { return m_models.size(); }
+    /** Selected object settings setter. Does nothing if no object selected. */
     void setObjectParams( const ModelParam& params );
 
-    Light* getSelectedLight() {
-        if ( m_selectedlight == -1 )
-            return nullptr;
-        else
-            return m_lights[m_selectedlight].get();
-    }
+    /** Selected Light ptr getter.
+     *
+     * @return nullptr if no Light selected.
+     */
+    Light* getSelectedLight();
+
+    /** Selected Light index getter.
+     *
+     * @return -1 if no Light selected.
+     */
     int getSelectedLightIndex() const { return m_selectedlight; }
-    void setSelectedLight( GLuint index ) {
-        m_selectedlight = glm::max( index, GLuint( m_models.size() - 1 ) );
-        m_selectedmodel = -1;
-    }
+
+    /** Selected Light index setter. */
+    void setSelectedLight( GLuint index );
+
+    /** Number of Light in scene getter. */
     unsigned long getNumLights() const { return m_lights.size(); }
 
     bool mouse_click( const Ray& ray, float xpos, float ypos );
     void mouse_move( float xpos, float ypos, const glm::mat4& projection, const glm::mat4& view );
     void mouserelease();
 
+    /** Change Gizmo 's transformation style
+     *  Can be translation of scale gizmo
+     * @param type - new type of the gizmo
+     */
     void switchGizmo( GizmoType type ) { m_gizmoType = type; };
 
+    /** Toggle Edition Mode.
+     *  Edition Mode draws scene with stuff for edition, if disabled,
+     *  nothing more than the scene is rendered, and the sky turn black.
+     */
     void toggleEditionMode() { m_edition = !m_edition; }
 
   private:

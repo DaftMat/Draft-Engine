@@ -22,7 +22,9 @@ class PointLight : public Light
     explicit PointLight( const glm::vec3& pos   = glm::vec3( 0.f, 0.f, 0.f ),
                          GLfloat intensity      = 1.f,
                          const glm::vec3& color = glm::vec3( 0.8f, 0.8f, 0.8f ) ) :
-        Light( color ), m_position{pos}, m_intensity{intensity} {
+        Light( color ),
+        m_position{pos},
+        m_intensity{intensity} {
         setupModel();
     }
 

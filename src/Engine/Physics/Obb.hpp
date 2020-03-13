@@ -14,14 +14,25 @@
 
 enum AxisType { X = 0, Y, Z };
 
+/**
+ * Oriented Bounding Box.
+ * A Bounding Box that rotate with the affiliated object
+ */
 class Obb
 {
   public:
+    /** Default constructor. */
     Obb() : m_aabb(), m_transform{Utils::Transform::Identity()} {}
+    /** Constructor.
+     *
+     * @param aabb - AABB of the affiliated object.
+     * @param transform - transformation of the object.
+     */
     Obb( const Utils::Aabb& aabb, const Utils::Transform& transform ) :
-        m_aabb{aabb}, m_transform{transform} {}
+        m_aabb{aabb},
+        m_transform{transform} {}
 
-    /// To directy get the transformed corners
+    /** To directy get the transformed corners. */
     glm::vec3 corner( int i ) const {
         return toGlm( m_transform * m_aabb.corner( static_cast<Utils::Aabb::CornerType>( i ) ) );
     }
@@ -29,7 +40,7 @@ class Obb
         return toGlm( m_transform * m_aabb.corner( t ) );
     }
 
-    /// Get the untransformed aabb min/max
+    /** Get the untransformed aabb min/max */
     glm::vec3 min() const { return toGlm( m_aabb.min() ); }
     glm::vec3 max() const { return toGlm( m_aabb.max() ); }
 

@@ -33,7 +33,11 @@ class Material
               float roughness,
               float ao,
               float ior ) :
-        m_albedo{albedo}, m_specular{specular}, m_roughness{roughness}, m_ao{ao}, m_ior{ior} {}
+        m_albedo{albedo},
+        m_specular{specular},
+        m_roughness{roughness},
+        m_ao{ao},
+        m_ior{ior} {}
 
     /** albedo color setter. */
     glm::vec3& albedo() { return m_albedo; }

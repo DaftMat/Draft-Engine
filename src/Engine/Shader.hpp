@@ -21,7 +21,8 @@ class Shader
      * @param fragmentPath - fragment shader's GLSL file path
      */
     Shader( const char* vertexPath, const char* fragmentPath ) :
-        m_vertexpath{vertexPath}, m_fragmentpath{fragmentPath} {
+        m_vertexpath{vertexPath},
+        m_fragmentpath{fragmentPath} {
         reset();
     }
 
