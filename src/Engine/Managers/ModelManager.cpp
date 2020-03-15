@@ -385,6 +385,6 @@ Light* ModelManager::getSelectedLight() {
 }
 
 void ModelManager::setSelectedLight( GLuint index ) {
-    m_selectedlight = glm::max( index, GLuint( m_models.size() - 1 ) );
+    m_selectedlight = glm::max( index, GLuint( m_lights.size() - 1 ) );
     m_selectedmodel = -1;
 }
