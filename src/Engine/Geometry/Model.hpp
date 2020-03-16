@@ -201,6 +201,12 @@ class Model
      */
     glm::mat4 rotation() const;
 
+    /** Total size of meshes.
+     * Total number of triangles in all the meshes of the model.
+     * @return number of triangles in the model.
+     */
+    GLuint getSize() const;
+
   protected:
     std::vector<std::unique_ptr<Mesh>> m_meshes;
     bool m_wire{false};

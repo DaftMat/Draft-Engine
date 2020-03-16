@@ -68,6 +68,12 @@ class Mesh
      */
     Utils::Aabb aabb() const;
 
+    /** Number of triangles getter.
+     *
+     * @return number of triangles in the mesh.
+     */
+    GLuint getSize() const { return m_indices.size() / 3; }
+
   private:
     void setupMesh();
     void deleteMesh();

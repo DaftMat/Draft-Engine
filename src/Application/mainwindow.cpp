@@ -97,6 +97,11 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ), ui( new Ui::M
              this,
              &MainWindow::on_selectionChanged );
 
+    connect( ui->m_openglwidget,
+             &MyOpenGLWidget::trianglesChanged,
+             this,
+             &MainWindow::on_trianglesChanged );
+
     unset_settings();
 }
 
@@ -194,6 +199,7 @@ void MainWindow::objectSelection() {
 
     Model::ModelParam settings = ui->m_openglwidget->getSelectedObject()->getParams();
     Model::ModelType type      = ui->m_openglwidget->getSelectedObject()->getType();
+    GLuint size                = ui->m_openglwidget->getSelectedObject()->getSize();
     updateSettings( type );
     switch ( type )
     {
@@ -218,6 +224,7 @@ void MainWindow::objectSelection() {
         ui->object_settings_label->setText( "Model Settings" );
         break;
     }
+    ui->triangle_num->setText( ( "Number of triangles : " + std::to_string( size ) ).c_str() );
 
     ui->materialSettingsWidget->setEnabled( true );
     Material material = ui->m_openglwidget->getSelectedObject()->material();
@@ -356,6 +363,7 @@ void MainWindow::updateSettings( Model::ModelType type ) {
     default:
         break;
     }
+    ui->triangle_num->setVisible( true );
 }
 
 void MainWindow::updateSettings( Light::LightType type ) {
@@ -403,6 +411,7 @@ void MainWindow::unset_settings() {
     ui->cube_res_label->setVisible( false );
     ui->cubec_res->setVisible( false );
     ui->cubec_res_label->setVisible( false );
+    ui->triangle_num->setVisible( false );
     // light settings
     ui->intensitySpin->setVisible( false );
     ui->intensityLabel->setVisible( false );
@@ -536,4 +545,9 @@ void MainWindow::on_iorSpin_valueChanged( double arg1 ) {
     if ( ui->m_openglwidget->getSelectedObject() == nullptr ) return;
     ui->m_openglwidget->getSelectedObject()->material().IOR() = float( arg1 );
     ui->m_openglwidget->update();
+}
+
+void MainWindow::on_trianglesChanged( GLuint size ) {
+    if ( m_state == SELECTION ) return;
+    ui->triangle_num->setText( ( "Number of triangles : " + std::to_string( size ) ).c_str() );
 }

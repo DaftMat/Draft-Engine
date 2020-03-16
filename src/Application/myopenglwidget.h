@@ -91,6 +91,7 @@ class MyOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_1_Core
 
   signals:
     void selectionChanged( GLuint newIndex );
+    void trianglesChanged( GLuint size );
 
   protected:
     // OpenGL management

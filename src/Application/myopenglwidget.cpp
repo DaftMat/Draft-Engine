@@ -52,6 +52,8 @@ void MyOpenGLWidget::paintGL() {
         emit selectionChanged( m_engine->getSelectedIndex() );
         update();
     }
+    if ( m_engine->getSelectedModel() != nullptr )
+        emit trianglesChanged( m_engine->getSelectedModel()->getSize() );
     glFinish();
     std::int64_t endtime = QDateTime::currentMSecsSinceEpoch();
     _lastime             = endtime - starttime;

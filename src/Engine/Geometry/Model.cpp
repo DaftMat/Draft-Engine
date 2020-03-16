@@ -84,3 +84,12 @@ Utils::Aabb Model::aabb() const {
     }
     return res;
 }
+
+GLuint Model::getSize() const {
+    GLuint size = 0;
+    for ( const auto& mesh : m_meshes )
+    {
+        size += mesh->getSize();
+    }
+    return size;
+}

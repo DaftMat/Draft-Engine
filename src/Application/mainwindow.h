@@ -45,6 +45,7 @@ class MainWindow : public QMainWindow
     void on_roughnessSpin_valueChanged( double arg1 );
     void on_aoSpin_valueChanged( double arg1 );
     void on_iorSpin_valueChanged( double arg1 );
+    void on_trianglesChanged( GLuint size );
 
   private:
     void updateSettings( Model::ModelType type );
