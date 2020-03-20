@@ -1,8 +1,8 @@
 #include "camera.h"
 #define GLM_ENABLE_EXPERIMENTAL
-#include "gtc/matrix_transform.hpp"
-#include "gtc/quaternion.hpp"
-#include "gtx/norm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/quaternion.hpp"
+#include "glm/gtx/norm.hpp"
 
 /*------------------------------------------------------------------------------------------------------------------------*/
 

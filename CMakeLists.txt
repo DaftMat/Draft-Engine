@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 2.8.9) # Minimal version compatible QT5
 CMAKE_POLICY(SET CMP0043 NEW) # This will silence the Cmake Warning "Policy CMP0043 is not set"
 CMAKE_POLICY(SET CMP0072 NEW) # OpenGL Policy
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -pedantic -Wextra")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -pedantic -Wextra -g -fopenmp -O")
 #set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
@@ -29,13 +29,13 @@ add_definitions(-DGL_SILENCE_DEPRECATION)
 FILE(GLOB_RECURSE
     folder_source
     ${CMAKE_SOURCE_DIR}/src/*.cpp
+    ${CMAKE_SOURCE_DIR}/3rdPartyLibs/stb/lodepng.cpp
 )
 
 FILE(GLOB_RECURSE
     folder_header
     ${CMAKE_SOURCE_DIR}/src/*.h
     ${CMAKE_SOURCE_DIR}/src/*.hpp
-
 )
 
 FILE(GLOB_RECURSE
@@ -46,8 +46,7 @@ FILE(GLOB_RECURSE
 # Include libraries
 include_directories(
    ${CMAKE_SOURCE_DIR}/src
-   ${CMAKE_SOURCE_DIR}/glm
-   ${CMAKE_SOURCE_DIR}/Eigen
+   ${CMAKE_SOURCE_DIR}/3rdPartyLibs
 )
 
 SOURCE_GROUP("Source Files" FILES ${folder_source})

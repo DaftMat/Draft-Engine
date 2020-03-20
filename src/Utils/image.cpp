@@ -1,13 +1,15 @@
 #include "image.h"
-#include <lodepng.h>
-#include <stdio.h>
-#include <string.h>
+#include <stb/lodepng.h>
+#include <cstdio>
+#include <cstring>
 
 #define SAVE_PNG
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include <stb/stb_image.h>
 
-color3 *getPixelPtr(Image *img, size_t x, size_t y) {
+
+
+glm::vec3 *getPixelPtr(Image *img, size_t x, size_t y) {
     return &(img->data[y * img->width + x]);
 }
 
@@ -15,7 +17,7 @@ Image *initImage(size_t width, size_t height) {
     Image *img = (Image*) malloc(sizeof(Image));
     img->width = width;
     img->height = height;
-    img->data = (color3 *)malloc(sizeof(color3)*width*height);
+    img->data = (glm::vec3 *)malloc(sizeof(glm::vec3)*width*height);
     return img;
 }
 
@@ -34,9 +36,9 @@ void saveImage(Image *img, char *basename) {
   unsigned char *image = new unsigned char [img->width*img->height*3];
   // write image to file
   for(unsigned y = 0; y < img->height; y++) {
-    color3 *ptr = getPixelPtr(img, 0, img->height-y-1);
+      glm::vec3 *ptr = getPixelPtr(img, 0, img->height-y-1);
     for(unsigned x = 0; x < img->width; x++) {
-      ivec3 c = clamp(ivec3(255.f**ptr), 0, 255);
+        glm::vec3 c = glm::clamp(glm::vec3(255.f**ptr), glm::vec3(0.f), glm::vec3(255.f));
       image[cpt++] = c.x;
       image[cpt++] = c.y;
       image[cpt++] = c.z;

@@ -79,13 +79,12 @@ bool Ray::intersects( const Obb& obb, float& dist ) const {
     return true;
 }
 
-bool Ray::intersects( const glm::vec3& a,
-                      const glm::vec3& b,
-                      const glm::vec3& c,
+bool Ray::intersects( const Mesh::Vertex& a,
+                      const Mesh::Vertex& b,
+                      const Mesh::Vertex& c,
                       float& dist ) const {
-    glm::vec3 ab = b - a;
-    glm::vec3 ac = c - a;
-    glm::vec3 n  = glm::cross( ab, ac );
+    glm::vec3 ab = b.Position - a.Position;
+    glm::vec3 ac = c.Position - a.Position;
     float u{0.0}, v{0.0};
 
     const glm::vec3 pvec = glm::cross( m_direction, ac );

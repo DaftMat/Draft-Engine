@@ -207,6 +207,13 @@ class Model
      */
     GLuint getSize() const;
 
+    /** Mesh getter.
+     * access a mesh using its index.
+     * @param i - index of the mesh wanted.
+     * @return mesh at the index i.
+     */
+     const Mesh& getMesh(GLuint i) { return *m_meshes[i]; }
+
   protected:
     std::vector<std::unique_ptr<Mesh>> m_meshes;
     bool m_wire{false};

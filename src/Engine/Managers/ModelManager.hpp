@@ -195,10 +195,10 @@ class ModelManager
     std::unique_ptr<Mesh> m_grid;
     std::vector<std::unique_ptr<Mesh>> m_unitarrows;
 
-    std::vector<std::unique_ptr<Model>> m_models;
+    std::vector<std::shared_ptr<Model>> m_models;
     int m_selectedmodel;
 
-    std::vector<std::unique_ptr<Light>> m_lights;
+    std::vector<std::shared_ptr<Light>> m_lights;
     int m_selectedlight;
     std::unique_ptr<Light> m_editionlight;
 

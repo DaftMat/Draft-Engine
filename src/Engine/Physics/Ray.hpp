@@ -5,9 +5,11 @@
 #ifndef DAFT_ENGINE_RAY_HPP
 #define DAFT_ENGINE_RAY_HPP
 
-#include "Obb.hpp"
 #include <opengl_stuff.h>
+
+#include "Obb.hpp"
 #include <src/Utils/types.hpp>
+#include <src/Engine/Geometry/Mesh.hpp>
 
 /**
  *  A ray that can be found in raycast/raytrace techniques.
@@ -66,14 +68,14 @@ class Ray
      * @return true if intersected, false otherwise.
      */
     bool
-    intersects( const glm::vec3& a, const glm::vec3& b, const glm::vec3& c, float& dist ) const;
+    intersects( const Mesh::Vertex& a, const Mesh::Vertex& b, const Mesh::Vertex& c, float& dist ) const;
 
     /** "Position" of the ray's end.
      *
      * @param dist - dist from ray's origin
      * @return O + dist * D
      */
-    glm::vec3 position( float dist ) { return m_origin + dist * m_direction; }
+    glm::vec3 position( float dist ) const { return m_origin + dist * m_direction; }
 
   private:
     glm::vec3 m_origin;

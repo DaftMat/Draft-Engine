@@ -5,8 +5,9 @@
 #ifndef DAFT_ENGINE_ADAPTERS_HPP
 #define DAFT_ENGINE_ADAPTERS_HPP
 
-#include <Eigen>
-#include <glm.hpp>
+//#include <Eigen/Eigen>
+#include <Eigen/Eigen>
+#include <glm/glm.hpp>
 
 template <int m, int n>
 inline glm::mat<m, n, float> toGlm( const Eigen::Matrix<float, m, n>& mat ) {
