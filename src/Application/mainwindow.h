@@ -46,8 +46,9 @@ class MainWindow : public QMainWindow
     void on_aoSpin_valueChanged( double arg1 );
     void on_iorSpin_valueChanged( double arg1 );
     void on_trianglesChanged( GLuint size );
+    void on_renderButton_clicked();
 
-  private:
+private:
     void updateSettings( Model::ModelType type );
     void updateSettings( Light::LightType type );
     void unset_settings();

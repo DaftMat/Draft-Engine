@@ -50,17 +50,29 @@ class Mesh
      */
     void reset( std::vector<Vertex> vertices, std::vector<GLuint> indices );
 
-    /** Geometry getter.
+    /** Geometry const ref getter.
      * c.f. Vertex
      * @return geometry - list of vertices.
      */
     const std::vector<Vertex>& vertices() const { return m_vertices; }
 
-    /** Topology getter.
+    /** Topology const ref getter.
      *
      * @return topology - list of indices.
      */
     const std::vector<GLuint>& indices() const { return m_indices; }
+
+    /** Geometry copy getter.
+     * used in Raytracer.
+     * @return copied geometry.
+     */
+    std::vector<Vertex> getVertices() const { return m_vertices; }
+
+    /** Topology copy getter.
+     * used in Raytracer.
+     * @return copied topology.
+     */
+    std::vector<GLuint> getIndices() const { return m_indices; }
 
     /** Aligned Axis Bounding Box getter.
      * calculate untransformed mesh's AABB.

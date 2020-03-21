@@ -34,6 +34,7 @@
 # Building directories
 *build*
 *bin*
+*output*
 
 # Jetbrain's
 .idea/

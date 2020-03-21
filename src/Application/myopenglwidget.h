@@ -86,6 +86,8 @@ class MyOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_1_Core
         update();
     }
 
+    void raytrace( const std::string &path ) { m_engine->raytrace(path); }
+
   public slots:
     void cleanup();
 

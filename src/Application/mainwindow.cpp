@@ -551,3 +551,10 @@ void MainWindow::on_trianglesChanged( GLuint size ) {
     if ( m_state == SELECTION ) return;
     ui->triangle_num->setText( ( "Number of triangles : " + std::to_string( size ) ).c_str() );
 }
+
+void MainWindow::on_renderButton_clicked()
+{
+    std::string path = "output/" + std::string(ui->picturename->text().toUtf8().constData());
+    ui->picturename->setText("");
+    ui->m_openglwidget->raytrace(path);
+}

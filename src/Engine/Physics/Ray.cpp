@@ -83,38 +83,30 @@ bool Ray::intersects( const Mesh::Vertex& a,
                       const Mesh::Vertex& b,
                       const Mesh::Vertex& c,
                       float& dist ) const {
-    glm::vec3 ab = b.Position - a.Position;
-    glm::vec3 ac = c.Position - a.Position;
-    float u{0.0}, v{0.0};
+    glm::vec3 A = a.Position - c.Position;
+    glm::vec3 B = b.Position - c.Position;
+    glm::vec3 N = glm::normalize(glm::cross(B, A));
+    glm::vec3 T = m_origin - c.Position;
 
-    const glm::vec3 pvec = glm::cross( m_direction, ac );
-    const float det      = glm::dot( ab, pvec );
-    const glm::vec3 tvec = m_origin;
-    const float inv_det  = 1.f / det;
-    const glm::vec3 qvec = glm::cross( tvec, ab );
+    if (glm::abs(glm::dot(N, m_direction)) < glm::epsilon<float>())
+        return false;
+    glm::vec3 p = glm::cross(m_direction, B);
+    glm::vec3 q = glm::cross(T, A);
 
-    if ( det > 0 )
-    {
-        u = glm::dot( tvec, pvec );
-        if ( u < 0 || u > det ) return false;
-        v = glm::dot( m_direction, qvec );
-        if ( v < 0 || u + v > det ) return false;
-    }
-    else if ( det < 0 )
-    {
-        u = glm::dot( tvec, pvec );
-        if ( u > 0 || u < det ) return false;
-        v = glm::dot( m_direction, qvec );
-        if ( v > 0 || u + v < det ) return false;
-    }
-    else
+    float det = glm::dot(p, A);
+    if (glm::abs(det) < glm::epsilon<float>())
+        return false;
+    float u = (1.f / det) * glm::dot(p, T);
+    if (u < 0.f)
+        return false;
+    float v = (1.f / det) * glm::dot(q, m_direction);
+    if (v < 0.f || (u + v) > 1.f)
         return false;
 
-    float t = glm::dot( ac, qvec ) * inv_det;
-    if ( t >= 0 && t < dist )
-    {
-        dist = t;
-        return true;
-    }
-    return false;
+    float t = (1.f / det) * glm::dot(q, B);
+    if (t < 0.f || t > dist)
+        return false;
+
+    dist = t;
+    return true;
 }

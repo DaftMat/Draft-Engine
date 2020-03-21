@@ -26,7 +26,7 @@ void freeImage(Image *img) {
     free(img);
 }
 
-void saveImage(Image *img, char *basename) {
+void saveImage(Image *img, const char *basename) {
 #ifdef SAVE_PNG
   char filename[256+4];
   strcpy(filename, basename);

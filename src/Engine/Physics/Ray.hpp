@@ -17,6 +17,8 @@
 class Ray
 {
   public:
+    Ray() = default;
+
     /** Constructor.
      *
      * @param origin - origin position of the ray.
@@ -76,6 +78,18 @@ class Ray
      * @return O + dist * D
      */
     glm::vec3 position( float dist ) const { return m_origin + dist * m_direction; }
+
+    /** Origin.
+     *
+     * @return position when dist is 0.
+     */
+     const glm::vec3& origin() const { return m_origin; }
+
+     /** Direction.
+      *
+      * @return direction of the ray.
+      */
+     const glm::vec3& direction() const { return m_direction; }
 
   private:
     glm::vec3 m_origin;

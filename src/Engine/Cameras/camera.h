@@ -24,7 +24,11 @@ class Camera
     glm::mat4 viewmatrix() const;
     float& zoom();
     glm::vec3& position();
+    const glm::vec3& position() const { return _position; }
     const glm::vec3& front() const { return _front; };
+    const glm::vec3& up() const { return _up; };
+    glm::vec3 right() const { return glm::cross(_up, _front); }
+    const glm::vec3 center() const { return _center; }
 
     void setviewport( glm::vec4 viewport );
 
@@ -46,6 +50,7 @@ class Camera
     glm::vec3 _front;
     glm::vec3 _up;
     float _zoom;
+    glm::vec3 _center;
 
     glm::vec4 _viewport;
 

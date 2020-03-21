@@ -138,6 +138,8 @@ class Engine
      */
     void setGizmoType( Gizmo::GizmoType type ) { m_modelmanager->switchGizmo( type ); }
 
+    void raytrace(const std::string &path) const;
+
   private:
     void checkCreation();
 

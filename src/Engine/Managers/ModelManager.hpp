@@ -15,6 +15,7 @@
 #include <src/Engine/Managers/Gizmos/TranslateGizmo.hpp>
 #include <src/Engine/Physics/Ray.hpp>
 #include <vector>
+#include <src/Engine/Rendering/Raytracer/Raytracer.hpp>
 
 /**
  *  Set of Model and Light to be drawn.
@@ -26,14 +27,15 @@ class ModelManager
     /** Constructor.
      * creates the model manager for the engine.
      */
-    ModelManager() :
+    ModelManager(int width, int height) :
         m_selectedmodel{-1},
         m_selectedlight{-1},
         m_editionlight{new DirLight},
         m_colorshader{new Shader( "shaders/color.vert.glsl", "shaders/color.frag.glsl" )},
         m_wireframe{true},
         m_edition{true},
-        m_gizmo{new TranslateGizmo( Utils::Transform::Identity() )} {
+        m_gizmo{new TranslateGizmo( Utils::Transform::Identity() )},
+        m_raytracer { new Raytracer(width, height) }{
         makeGrid( 50 );
         makeUnitArrows();
     }
@@ -43,6 +45,7 @@ class ModelManager
         m_lights.clear();
         m_editionlight.reset();
         m_colorshader.reset();
+        m_raytracer.reset();
     }
 
     ModelManager( const ModelManager& ) = delete;
@@ -182,6 +185,12 @@ class ModelManager
      */
     void toggleEditionMode() { m_edition = !m_edition; }
 
+    /** Render the scene using Raytracer.
+     *
+     * @param path - path of the output picture.
+     */
+    void raytrace(const std::string &path, int width, int height, const glm::mat4 & projection, const glm::mat4 & view);
+
   private:
     void drawGrid( const glm::mat4& projection, const glm::mat4& view );
     void makeGrid( int size );
@@ -195,10 +204,10 @@ class ModelManager
     std::unique_ptr<Mesh> m_grid;
     std::vector<std::unique_ptr<Mesh>> m_unitarrows;
 
-    std::vector<std::shared_ptr<Model>> m_models;
+    std::vector<std::unique_ptr<Model>> m_models;
     int m_selectedmodel;
 
-    std::vector<std::shared_ptr<Light>> m_lights;
+    std::vector<std::unique_ptr<Light>> m_lights;
     int m_selectedlight;
     std::unique_ptr<Light> m_editionlight;
 
@@ -211,6 +220,8 @@ class ModelManager
 
     std::unique_ptr<Gizmo> m_gizmo;
     Gizmo::GizmoType m_gizmoType{Gizmo::TRANSLATE};
+
+    std::unique_ptr<Raytracer> m_raytracer;
 };
 
 #endif // DAFT_ENGINE_MODELMANAGER_HPP

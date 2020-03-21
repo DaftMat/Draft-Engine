@@ -102,40 +102,42 @@ void ModelManager::draw( Shader& shader,
 }
 
 void ModelManager::addLight( Light::LightType type ) {
+    Light *light;
     switch ( type )
     {
     case Light::POINT_LIGHT:
-        m_lights.emplace_back( new PointLight() );
+        light = new PointLight();
         break;
     case Light::DIR_LIGHT:
-        m_lights.emplace_back( new DirLight() );
+        light = new DirLight();
         break;
     case Light::SPOT_LIGHT:
-        m_lights.emplace_back( new SpotLight() );
-        break;
-    default:
+        light = new SpotLight();
         break;
     }
+    m_lights.emplace_back(light);
 }
 
 void ModelManager::addObject( Model::ModelType type ) {
+    Model *model;
     switch ( type )
     {
     case Model::UV_SPHERE:
-        m_models.emplace_back( new UVSphere() );
+        model = new UVSphere();
         break;
     case Model::ICO_SPHERE:
-        m_models.emplace_back( new IcoSphere() );
+        model = new IcoSphere();
         break;
     case Model::CUBE_SPHERE:
-        m_models.emplace_back( new CubeSphere() );
+        model = new CubeSphere();
         break;
     case Model::CUBE:
-        m_models.emplace_back( new Cube() );
+        model = new Cube();
         break;
     default:
         break;
     }
+    m_models.emplace_back(model);
 }
 
 void ModelManager::setObjectParams( const Model::ModelParam& params ) {
@@ -387,4 +389,14 @@ Light* ModelManager::getSelectedLight() {
 void ModelManager::setSelectedLight( GLuint index ) {
     m_selectedlight = glm::max( index, GLuint( m_lights.size() - 1 ) );
     m_selectedmodel = -1;
+}
+
+void ModelManager::raytrace(const std::string &path, int width, int height, const glm::mat4 & projection, const glm::mat4 & view) {
+    m_raytracer.reset(new Raytracer(width, height, glm::vec3(0.2f, 0.8f, 1.f)));
+    for (int i = 0 ; i < m_models.size() ; ++i)
+        m_raytracer->addModel(*m_models[i]);
+    for (int i = 0 ; i < m_lights.size() ; ++i)
+        m_raytracer->addLight(*m_lights[i]);
+    m_raytracer->render(path, projection, view);
+    m_raytracer.reset(nullptr);
 }

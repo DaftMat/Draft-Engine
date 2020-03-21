@@ -9,7 +9,7 @@
 Engine::Engine( int width, int height ) :
     m_width{width},
     m_height{height},
-    m_modelmanager{new ModelManager()},
+    m_modelmanager{new ModelManager(width, height)},
     m_activeshader{0},
     m_shader{nullptr},
     m_activecamera{0},
@@ -156,4 +156,9 @@ void Engine::checkCreation() {
 
 void Engine::setModelParams( const Model::ModelParam& params ) {
     m_modelmanager->setObjectParams( params );
+}
+
+void Engine::raytrace(const std::string &path) const {
+    m_modelmanager->raytrace(path, m_width, m_height,
+            m_projection, m_camera->viewmatrix());
 }

@@ -207,12 +207,18 @@ class Model
      */
     GLuint getSize() const;
 
+    /** Number of meshes.
+     *
+     * @return number of meshes in the model.
+     */
+    GLuint getNumMeshes() const { return m_meshes.size(); }
+
     /** Mesh getter.
      * access a mesh using its index.
      * @param i - index of the mesh wanted.
      * @return mesh at the index i.
      */
-     const Mesh& getMesh(GLuint i) { return *m_meshes[i]; }
+     const Mesh& getMesh(GLuint i) const { return *m_meshes[i]; }
 
   protected:
     std::vector<std::unique_ptr<Mesh>> m_meshes;

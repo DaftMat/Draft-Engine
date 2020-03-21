@@ -10,7 +10,9 @@ Camera::Camera( glm::vec3 position, glm::vec3 up, glm::vec3 look, float zoom ) :
     _position( position ),
     _front( look - position ),
     _up( up ),
-    _zoom( zoom ) {}
+    _zoom( zoom ) {
+    _center = 1.f / glm::tan((zoom * glm::pi<float>() / 180.f) * 0.5f) * glm::normalize(front());
+}
 
 Camera::~Camera() {}
 

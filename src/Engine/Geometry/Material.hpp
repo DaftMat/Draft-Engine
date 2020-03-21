@@ -19,7 +19,8 @@ class Material
         m_specular{0.9f, 0.9f, 0.9f},
         m_roughness{0.1f},
         m_ao{1.f},
-        m_ior{1.777} {}
+        m_ior{1.777},
+        m_transparency { 0.f } {}
 
     /** Constructor.
      *
@@ -99,12 +100,25 @@ class Material
      */
     float IOR() const { return m_ior; }
 
+    /** transparency ref.
+     * for Raytracer only.
+     * @return reference to the transparency of the material.
+     */
+    float& transparency() { return m_transparency; }
+
+    /** transparency getter.
+     * for Raytracer only.
+     * @return
+     */
+    float transparency() const { return m_transparency; }
+
   private:
     glm::vec3 m_albedo;
     glm::vec3 m_specular;
     float m_roughness;
     float m_ao;
     float m_ior;
+    float m_transparency;
 };
 
 #endif // DAFT_ENGINE_MATERIAL_HPP
