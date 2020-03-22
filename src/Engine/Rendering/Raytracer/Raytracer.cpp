@@ -160,7 +160,7 @@ glm::vec3 Raytracer::traceRay(const Ray &ray, float reflcoef) {
     Ray refractRay;
 
     if (intersectScene(ray, frag)) {
-        //color += skyLighting(frag, ray);
+        color += skyLighting(frag, ray);
         for (const auto &light : m_lights) {
             glm::vec3 L;
             float attenuation, distLight;
@@ -168,7 +168,7 @@ glm::vec3 Raytracer::traceRay(const Ray &ray, float reflcoef) {
             shadow = Ray(frag.position + ACNE_EPS * L, L);
             Fragment dummy;
             if (!intersectScene(shadow, dummy, distLight)) {
-                color += shade(-ray.direction(), light, L, frag) * attenuation;
+                color += glm::max(shade(-ray.direction(), light, L, frag), glm::vec3(0.f)) * attenuation;
             }
         }
 
