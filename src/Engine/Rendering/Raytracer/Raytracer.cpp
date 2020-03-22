@@ -160,7 +160,7 @@ glm::vec3 Raytracer::traceRay(const Ray &ray, float reflcoef) {
     Ray refractRay;
 
     if (intersectScene(ray, frag)) {
-        color += skyLighting(frag, ray);
+        //color += skyLighting(frag, ray);
         for (const auto &light : m_lights) {
             glm::vec3 L;
             float attenuation, distLight;
@@ -190,10 +190,12 @@ glm::vec3 Raytracer::traceRay(const Ray &ray, float reflcoef) {
             }
         }
 
-        glm::vec3 ambient = glm::vec3(0.03f) * frag.material.albedo() * frag.material.ambientOcclusion();
-        color += ambient;
-        color = color / (color + glm::vec3(1.0));
-        color = glm::pow(color, glm::vec3(0.5f));
+        if (reflcoef == 1.f) {
+            glm::vec3 ambient = glm::vec3(0.03f) * frag.material.albedo() * frag.material.ambientOcclusion();
+            color += ambient;
+            color = color / (color + glm::vec3(1.0));
+            color = glm::pow(color, glm::vec3(0.5f));
+        }
     } else {
         color = m_skyColor;
     }
@@ -240,6 +242,9 @@ void Raytracer::addLight(const Light &light) {
     SimpleLight newLight {};
     newLight.type = light.getType();
     newLight.param = light.getParams();
+    if (newLight.type == Light::DIR_LIGHT)
+        newLight.param.dirlight.direction =
+                ( light.model().rotation() * glm::vec4( newLight.param.dirlight.direction, 0.f ) );
     newLight.color = glm::vec3(light.color());
     m_lights.push_back(newLight);
 }
