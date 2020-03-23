@@ -116,24 +116,29 @@ glm::vec3 Raytracer::skyLighting(const Fragment &frag, const Ray &ray) {
 bool Raytracer::intersectScene(const Ray &ray, Fragment &frag, float dist) {
     bool hasIntersection = false;
     for (auto &mesh : m_meshes) {
-        for (int j = 0 ; j < mesh.indices.size() ; j += 3) {
-            glm::vec3 k {
-                mesh.indices[j],
-                mesh.indices[j + 1],
-                mesh.indices[j + 2]
-            };
-            std::vector<Mesh::Vertex> v;
-            for (int vi = 0 ; vi < 3 ; ++vi) {
-                Mesh::Vertex vx = mesh.vertices[k[vi]];
-                vx.Normal = glm::mat3(glm::transpose(glm::inverse(mesh.model))) * vx.Normal;
-                vx.Position = glm::vec3(mesh.model * glm::vec4(vx.Position, 1.f));
-                v.push_back(vx);
-            }
-            if (ray.intersects(v[0], v[1], v[2], dist)) {
-                hasIntersection = true;
-                frag.position = ray.position(dist);
-                frag.normal = calculateNormal(v[0], v[1], v[2]);
-                frag.material = mesh.materal;
+        float aabbDist = dist;
+        if (ray.intersects(mesh.aabb, aabbDist)) {
+            for (int j = 0; j < mesh.indices.size(); j += 3) {
+                glm::vec3 k{
+                        mesh.indices[j],
+                        mesh.indices[j + 1],
+                        mesh.indices[j + 2]
+                };
+                std::vector<Mesh::Vertex> v;
+                for (int vi = 0; vi < 3; ++vi) {
+                    Mesh::Vertex vx = mesh.vertices[k[vi]];
+                    vx.Normal = glm::mat3(glm::transpose(glm::inverse(mesh.model))) * vx.Normal;
+                    vx.Position = glm::vec3(mesh.model * glm::vec4(vx.Position, 1.f));
+                    v.push_back(vx);
+                }
+                if (ray.intersects(v[0], v[1], v[2], dist)) {
+                    hasIntersection = true;
+                    frag.position = ray.position(dist);
+                    frag.normal = calculateNormal(v[0], v[1], v[2]);
+                    if (glm::dot(-ray.direction(), frag.normal) < 0.f)
+                        frag.normal = -frag.normal;
+                    frag.material = mesh.materal;
+                }
             }
         }
     }
@@ -172,11 +177,11 @@ glm::vec3 Raytracer::traceRay(const Ray &ray, float reflcoef) {
             }
         }
 
-        if (reflcoef > 0.1f) {
+        if (reflcoef > 0.01f) {
             float transparency = frag.material.transparency();
             if (transparency < 1.f) {
                 glm::vec3 reflectDir = glm::normalize(glm::reflect(ray.direction(), frag.normal));
-                glm::vec3 reflectOrig = frag.position + ACNE_EPS * frag.normal;
+                glm::vec3 reflectOrig = frag.position + ACNE_EPS * reflectDir;
                 float fr = RDM_fresnel(glm::dot(reflectDir, frag.normal), 1.f, frag.material.IOR());
                 reflectRay = Ray(reflectOrig, reflectDir);
                 color += (1.f - transparency) * fr * traceRay(reflectRay, reflcoef * 0.5f) * frag.material.specular() * reflcoef;
@@ -184,15 +189,18 @@ glm::vec3 Raytracer::traceRay(const Ray &ray, float reflcoef) {
 
             if (transparency > 0.f) {
                 glm::vec3 refractDir = glm::normalize(glm::refract(ray.direction(), frag.normal, 1.f / frag.material.IOR()));
-                glm::vec3 refractOrig = frag.position + ACNE_EPS * (-frag.normal);
+                glm::vec3 refractOrig = frag.position + ACNE_EPS * refractDir;
                 refractRay = Ray(refractOrig, refractDir);
-                color += transparency * traceRay(refractRay, reflcoef * 0.5f) * frag.material.specular();
+                color += transparency * traceRay(refractRay, reflcoef * 0.5f);
             }
         }
 
         if (reflcoef == 1.f) {
-            glm::vec3 ambient = glm::vec3(0.03f) * frag.material.albedo() * frag.material.ambientOcclusion();
+            glm::vec3 ambient = glm::vec3(0.03f) * frag.material.albedo() *
+                    frag.material.ambientOcclusion() * (1.f - frag.material.transparency());
             color += ambient;
+        }
+        if (frag.material.transparency() < 1.f) {
             color = color / (color + glm::vec3(1.0));
             color = glm::pow(color, glm::vec3(0.5f));
         }
@@ -231,6 +239,7 @@ void Raytracer::addModel(const Model &model) {
     SimpleMesh newModel {};
     newModel.materal = Material(model.material());
     newModel.model = model.model();
+    newModel.aabb = model.aabb();
     for (int i = 0 ; i < model.getNumMeshes() ; ++i) {
         newModel.vertices = model.getMesh(i).getVertices();
         newModel.indices = model.getMesh(i).getIndices();

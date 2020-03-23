@@ -48,6 +48,8 @@ class MainWindow : public QMainWindow
     void on_trianglesChanged( GLuint size );
     void on_renderButton_clicked();
 
+    void on_transSpin_valueChanged(double arg1);
+
 private:
     void updateSettings( Model::ModelType type );
     void updateSettings( Light::LightType type );

@@ -66,7 +66,7 @@ public:
     void render(const std::string & path, const glm::mat4 & projection, const glm::mat4 & view);
 
 private:
-    const float ACNE_EPS = 1.e-2f;
+    const float ACNE_EPS = 1.e-4f;
 
     struct Fragment {
         glm::vec3 normal;
@@ -79,6 +79,7 @@ private:
         std::vector<GLuint> indices;
         glm::mat4 model;
         Material materal;
+        Utils::Aabb aabb;
     };
 
     struct SimpleLight {

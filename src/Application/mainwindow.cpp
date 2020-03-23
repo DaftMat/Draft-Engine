@@ -237,6 +237,7 @@ void MainWindow::objectSelection() {
     ui->roughnessSpin->setValue( material.roughness() );
     ui->aoSpin->setValue( material.ambientOcclusion() );
     ui->iorSpin->setValue( material.IOR() );
+    ui->transSpin->setValue( material.transparency() );
 }
 
 void MainWindow::lightSelection() {
@@ -557,4 +558,12 @@ void MainWindow::on_renderButton_clicked()
     std::string path = "output/" + std::string(ui->picturename->text().toUtf8().constData());
     ui->picturename->setText("");
     ui->m_openglwidget->raytrace(path);
+}
+
+void MainWindow::on_transSpin_valueChanged(double arg1)
+{
+    if ( m_state == SELECTION ) return;
+    if ( ui->m_openglwidget->getSelectedObject() == nullptr )   return;
+    ui->m_openglwidget->getSelectedObject()->material().transparency() = float( arg1 );
+    ui->m_openglwidget->update();
 }

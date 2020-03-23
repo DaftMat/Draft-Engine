@@ -285,15 +285,10 @@ bool ModelManager::mouse_click( const Ray& ray, float xpos, float ypos ) {
     found = false;
     for ( int i = 0; i < m_models.size(); ++i )
     {
-        float temp;
-        if ( ray.intersects( m_models[i]->obb(), temp ) )
+        if ( ray.intersects( m_models[i]->obb(), dist ) )
         {
             found = true;
-            if ( temp < dist )
-            {
-                dist            = temp;
-                m_selectedmodel = i;
-            }
+            m_selectedmodel = i;
         }
     }
     if ( !found )
@@ -303,15 +298,10 @@ bool ModelManager::mouse_click( const Ray& ray, float xpos, float ypos ) {
     bool found_light = false;
     for ( int i = 0; i < m_lights.size(); ++i )
     {
-        float temp;
-        if ( ray.intersects( m_lights[i]->model().obb(), temp ) )
+        if ( ray.intersects( m_lights[i]->model().obb(), dist ) )
         {
-            if ( temp < dist )
-            {
-                found_light     = true;
-                dist            = temp;
-                m_selectedlight = i;
-            }
+            found_light     = true;
+            m_selectedlight = i;
         }
     }
     if ( !found_light )

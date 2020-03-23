@@ -46,6 +46,8 @@ bool Ray::intersects( const Utils::Aabb& aabb, float& dist ) const {
         if ( tMax <= tMin ) return false;
     }
 
+    if (tMin > dist)
+        return false;
     dist = tMin;
     return true;
 }
@@ -75,6 +77,8 @@ bool Ray::intersects( const Obb& obb, float& dist ) const {
         { return false; }
     }
 
+    if (tMin > dist)
+        return false;
     dist = tMin;
     return true;
 }
