@@ -7,7 +7,7 @@ Render Engine made in C++/OpenGL/Qt.
  - [GLM](https://github.com/g-truc/glm) (As submodule in repository)
  - [Eigen](https://gitlab.com/libeigen/eigen) (As submodule in repository)
  - GLSL/OpenGL 4.10+
- - Qt
+ - Qt5
 
 ## Downloading
 Run the following command :
