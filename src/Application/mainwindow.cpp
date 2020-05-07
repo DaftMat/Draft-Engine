@@ -284,6 +284,8 @@ void MainWindow::on_objectCreator_activated( const QString& arg1 ) {
         ui->m_openglwidget->addObject( Model::CUBE_SPHERE );
     else if ( arg1 == "Cube" )
         ui->m_openglwidget->addObject( Model::CUBE );
+    else if ( arg1 == "Particle System")
+        ui->m_openglwidget->addObject( Model::PARTICLESYS );
     ui->m_openglwidget->setFocus();
     ui->objectCreator->setCurrentIndex( 0 );
 }

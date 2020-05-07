@@ -34,7 +34,7 @@ class Engine
     /** draw the scene.
      *  draw all the models and lights of the ModelManager using selected shader.
      */
-    void draw();
+    void draw(float dt);
 
     /** mouse click event handler.
      * can start to move camera, select a model or a light or a gizmo to move.
@@ -175,7 +175,7 @@ class Engine
     using CameraSelector = std::function<Camera*()>;
     std::vector<CameraSelector> m_cameraselector;
     unsigned int m_activecamera;
-    std::unique_ptr<Camera> m_camera;
+    std::shared_ptr<Camera> m_camera;
 
     glm::mat4 m_projection;
 };

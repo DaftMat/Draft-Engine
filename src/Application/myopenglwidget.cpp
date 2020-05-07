@@ -46,7 +46,7 @@ void MyOpenGLWidget::initializeGL() {
 
 void MyOpenGLWidget::paintGL() {
     std::int64_t starttime = QDateTime::currentMSecsSinceEpoch();
-    m_engine->draw();
+    m_engine->draw(_lastime/1000.f);
     glCheckError() if ( object_added ) {
         object_added = false;
         emit selectionChanged( m_engine->getSelectedIndex() );
@@ -57,6 +57,7 @@ void MyOpenGLWidget::paintGL() {
     glFinish();
     std::int64_t endtime = QDateTime::currentMSecsSinceEpoch();
     _lastime             = endtime - starttime;
+    update();
 }
 
 void MyOpenGLWidget::resizeGL( int width, int height ) {
@@ -83,7 +84,6 @@ void MyOpenGLWidget::mousePressEvent( QMouseEvent* event ) {
     m_engine->mouseclick( b, event->x(), event->y() );
     emit selectionChanged( m_engine->getSelectedIndex() );
     update();
-    _lastime = QDateTime::currentMSecsSinceEpoch();
 }
 
 void MyOpenGLWidget::mouseReleaseEvent( QMouseEvent* event ) {

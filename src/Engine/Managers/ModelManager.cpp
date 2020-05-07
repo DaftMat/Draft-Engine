@@ -9,8 +9,9 @@
 #include <Engine/Geometry/Primitives/CubeSphere.hpp>
 #include <Engine/Geometry/Primitives/IcoSphere.hpp>
 #include <Engine/Geometry/Primitives/UVSphere.hpp>
+#include <src/Engine/Geometry/Primitives/ParticleSystem/ParticleSystem.hpp>
 
-void ModelManager::draw( Shader& shader,
+void ModelManager::draw( float dt, Shader& shader,
                          const glm::mat4& view,
                          const glm::mat4& projection,
                          const glm::vec3& viewPos,
@@ -29,7 +30,7 @@ void ModelManager::draw( Shader& shader,
     {
         updateGizmo( viewPos );
         glDepthRange( 0.0, 0.01 );
-        m_gizmo->draw( projection, view );
+        m_gizmo->draw( dt, projection, view );
         glDepthRange( 0.01, 1.0 );
     }
 
@@ -57,7 +58,12 @@ void ModelManager::draw( Shader& shader,
     for ( GLuint i = 0; i < m_models.size(); ++i )
     {
         glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-        m_models[i]->draw( shader );
+        if (m_models[i]->getType() == Model::PARTICLESYS) {
+            Model::ModelParam params = m_models[i]->getParams();
+            params.particlesys.view = view;
+            m_models[i]->editModel(params);
+        }
+        m_models[i]->draw( dt, shader );
         if ( m_edition )
         {
             glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
@@ -65,12 +71,12 @@ void ModelManager::draw( Shader& shader,
             if ( i == m_selectedmodel )
             {
                 m_colorshader->setVec3( "color", glm::vec3( 0.f, 1.f, 1.f ) );
-                m_models[i]->draw( *m_colorshader );
+                m_models[i]->draw( dt, *m_colorshader );
             }
             else if ( m_wireframe )
             {
                 m_colorshader->setVec3( "color", glm::vec3( 0.f, 0.f, 0.f ) );
-                m_models[i]->draw( *m_colorshader );
+                m_models[i]->draw( dt, *m_colorshader );
             }
         }
     }
@@ -85,13 +91,13 @@ void ModelManager::draw( Shader& shader,
             {
                 m_colorshader->setVec3( "color", glm::vec3( 0.f, 1.f, 1.f ) );
                 m_lights[i]->reset();
-                m_lights[i]->model().draw( *m_colorshader );
+                m_lights[i]->model().draw( dt, *m_colorshader );
             }
             else if ( m_wireframe )
             {
                 m_colorshader->setVec3( "color", glm::vec3( 0.9f, 0.9f, 0.9f ) );
                 m_lights[i]->reset();
-                m_lights[i]->model().draw( *m_colorshader );
+                m_lights[i]->model().draw( dt, *m_colorshader );
             }
         }
     }
@@ -134,6 +140,8 @@ void ModelManager::addObject( Model::ModelType type ) {
     case Model::CUBE:
         model = new Cube();
         break;
+    case Model::PARTICLESYS:
+        model = new ParticleSystem();
     default:
         break;
     }

@@ -73,9 +73,9 @@ void Engine::resize( int width, int height ) {
     m_projection = glm::perspective( m_camera->zoom(), float( m_width ) / m_height, 0.1f, 100.0f );
 }
 
-void Engine::draw() {
+void Engine::draw(float dt) {
     checkCreation();
-    m_modelmanager->draw(
+    m_modelmanager->draw( dt,
         *m_shader, m_camera->viewmatrix(), m_projection, m_camera->position(), m_camera->front() );
 }
 

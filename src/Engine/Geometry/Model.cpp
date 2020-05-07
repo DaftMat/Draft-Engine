@@ -10,16 +10,16 @@ Model::Model( const std::vector<Mesh::Vertex>& vertices,
               bool wire ) :
     m_wire{wire} {
     m_meshes.clear();
-    m_meshes.emplace_back( new Mesh( vertices, indices, m_wire ) );
+    m_meshes.emplace_back( new MeshObject( vertices, indices, m_wire ) );
 }
 
-void Model::draw( const Shader& shader ) const {
+void Model::draw( float dt, const Shader& shader ) {
     shader.use();
-    shader.setMat4( "model", model() );
     shader.setMaterial( m_material );
 
     for ( auto& mesh : m_meshes )
     {
+        shader.setMat4( "model", model() * mesh->model() );
         mesh->draw();
     }
 }

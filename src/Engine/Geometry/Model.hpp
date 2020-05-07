@@ -13,7 +13,7 @@
 #include <src/Utils/adapters.hpp>
 
 #include "Material.hpp"
-#include "Mesh.hpp"
+#include "MeshObject.hpp"
 #include <Engine/Physics/Obb.hpp>
 
 class Shader;
@@ -37,6 +37,16 @@ class Model
         struct cube_param {
             GLuint resolution; ///< Cube's faces resolution.
         } cube;
+        struct particle_param {
+            glm::vec3 normal;
+            glm::vec3 variance;
+            GLfloat frequency;
+            GLfloat lifetime;
+            GLfloat gravity;
+            GLfloat startSpeed;
+            GLfloat weight;
+            glm::mat4 view;
+        } particlesys;
     };
 
     /** Model's Type type. */
@@ -45,7 +55,8 @@ class Model
         UV_SPHERE,   ///< UVSphere.
         ICO_SPHERE,  ///< IcoSphere.
         CUBE_SPHERE, ///< CubeSphere.
-        CUBE         ///< Cube.
+        CUBE,        ///< Cube.
+        PARTICLESYS  ///< ParticleSystem.
     };
 
     /** Default constructor. */
@@ -69,7 +80,7 @@ class Model
      *  Set the drawing shader for the current object and draws meshes in it.
      * @param shader - drawing shader.
      */
-    void draw( const Shader& shader ) const;
+    virtual void draw( float dt, const Shader& shader );
 
     /** Model's model matrix getter.
      *
@@ -138,7 +149,7 @@ class Model
      */
     void reset( const std::vector<Mesh::Vertex>& vertices, const std::vector<GLuint>& indices ) {
         m_meshes.clear();
-        m_meshes.emplace_back( new Mesh( vertices, indices, m_wire ) );
+        m_meshes.emplace_back( new MeshObject( vertices, indices, m_wire ) );
     }
 
     /** model's type getter.
@@ -218,10 +229,10 @@ class Model
      * @param i - index of the mesh wanted.
      * @return mesh at the index i.
      */
-     const Mesh& getMesh(GLuint i) const { return *m_meshes[i]; }
+     const MeshObject& getMesh(GLuint i) const { return *m_meshes[i]; }
 
   protected:
-    std::vector<std::unique_ptr<Mesh>> m_meshes;
+    std::vector<std::unique_ptr<MeshObject>> m_meshes;
     bool m_wire{false};
 
   private:

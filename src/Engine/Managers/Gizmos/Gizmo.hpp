@@ -32,7 +32,7 @@ class Gizmo
      * @param projection - projection matrix of the Camera.
      * @param view - view matrix of the Camera.
      */
-    void draw( const glm::mat4& projection, const glm::mat4& view );
+    void draw( float dt, const glm::mat4& projection, const glm::mat4& view );
 
     /** X axis Model 's OBB getter.
      * c.f. Obb - used for mouse click detection.

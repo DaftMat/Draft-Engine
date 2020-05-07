@@ -61,7 +61,7 @@ class ModelManager
      * @param viewPos - position of the Camera.
      * @param viewDir - view direction (look at) of the Camera.
      */
-    void draw( Shader& shader,
+    void draw( float dt, Shader& shader,
                const glm::mat4& view,
                const glm::mat4& projection,
                const glm::vec3& viewPos,

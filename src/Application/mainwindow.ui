@@ -994,6 +994,11 @@
           <string>Cube</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>Particle System</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item>

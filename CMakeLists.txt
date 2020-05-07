@@ -37,6 +37,7 @@ FILE(GLOB_RECURSE
     folder_header
     ${CMAKE_SOURCE_DIR}/src/*.h
     ${CMAKE_SOURCE_DIR}/src/*.hpp
+    ${CMAKE_SOURCE_DIR}/3rdPartyLibs/random.hpp
 )
 
 FILE(GLOB_RECURSE
@@ -46,8 +47,8 @@ FILE(GLOB_RECURSE
 
 # Include libraries
 include_directories(
-   ${CMAKE_SOURCE_DIR}/src
-   ${CMAKE_SOURCE_DIR}/3rdPartyLibs
+        ${CMAKE_SOURCE_DIR}/src
+        ${CMAKE_SOURCE_DIR}/3rdPartyLibs
 )
 
 SOURCE_GROUP("Source Files" FILES ${folder_source})
