@@ -59,6 +59,8 @@ void Shader::setMaterial( const Material& material ) const {
     setFloat( "material.roughness", material.roughness() );
     setFloat( "material.ao", material.ambientOcclusion() );
     setFloat( "material.ior", material.IOR() );
+    setFloat("material.shininess", 16.f);
+    setBool("material.isParticle", material.isParticle());
 }
 
 void Shader::addLight( Light* light ) {

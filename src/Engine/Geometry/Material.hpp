@@ -112,6 +112,10 @@ class Material
      */
     float transparency() const { return m_transparency; }
 
+    bool& isParticle() { return m_isParticle; }
+
+    bool isParticle() const { return m_isParticle; }
+
   private:
     glm::vec3 m_albedo;
     glm::vec3 m_specular;
@@ -119,6 +123,7 @@ class Material
     float m_ao;
     float m_ior;
     float m_transparency;
+    bool m_isParticle {false};
 };
 
 #endif // DAFT_ENGINE_MATERIAL_HPP

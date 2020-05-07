@@ -11,6 +11,7 @@ struct Material {
     float roughness;
     float ao;
     float ior;
+    bool isParticle;
 };
 
 struct PointLight {
@@ -61,6 +62,7 @@ vec3 RDM_bsdf(float LdotH, float NdotH, float VdotH, float LdotN, float VdotN);
 vec3 shade(PointLight light, vec3 N, vec3 V, vec3 fragPos);
 vec3 shade(DirLight light, vec3 N, vec3 V);
 vec3 shade(SpotLight light, vec3 N, vec3 V, vec3 fragPos);
+float alpha();
 
 void main() {
     vec3 N = normalize(fragNormal);
@@ -84,7 +86,7 @@ void main() {
     vec3 color = ambient + Lo;
     color = color / (color + vec3(1.0));
     color = pow(color, vec3(0.5f));
-    fragColor = vec4(color, 1.0);
+    fragColor = vec4(color, alpha());
 }
 
 float RDM_Beckmann(float NdotH, float alpha) {
@@ -182,4 +184,12 @@ vec3 shade(SpotLight light, vec3 N, vec3 V, vec3 fragPos) {
     float VdotN = dot(V, N);
 
     return light.color * RDM_bsdf(LdotH, NdotH, VdotH, LdotN, VdotN) * attenuation * intensity * max(LdotN, 0.f);
+}
+
+float alpha() {
+    if (!material.isParticle) {
+        return 1.0;
+    }
+    float dist = length(fragTex - vec2(0.5));
+    return 1.0 - (dist / 0.5);
 }

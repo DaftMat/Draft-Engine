@@ -11,7 +11,7 @@ using Random = effolkronium::random_static;
 
 ParticleSystem::ParticleSystem() :
     m_normal { 0.f, 1.f, 0.f },
-    m_variance { 0.2f, 0.f, 0.2f },
+    m_variance { 0.2f, 0.3f, 0.2f },
     m_frequency { 10000.f },
     m_lifetime { 2.f },
     m_gravity { -9.81 },

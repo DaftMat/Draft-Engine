@@ -38,10 +38,6 @@ void ModelManager::draw( float dt, Shader& shader,
         m_models[ind]->reset();
     m_toReset.clear();
 
-    m_particleshader->use();
-    m_particleshader->setMat4("view", view);
-    m_particleshader->setMat4("projection", projection);
-
     shader.use();
     shader.setVec3( "viewPos", viewPos );
     shader.setMat4( "view", view );
@@ -70,11 +66,9 @@ void ModelManager::draw( float dt, Shader& shader,
             Model::ModelParam params = m_models[i]->getParams();
             params.particlesys.view = view;
             m_models[i]->editModel(params);
+            m_models[i]->material().isParticle() = true;
         }
-        if (m_models[i]->getType() == Model::PARTICLESYS)
-            m_models[i]->draw( dt, *m_particleshader );
-        else
-            m_models[i]->draw( dt, shader );
+        m_models[i]->draw( dt, shader );
         if ( m_edition )
         {
             glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
