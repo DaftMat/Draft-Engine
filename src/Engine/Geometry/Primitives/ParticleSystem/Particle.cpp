@@ -3,6 +3,7 @@
  */
 
 #include "Particle.hpp"
+#include <Engine/Shader.hpp>
 
 float Particle::gravity = -9.81f;
 
@@ -40,4 +41,11 @@ void Particle::update(float dt) {
     m_lifetime += dt;
     m_speed += dt * glm::vec3 { 0.f, gravity, 0.f };
     m_position += m_speed * dt;
+}
+
+void Particle::draw(const Shader &shader) {
+    shader.use();
+    shader.setVec3("particlePosition", {0.f, 0.f, 0.f});
+    shader.setFloat("particleRadius", m_size);
+    m_mesh->draw();
 }

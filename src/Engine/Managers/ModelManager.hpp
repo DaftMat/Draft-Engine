@@ -32,6 +32,7 @@ class ModelManager
         m_selectedlight{-1},
         m_editionlight{new DirLight},
         m_colorshader{new Shader( "shaders/color.vert.glsl", "shaders/color.frag.glsl" )},
+        m_particleshader{new Shader( "shaders/particle.vert.glsl", "shaders/particle.frag.glsl" )},
         m_wireframe{true},
         m_edition{true},
         m_gizmo{new TranslateGizmo( Utils::Transform::Identity() )},
@@ -212,6 +213,7 @@ class ModelManager
     std::unique_ptr<Light> m_editionlight;
 
     std::unique_ptr<Shader> m_colorshader;
+    std::unique_ptr<Shader> m_particleshader;
 
     /// Reset utils
     std::set<GLuint> m_toReset;

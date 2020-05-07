@@ -21,6 +21,8 @@ Engine::Engine( int width, int height ) :
     // glFrontFace(GL_CW);
     glEnable( GL_MULTISAMPLE );
     glEnable( GL_FRAMEBUFFER_SRGB );
+    glEnable( GL_BLEND );
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     /// Setup shaders
     m_shaderselector.emplace_back( []() -> Shader* {

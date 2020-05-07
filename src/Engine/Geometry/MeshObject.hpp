@@ -36,6 +36,8 @@ public:
      */
     void draw() const { m_mesh->draw(); }
 
+    virtual void draw(const Shader &shader) {}
+
     /** Added function : used for animated meshes.
      *
      */

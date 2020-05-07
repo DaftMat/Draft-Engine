@@ -38,6 +38,10 @@ void ModelManager::draw( float dt, Shader& shader,
         m_models[ind]->reset();
     m_toReset.clear();
 
+    m_particleshader->use();
+    m_particleshader->setMat4("view", view);
+    m_particleshader->setMat4("projection", projection);
+
     shader.use();
     shader.setVec3( "viewPos", viewPos );
     shader.setMat4( "view", view );
@@ -55,6 +59,10 @@ void ModelManager::draw( float dt, Shader& shader,
         shader.addLight( m_editionlight.get() );
     }
 
+    std::sort(m_models.begin(), m_models.end(), [](std::unique_ptr<Model> &pa, std::unique_ptr<Model> &pb){
+        return pa->getType() < pb->getType();
+    });
+
     for ( GLuint i = 0; i < m_models.size(); ++i )
     {
         glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
@@ -63,7 +71,10 @@ void ModelManager::draw( float dt, Shader& shader,
             params.particlesys.view = view;
             m_models[i]->editModel(params);
         }
-        m_models[i]->draw( dt, shader );
+        if (m_models[i]->getType() == Model::PARTICLESYS)
+            m_models[i]->draw( dt, *m_particleshader );
+        else
+            m_models[i]->draw( dt, shader );
         if ( m_edition )
         {
             glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );

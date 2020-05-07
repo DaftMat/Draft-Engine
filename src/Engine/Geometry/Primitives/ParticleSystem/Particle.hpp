@@ -20,6 +20,7 @@ public:
 
     glm::mat4 model() const override { return glm::translate(glm::mat4(1.f), m_position); }
     void update(float dt) override;
+    void draw(const Shader &shader) override;
     float getSetting() const override { return m_lifetime; }
 private:
     static float gravity;

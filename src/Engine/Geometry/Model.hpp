@@ -51,7 +51,7 @@ class Model
 
     /** Model's Type type. */
     enum ModelType {
-        MODEL,       ///< No specific type.
+        MODEL =0,    ///< No specific type.
         UV_SPHERE,   ///< UVSphere.
         ICO_SPHERE,  ///< IcoSphere.
         CUBE_SPHERE, ///< CubeSphere.
