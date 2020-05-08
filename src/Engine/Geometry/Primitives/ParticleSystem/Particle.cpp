@@ -5,8 +5,6 @@
 #include "Particle.hpp"
 #include <Engine/Shader.hpp>
 
-float Particle::gravity = -9.81f;
-
 void Particle::buildMesh(const glm::mat4 &view) {
     std::vector<Mesh::Vertex> vertices;
     std::vector<GLuint> indices { 0, 1, 2, 0, 2, 3 };
@@ -39,7 +37,7 @@ void Particle::buildMesh(const glm::mat4 &view) {
 
 void Particle::update(float dt) {
     m_lifetime += dt;
-    m_speed += dt * glm::vec3 { 0.f, gravity, 0.f };
+    m_speed += dt * glm::vec3 { 0.f, m_gravity, 0.f };
     m_position += m_speed * dt;
 }
 

@@ -220,6 +220,20 @@ void MainWindow::objectSelection() {
         ui->object_settings_label->setText( "Cube Settings" );
         ui->cubec_res->setValue( settings.cube.resolution );
         break;
+    case Model::ModelType::PARTICLESYS:
+        ui->object_settings_label->setText( "Particle System Settings" );
+        ui->normalX->setValue( settings.particlesys.normal.x );
+        ui->normalY->setValue( settings.particlesys.normal.y );
+        ui->normalZ->setValue( settings.particlesys.normal.z );
+        ui->varianceX->setValue( settings.particlesys.variance.x );
+        ui->varianceY->setValue( settings.particlesys.variance.y );
+        ui->varianceZ->setValue( settings.particlesys.variance.z );
+        ui->velocity->setValue(settings.particlesys.velocity);
+        ui->freq->setValue( settings.particlesys.frequency );
+        ui->lifeTime->setValue( settings.particlesys.lifetime );
+        ui->gravity->setValue( settings.particlesys.gravity );
+        ui->size->setValue( settings.particlesys.size );
+        break;
     default:
         ui->object_settings_label->setText( "Model Settings" );
         break;
@@ -363,6 +377,27 @@ void MainWindow::updateSettings( Model::ModelType type ) {
     case Model::ModelType::CUBE:
         ui->cubec_res->setVisible( true );
         ui->cubec_res_label->setVisible( true );
+        break;
+    case Model::ModelType::PARTICLESYS:
+        ui->velocityLabel->setVisible(true);
+        ui->normalX->setVisible(true);
+        ui->normalY->setVisible(true);
+        ui->normalZ->setVisible(true);
+        ui->varianceLabel->setVisible(true);
+        ui->varianceX->setVisible(true);
+        ui->varianceY->setVisible(true);
+        ui->varianceZ->setVisible(true);
+        ui->velocityLabel->setVisible(true);
+        ui->velocity->setVisible(true);
+        ui->freqLabel->setVisible(true);
+        ui->freq->setVisible(true);
+        ui->lifetimeLabel->setVisible(true);
+        ui->lifeTime->setVisible(true);
+        ui->gravityLabel->setVisible(true);
+        ui->gravity->setVisible(true);
+        ui->sizeLabel->setVisible(true);
+        ui->size->setVisible(true);
+        break;
     default:
         break;
     }
@@ -415,6 +450,24 @@ void MainWindow::unset_settings() {
     ui->cubec_res->setVisible( false );
     ui->cubec_res_label->setVisible( false );
     ui->triangle_num->setVisible( false );
+    ui->velocityLabel->setVisible(false);
+    ui->normalX->setVisible(false);
+    ui->normalY->setVisible(false);
+    ui->normalZ->setVisible(false);
+    ui->varianceLabel->setVisible(false);
+    ui->varianceX->setVisible(false);
+    ui->varianceY->setVisible(false);
+    ui->varianceZ->setVisible(false);
+    ui->velocityLabel->setVisible(false);
+    ui->velocity->setVisible(false);
+    ui->freqLabel->setVisible(false);
+    ui->freq->setVisible(false);
+    ui->lifetimeLabel->setVisible(false);
+    ui->lifeTime->setVisible(false);
+    ui->gravityLabel->setVisible(false);
+    ui->gravity->setVisible(false);
+    ui->sizeLabel->setVisible(false);
+    ui->size->setVisible(false);
     // light settings
     ui->intensitySpin->setVisible( false );
     ui->intensityLabel->setVisible( false );
@@ -567,5 +620,103 @@ void MainWindow::on_transSpin_valueChanged(double arg1)
     if ( m_state == SELECTION ) return;
     if ( ui->m_openglwidget->getSelectedObject() == nullptr )   return;
     ui->m_openglwidget->getSelectedObject()->material().transparency() = float( arg1 );
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_normalX_valueChanged(double arg1)
+{
+    if ( m_state == DaftState::SELECTION ) return;
+    Model::ModelParam settings = ui->m_openglwidget->getSelectedObject()->getParams();
+    settings.particlesys.normal.x = float(arg1);
+    ui->m_openglwidget->setModelParams(settings);
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_normalY_valueChanged(double arg1)
+{
+    if ( m_state == DaftState::SELECTION ) return;
+    Model::ModelParam settings = ui->m_openglwidget->getSelectedObject()->getParams();
+    settings.particlesys.normal.y = float(arg1);
+    ui->m_openglwidget->setModelParams(settings);
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_normalZ_valueChanged(double arg1)
+{
+    if ( m_state == DaftState::SELECTION ) return;
+    Model::ModelParam settings = ui->m_openglwidget->getSelectedObject()->getParams();
+    settings.particlesys.normal.z = float(arg1);
+    ui->m_openglwidget->setModelParams(settings);
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_varianceX_valueChanged(double arg1)
+{
+    if ( m_state == DaftState::SELECTION ) return;
+    Model::ModelParam settings = ui->m_openglwidget->getSelectedObject()->getParams();
+    settings.particlesys.variance.x = float(arg1);
+    ui->m_openglwidget->setModelParams(settings);
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_varianceY_valueChanged(double arg1)
+{
+    if ( m_state == DaftState::SELECTION ) return;
+    Model::ModelParam settings = ui->m_openglwidget->getSelectedObject()->getParams();
+    settings.particlesys.variance.y = float(arg1);
+    ui->m_openglwidget->setModelParams(settings);
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_varianceZ_valueChanged(double arg1)
+{
+    if ( m_state == DaftState::SELECTION ) return;
+    Model::ModelParam settings = ui->m_openglwidget->getSelectedObject()->getParams();
+    settings.particlesys.variance.z = float(arg1);
+    ui->m_openglwidget->setModelParams(settings);
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_freq_valueChanged(double arg1)
+{
+    if ( m_state == DaftState::SELECTION ) return;
+    Model::ModelParam settings = ui->m_openglwidget->getSelectedObject()->getParams();
+    settings.particlesys.frequency = float(arg1);
+    ui->m_openglwidget->setModelParams(settings);
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_lifeTime_valueChanged(double arg1)
+{
+    if ( m_state == DaftState::SELECTION ) return;
+    Model::ModelParam settings = ui->m_openglwidget->getSelectedObject()->getParams();
+    settings.particlesys.lifetime = float(arg1);
+    ui->m_openglwidget->setModelParams(settings);
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_gravity_valueChanged(double arg1)
+{
+    if ( m_state == DaftState::SELECTION ) return;
+    Model::ModelParam settings = ui->m_openglwidget->getSelectedObject()->getParams();
+    settings.particlesys.gravity = float(arg1);
+    ui->m_openglwidget->setModelParams(settings);
+    ui->m_openglwidget->update();
+}
+
+void MainWindow::on_size_valueChanged(double arg1)
+{
+    if ( m_state == DaftState::SELECTION ) return;
+    Model::ModelParam settings = ui->m_openglwidget->getSelectedObject()->getParams();
+    settings.particlesys.size = float(arg1);
+    ui->m_openglwidget->setModelParams(settings);
+    ui->m_openglwidget->update();
+}
+void MainWindow::on_velocity_valueChanged(double arg1)
+{
+    if ( m_state == DaftState::SELECTION ) return;
+    Model::ModelParam settings = ui->m_openglwidget->getSelectedObject()->getParams();
+    settings.particlesys.velocity = float(arg1);
+    ui->m_openglwidget->setModelParams(settings);
     ui->m_openglwidget->update();
 }

@@ -40,10 +40,11 @@ class Model
         struct particle_param {
             glm::vec3 normal;
             glm::vec3 variance;
+            GLfloat velocity;
             GLfloat frequency;
             GLfloat lifetime;
             GLfloat gravity;
-            GLfloat startSpeed;
+            GLfloat size;
             GLfloat weight;
             glm::mat4 view;
         } particlesys;

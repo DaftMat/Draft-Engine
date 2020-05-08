@@ -47,8 +47,18 @@ class MainWindow : public QMainWindow
     void on_iorSpin_valueChanged( double arg1 );
     void on_trianglesChanged( GLuint size );
     void on_renderButton_clicked();
-
     void on_transSpin_valueChanged(double arg1);
+    void on_normalX_valueChanged(double arg1);
+    void on_normalY_valueChanged(double arg1);
+    void on_normalZ_valueChanged(double arg1);
+    void on_varianceX_valueChanged(double arg1);
+    void on_varianceY_valueChanged(double arg1);
+    void on_varianceZ_valueChanged(double arg1);
+    void on_freq_valueChanged(double arg1);
+    void on_lifeTime_valueChanged(double arg1);
+    void on_gravity_valueChanged(double arg1);
+    void on_size_valueChanged(double arg1);
+    void on_velocity_valueChanged(double arg1);
 
 private:
     void updateSettings( Model::ModelType type );
