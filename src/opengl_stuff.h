@@ -1,7 +1,7 @@
 #ifndef OPENGL_STUFF_H
 #define OPENGL_STUFF_H
 
-#include <OpenGL/glad/glad.h>
+#include <GLAD/gl41core/glad.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
