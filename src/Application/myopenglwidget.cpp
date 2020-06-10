@@ -40,6 +40,8 @@ void MyOpenGLWidget::initializeGL() {
             "MyOpenGLWidget::initializeGL() : Unable to initialize OpenGL functions" );
         exit( 1 );
     }
+
+    gladLoadGL();
     // Initialize OpenGL and all OpenGL dependent stuff below
     m_engine.reset( new Engine( width(), height() ) );
 }

@@ -46,7 +46,7 @@ void ParticleSystem::draw(float dt, const Shader &shader) {
         glm::vec3 posa {pa->model()[3][0], pa->model()[3][1], pa->model()[3][2]};
         glm::vec3 posb {pb->model()[3][0], pb->model()[3][1], pb->model()[3][2]};
         glm::vec3 viewPos {view[3][0], view[3][1], view[3][2]};
-        return glm::length(viewPos - posa) - glm::length(viewPos - posb) < glm::epsilon<float>();
+        return (glm::length(viewPos - posa) * glm::length(viewPos - posa)) - (glm::length(viewPos - posb) * glm::length(viewPos - posb)) < glm::epsilon<float>();
     });
 
     shader.use();

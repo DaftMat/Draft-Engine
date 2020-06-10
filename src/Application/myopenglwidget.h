@@ -1,12 +1,13 @@
 #ifndef MYOPENGLWIDGET_H
 #define MYOPENGLWIDGET_H
 
-#include <QKeyEvent>
-#include <QOpenGLFunctions_4_1_Core>
-#include <QOpenGLWidget>
 
 #include <memory>
 #include <src/Engine/Engine.hpp>
+
+#include <QKeyEvent>
+#include <QOpenGLFunctions_4_1_Core>
+#include <QOpenGLWidget>
 
 /** QOpenGLWidget implementation.
  * Interface between Qt's MainWindow and my OpenGL Engine.

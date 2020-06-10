@@ -31,6 +31,7 @@ FILE(GLOB_RECURSE
     folder_source
     ${CMAKE_SOURCE_DIR}/src/*.cpp
     ${CMAKE_SOURCE_DIR}/3rdPartyLibs/stb/lodepng.cpp
+    ${CMAKE_SOURCE_DIR}/3rdPartyLibs/OpenGL/src/glad.c
 )
 
 FILE(GLOB_RECURSE
@@ -72,7 +73,7 @@ add_executable(${PROJECT_NAME}
                ${folder_ui}
                )
 
-set(EXT_LIBS Qt5::OpenGL ${OPENGL_LIBRARIES})
+set(EXT_LIBS Qt5::OpenGL ${OPENGL_LIBRARIES} ${CMAKE_DL_LIBS})
 
 target_link_libraries(${PROJECT_NAME} ${EXT_LIBS})
 
