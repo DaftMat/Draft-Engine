@@ -6,13 +6,12 @@
 #include <src/Engine/Engine.hpp>
 
 #include <QKeyEvent>
-#include <QOpenGLFunctions_4_1_Core>
 #include <QOpenGLWidget>
 
 /** QOpenGLWidget implementation.
  * Interface between Qt's MainWindow and my OpenGL Engine.
  */
-class MyOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_1_Core
+class MyOpenGLWidget : public QOpenGLWidget
 {
     Q_OBJECT
 

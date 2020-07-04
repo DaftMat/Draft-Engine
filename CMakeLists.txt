@@ -31,7 +31,7 @@ FILE(GLOB_RECURSE
     folder_source
     ${CMAKE_SOURCE_DIR}/src/*.cpp
     ${CMAKE_SOURCE_DIR}/3rdPartyLibs/stb/lodepng.cpp
-    ${CMAKE_SOURCE_DIR}/3rdPartyLibs/GLAD/gl41core/glad.c
+    ${CMAKE_SOURCE_DIR}/3rdPartyLibs/GLAD/gl41core/*.c
 )
 
 FILE(GLOB_RECURSE
@@ -39,6 +39,7 @@ FILE(GLOB_RECURSE
     ${CMAKE_SOURCE_DIR}/src/*.h
     ${CMAKE_SOURCE_DIR}/src/*.hpp
     ${CMAKE_SOURCE_DIR}/3rdPartyLibs/random.hpp
+    ${CMAKE_SOURCE_DIR}/3rdPartyLibs/GLAD/gl41core/*.h
 )
 
 FILE(GLOB_RECURSE

@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QDateTime>
 #include <QMessageBox>
+#include <QOpenGLContext>
 
 #include <iostream>
 #include <stdexcept>
@@ -31,15 +32,6 @@ void MyOpenGLWidget::cleanup() {
 
 void MyOpenGLWidget::initializeGL() {
     connect( context(), &QOpenGLContext::aboutToBeDestroyed, this, &MyOpenGLWidget::cleanup );
-
-    if ( !initializeOpenGLFunctions() )
-    {
-        QMessageBox::critical(
-            this,
-            "OpenGL initialization error",
-            "MyOpenGLWidget::initializeGL() : Unable to initialize OpenGL functions" );
-        exit( 1 );
-    }
 
     gladLoadGL();
     // Initialize OpenGL and all OpenGL dependent stuff below
